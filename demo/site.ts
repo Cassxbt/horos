@@ -462,4 +462,26 @@ cpSync(here('./emails'), `${OUT}/evidence/emails`, { recursive: true });
 for (const f of ['replay.json', 'attacks.json', 'eval.json']) copyFileSync(here(`./${f}`), `${OUT}/evidence/${f}`);
 for (const f of ['site.css', 'site.js']) copyFileSync(here(`./site/${f}`), `${OUT}/assets/${f}`);
 for (const [slug, html] of [['index', overview], ['case', casePage], ['judges', judges], ['proof', proof], ['how', how]] as const) writeFileSync(`${OUT}/${slug}.html`, html);
+
+// The address a person verifies as where the live USD 100 Slack bill is paid. It is ours, and it says so: the payment
+// is an Airwallex sandbox checkout on the team's own account, standing in for the supplier. Served from a subfolder,
+// so links resolve from the site root.
+const checkout = layout(
+  'index',
+  'Sandbox checkout · Horos',
+  'The team-controlled Airwallex sandbox checkout that stands in for Slack Technologies, Inc. in the Horos demo. Not Slack.',
+  `
+<section class="hero sub wrap">
+  <div>
+    <span class="eyebrow">Checkout · stand-in for Slack Technologies, Inc.</span>
+    <h1>${lines('A sandbox checkout,', '<em>not Slack.</em>')}</h1>
+    <p class="lede">This address is the checkout a person verifies before Horos may pay the USD 100 T:0 sandbox bill INV-20250201-1234 from Slack Technologies, Inc. A payment made here is an Airwallex Payment Acceptance intent on the Horos team's own sandbox account, paid with a single-use Visa Intelligent Commerce credential from Airi. No real money moves, and nothing reaches Slack.</p>
+    <div class="chips">${chip('live')}<span class="chip">sandbox only</span><span class="chip">team-controlled</span></div>
+    <p class="lede" style="margin-top:28px"><a class="link" href="proof.html">What has run, and what has not →</a></p>
+  </div>
+</section>
+`,
+).replace('<head>\n', '<head>\n<base href="/">\n<meta name="robots" content="noindex">\n');
+mkdirSync(`${OUT}/checkout`, { recursive: true });
+writeFileSync(`${OUT}/checkout/slack.html`, checkout);
 console.log(`saved ${OUT}: index, case, judges, proof, how (${testCount} tests counted)`);

@@ -169,7 +169,7 @@ function record(ledger: Ledger, p: Payable, terms: ApprovalTerms, approver: stri
   console.log(`\nairi-cli mandate create --source Horos --payment-method-id <id> --merchant-name "${vendor.name}" \\
   --merchant-url "${url}" --merchant-country US --total-amount "${invoice.amount.toFixed(2)}" \\
   --currency ${invoice.currency} --item "name:Invoice ${p.invoiceNumber},unit_price:${invoice.amount.toFixed(2)},quantity:1" \\
-  --description "Pay invoice ${p.invoiceNumber} to vendor ${vendor.id} ${vendor.name}. Approval digest ${short}"`);
+  --description "Pay invoice ${p.invoiceNumber} to vendor ${vendor.id} ${vendor.name}, at the team-controlled sandbox checkout standing in for it. Approval digest ${short}"`);
 }
 
 async function pay(ledger: Ledger, mandateId: string, p: Payable) {
