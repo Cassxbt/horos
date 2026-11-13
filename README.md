@@ -11,7 +11,7 @@
 ![Claude](https://img.shields.io/badge/Claude-opus--5.5-ece7da)
 [![Live](https://img.shields.io/badge/live-horos--rosy.vercel.app-74dbb0)](https://horos-rosy.vercel.app)
 
-### Approve once. Re-check everything when the money moves. An email can stop a payment. It can never send one.
+### Approve once. Re-check when the money moves. An email can stop a payment, never send one.
 
 Supplier bank-change fraud works **after** the approval. The invoice is real and a person approved it correctly. Then an email "from the supplier" asks for this and all future payments to go to a new account. Most AP tools answer one question: *was this invoice approved?* Horos answers the harder one: **is everything the approval rested on still true at the moment of payment?**
 
