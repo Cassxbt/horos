@@ -6,25 +6,25 @@ Supplier bank-change fraud works after the approval. The invoice is real and a p
 
 **[Live site](https://horos-rosy.vercel.app)** · **[The case](https://horos-rosy.vercel.app/case.html)** · **[Attacks](https://horos-rosy.vercel.app/judges.html)** · **[Proof](https://horos-rosy.vercel.app/proof.html)** · [Judge guide](hackathon.md) · Demo video: added at submission
 
-![tests](https://img.shields.io/badge/tests-234%20passing-74dbb0) ![node](https://img.shields.io/badge/node-%E2%89%A522.18-ece7da) ![Airwallex](https://img.shields.io/badge/Airwallex-sandbox-e9b44c) ![Visa](https://img.shields.io/badge/Visa%20Intelligent%20Commerce-via%20Airi-e9b44c)
+![tests](https://img.shields.io/badge/tests-237%20passing-74dbb0) ![node](https://img.shields.io/badge/node-%E2%89%A522.18-ece7da) ![Airwallex](https://img.shields.io/badge/Airwallex-sandbox-e9b44c) ![Visa](https://img.shields.io/badge/Visa%20Intelligent%20Commerce-via%20Airi-e9b44c)
 
 ## Verify it in two minutes, no keys
 
 ```bash
 git clone https://github.com/Cassxbt/horos && cd horos
 npm install
-npm test        # 234 tests, about a minute
+npm test        # 237 tests, about a minute
 npm run demo    # replays the case, 8 attacks and a 12-email evaluation, then rebuilds site/
 ```
 
-`npm run demo` runs the real Horos commands against stand-ins for Airwallex, Airi and T:0. It uses Claude readings recorded from live calls. It writes `demo/replay.json`, `demo/attacks.json` and `demo/eval.json`, and rebuilds every page of the site from them and from the live evidence in `evidence/`.
+`npm run demo` runs the real Horos commands against stand-ins for Airwallex, Airi and T:0. It uses Claude readings recorded from live calls. It writes `demo/replay.json`, `demo/attacks.json` and `demo/eval.json`, and rebuilds every page of the site from them and from the live evidence in `evidence/`. It fails if any evaluation email disagrees with its label.
 
 ## What happens
 
 1. **The queue.** Horos reads every bill for the entity from T:0, open or already paid. It holds possible duplicates, and bills whose vendor name is shared by two vendor records, for a person.
 2. **Verified, then approved.** A person verifies who the bill pays and through which checkout. They then approve exactly what Horos shows. The approval binds the amount, the bill version, the verified destination and the Airwallex account that receives the money.
-3. **The email.** `scripts/email.ts` records the email as pending, and holding payment, before Claude reads it. Claude classifies the email and must quote the passage it relied on. A fixed policy decides. The quote must appear in the email, and bank-detail patterns hold whatever the model says. Claude can add a reason to hold. It can never remove one.
-4. **The payment.** `scripts/airi-pay.ts` re-reads T:0 three times: at the start, after the passkey, and just before confirming. It refuses if anything the approval rested on changed. It then confirms one Airwallex checkout with a single-use Visa Intelligent Commerce credential from Airi. One bill gets one payment, on any rail.
+3. **The email.** `scripts/email.ts` records the email as pending, and holding payment, before Claude reads it. Claude classifies the email and must quote the passage it relied on. A fixed policy decides. The quote must appear in the email, and bank-detail patterns hold whatever the model says. Claude can add a reason to hold. It can never remove one: once any reading of an email holds, a later or concurrent reading of it cannot release the hold. Only a person's new verification, and a new approval, can.
+4. **The payment.** `scripts/airi-pay.ts` re-reads T:0 three times: at the start, after the passkey, and just before confirming. It refuses if anything the approval rested on changed. It then confirms one Airwallex checkout with a single-use Visa Intelligent Commerce credential from Airi. Horos pays a bill at most once, across both of its rails. It cannot stop a payment made outside Horos; see the limits.
 5. **The books.** The paid bill owes T:0 exactly one payment record. It is sent only if the provider settled exactly what was approved.
 
 ## Success and refusal
@@ -94,7 +94,7 @@ Copy `.env.example` to `.env` and fill in the sandbox keys. Every command runs f
 ```
 src/        policy, ledger, queue, email, executor helpers, provider clients
 scripts/    the commands above
-test/       234 tests; fakes for Airwallex, Airi and T:0 in test/fixtures
+test/       237 tests; fakes for Airwallex, Airi and T:0 in test/fixtures
 demo/       replay, attacks, email evaluation, site generator, demo emails
 evidence/   records of the live sandbox runs
 site/       the generated judge site (deployed to Vercel)

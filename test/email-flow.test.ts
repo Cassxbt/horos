@@ -132,18 +132,19 @@ test('email: text from an email is shown as one plain line; it cannot forge queu
 });
 
 // A stand-in for the Claude API that answers only when the test releases it, so a payment can be tried mid-reading.
-function slowClaude(name: string) {
-  const raw = JSON.parse(readFileSync(join(EMAILS, `${name}.reading.json`), 'utf8')).raw;
+function slowClaude(name: string, raw: string = JSON.parse(readFileSync(join(EMAILS, `${name}.reading.json`), 'utf8')).raw) {
   let release!: () => void;
   const released = new Promise<void>((r) => (release = r));
+  let asked = false;
   const server = createServer(async (req, res) => {
+    asked = true;
     req.resume();
     await released;
     res.setHeader('content-type', 'application/json');
     res.end(JSON.stringify({ id: 'msg_test', type: 'message', role: 'assistant', model: 'claude-opus-5-5', content: [{ type: 'text', text: raw }], stop_reason: 'end_turn', stop_sequence: null, usage: { input_tokens: 1, output_tokens: 1 } }));
   });
-  return new Promise<{ url: string; release: () => void; close: () => void }>((done) =>
-    server.listen(0, '127.0.0.1', () => done({ url: `http://127.0.0.1:${(server.address() as { port: number }).port}`, release, close: () => server.close() })),
+  return new Promise<{ url: string; release: () => void; close: () => void; asked: () => boolean }>((done) =>
+    server.listen(0, '127.0.0.1', () => done({ url: `http://127.0.0.1:${(server.address() as { port: number }).port}`, release, close: () => server.close(), asked: () => asked })),
   );
 }
 const waitFor = async (check: () => boolean) => {
@@ -205,3 +206,59 @@ test('email: a later routine email from the same supplier clears only itself, ne
   assert.equal(b.pay('mdt_bill1').code, 1);
   assert.equal(b.last().refused, 'BILL_HOLD_FOR_REVIEW');
 });
+
+// The same unclear email read as routine: the passage is the recorded one, only the verdict changes.
+const routineReadingOf = (name: string) => {
+  const recorded = JSON.parse(readFileSync(join(EMAILS, `${name}.reading.json`), 'utf8'));
+  return { ...recorded, raw: JSON.stringify({ ...JSON.parse(recorded.raw), kind: 'ROUTINE', summary: 'routine' }) };
+};
+const confirms = (b: ReturnType<typeof billSandbox>) => b.paCalls().filter((c) => c.path.endsWith('/confirm')).length;
+
+test('email: once an email holds, a later reading that calls it routine cannot release it; a person still can', () => {
+  const b = approvedSlack();
+  assert.equal(readEmail(b, 'forwarded-unclear').code, 4);
+  const file = join(b.cwd, 'routine-reading.json');
+  writeFileSync(file, JSON.stringify(routineReadingOf('forwarded-unclear')));
+  const reread = readEmail(b, 'forwarded-unclear', file);
+  assert.equal(reread.code, 4, 'the email still holds');
+  const out = JSON.parse(reread.stdout);
+  assert.equal(out.decision.outcome, 'NOTED');
+  assert.match(out.standing, /earlier reading of this email holds payment/);
+  assert.equal(b.pay('mdt_bill1').code, 1);
+  assert.equal(b.last().refused, 'BILL_HOLD_FOR_REVIEW');
+  assert.deepEqual([b.credentialFetches(), confirms(b)], [0, 0]);
+  b.verify();
+  assert.equal(b.pay('mdt_bill1').code, 1);
+  assert.match(b.last().refused, /^APPROVAL_STALE:/);
+  b.mandateFor('mdt_bill2', b.digestOf(b.approveAs('cass').stdout));
+  assert.equal(b.pay('mdt_bill2').code, 0);
+  assert.equal(confirms(b), 1);
+});
+
+// Two readings of one email in flight at once, finishing in the given order.
+async function twoReaders(first: 'hold' | 'routine') {
+  const b = approvedSlack();
+  const claude = { hold: await slowClaude('forwarded-unclear'), routine: await slowClaude('forwarded-unclear', routineReadingOf('forwarded-unclear').raw) };
+  const start = (url: string) => {
+    const c = spawn(process.execPath, b.argv(EMAIL, ['read', '--bill', SLACK100, '--file', join(EMAILS, 'forwarded-unclear.eml')]), { cwd: b.cwd, env: { ...b.env, ANTHROPIC_API_KEY: 'test', ANTHROPIC_BASE_URL: url } });
+    return new Promise<number | null>((r) => c.on('exit', r));
+  };
+  const exited = { hold: start(claude.hold.url), routine: start(claude.routine.url) };
+  // Both readers have recorded their pending reading and are waiting on Claude.
+  await waitFor(() => claude.hold.asked() && claude.routine.asked());
+  const second = first === 'hold' ? 'routine' : 'hold';
+  claude[first].release();
+  assert.equal(await exited[first], 4, 'either reading reports the email holding payment');
+  assert.equal(b.pay('mdt_bill1').code, 1, `refused after the ${first} reading, with the other still reading`);
+  claude[second].release();
+  assert.equal(await exited[second], 4);
+  claude.hold.close();
+  claude.routine.close();
+  assert.equal(b.pay('mdt_bill1').code, 1, 'refused after both');
+  assert.equal(b.last().refused, 'BILL_HOLD_FOR_REVIEW');
+  assert.doesNotMatch(b.queue(['show']).stdout, /received and not yet read/);
+  assert.deepEqual([b.credentialFetches(), confirms(b)], [0, 0]);
+}
+
+test('email: two readings of one email in flight, the holding one finishing first: payment stays held throughout', () => twoReaders('hold'));
+test('email: two readings of one email in flight, the routine one finishing first: payment stays held throughout', () => twoReaders('routine'));

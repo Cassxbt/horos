@@ -46,3 +46,11 @@ const summary = {
 writeFileSync(here('./eval.json'), JSON.stringify({ generatedAt: new Date().toISOString(), how: 'demo/emails/eval: emails and labels.json written first; each read once by Claude (recorded beside it); decided by src/email.ts. Rerun with `node demo/eval.ts`.', summary, rows }, null, 2));
 console.log(`eval: ${summary.agree}/${summary.emails} agree with the labels; ${summary.falseHolds} false holds, ${summary.missedHolds} missed holds; ${summary.heldWithoutPattern} held on Claude's reading alone`);
 for (const r of rows) console.log(`${r.agrees ? ' ' : '!'} ${r.name.padEnd(28)} expected ${r.expected.padEnd(5)} got ${r.outcome.padEnd(5)} ${r.kind.padEnd(19)} ${r.signals.join(',')}`);
+
+// A verification, not a report: any disagreement, or an email and its label out of step, fails the command.
+const unlabelled = rows.filter((r) => !r.expected).map((r) => r.name);
+const unread = Object.keys(expected).filter((name) => !rows.some((r) => r.name === name));
+if (summary.agree !== summary.emails || unlabelled.length || unread.length) {
+  console.error(`eval failed: ${summary.emails - summary.agree} disagreement(s)${unlabelled.length ? `; no label for ${unlabelled.join(', ')}` : ''}${unread.length ? `; labelled but missing ${unread.join(', ')}` : ''}`);
+  process.exit(1);
+}

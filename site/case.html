@@ -67,7 +67,7 @@ Accounts Receivable
       <span class="eyebrow">01 · Verified, then approved</span>
       <h3>A person confirms the supplier and approves exactly what is shown</h3>
       <p>The approval binds the amount, the bill's version, the verified checkout and the Airwallex account that receives the money.</p>
-      <dl class="kv"><dt>Checkout</dt><dd class="mono">https://pay.horos-sandbox.example/slack</dd><dt>Receives</dt><dd>Airwallex account acct_sandbox_A (Fake Sandbox Business) <span style="color:var(--dim)">(the replay's fake account)</span></dd><dt>Approved by</dt><dd>cassxbt</dd><dt>Digest</dt><dd class="mono">74592e0950d0685850c07c3d…</dd></dl>
+      <dl class="kv"><dt>Checkout</dt><dd class="mono">https://pay.horos-sandbox.example/slack</dd><dt>Receives</dt><dd>Airwallex account acct_sandbox_A (Fake Sandbox Business) <span style="color:var(--dim)">(the replay's fake account)</span></dd><dt>Approved by</dt><dd>cassxbt</dd><dt>Digest</dt><dd class="mono">6a50590412c7a1d729148314…</dd></dl>
     </article>
     <article class="step" data-act="email">
       <span class="eyebrow">02 · The email arrives</span>
@@ -94,7 +94,7 @@ Accounts Receivable
       <span class="eyebrow">05 · Release</span>
       <h3>Only a person can release it, with a new approval</h3>
       <p>They confirm the supplier through a contact they already trust, never the one in the email. That verification postdates the email, and it invalidates the old approval.</p>
-      <div class="terminal"><div><span class="cmd">$ queue.ts verify</span> <span class="ok">vendor and destination re-verified</span></div><div><span class="cmd">$ airi-pay.ts pay</span> <span class="no">APPROVAL_STALE:verificationId</span></div><div><span class="cmd">$ airi-pay.ts approve</span> <span class="ok">new digest cc2e2806779f</span></div></div>
+      <div class="terminal"><div><span class="cmd">$ queue.ts verify</span> <span class="ok">vendor and destination re-verified</span></div><div><span class="cmd">$ airi-pay.ts pay</span> <span class="no">APPROVAL_STALE:verificationId</span></div><div><span class="cmd">$ airi-pay.ts approve</span> <span class="ok">new digest 1771fc9b9ed8</span></div></div>
     </article>
     <article class="step paid" data-act="paid">
       <span class="eyebrow">06 · Paid once</span>
@@ -105,22 +105,53 @@ Accounts Receivable
 </div></section>
 
 <section class="band"><div class="wrap">
-  <div class="band-head"><span class="index"><b>Controls</b></span><div><h2 data-reveal>An ordinary email changes <em>nothing</em></h2><p data-reveal>The same approved bill, with two other emails, each read live by Claude and replayed here.</p></div></div>
-  <div class="split">
-  <article class="spot" data-reveal>
-    <div class="chips"><span class="eyebrow">Invoice notice</span><span class="chip green">noted, no hold</span></div>
-    <h3>Your invoice INV-20250201-1234 is ready</h3>
-    <p class="serif" style="font-size:20px;line-height:1.35;margin:0 0 16px">“You can pay it through the usual checkout link in your account. Nothing about how you pay us has changed.”</p>
-    <ul><li>Claude: <b>routine</b></li><li>The approved checkout paid, with <b>1</b> confirmation</li></ul>
-  </article>
-  <article class="spot" data-reveal>
-    <div class="chips"><span class="eyebrow">Forwarded, unclear</span><span class="chip red">held for review</span></div>
-    <h3>Fwd: Slack - quick question</h3>
-    <p class="serif" style="font-size:20px;line-height:1.35;margin:0 0 16px">“Hi Priya, before your team sends the next payment, can you confirm who I should speak to about where it goes? We are making some changes on our side and want to send the right instructions to the right person.”</p>
-    <ul><li>Claude: <b>unclear</b></li><li>The approved checkout sent <b>0</b> confirmations</li></ul>
-  </article></div>
+  <div class="band-head"><span class="index"><b>Compare</b> · replay</span><div><h2 data-reveal>Same bill, <em>three emails</em></h2><p data-reveal>One approved USD 100 bill. Each email was read once, live, by Claude, and is replayed here through the real commands. Switch between them to see what the rules caught, what only Claude caught, and what the checkout then did.</p></div></div>
+  
+  <div class="compare" data-tabs>
+    <div class="tabs" role="tablist" aria-label="Three emails about the same approved bill"><button role="tab" id="tab-routine" aria-controls="panel-routine" aria-selected="false" tabindex="-1"><span>Routine notice</span><i class="green">paid</i></button><button role="tab" id="tab-unclear" aria-controls="panel-unclear" aria-selected="true" tabindex="0"><span>Unclear forward</span><i class="red">held</i></button><button role="tab" id="tab-bank" aria-controls="panel-bank" aria-selected="false" tabindex="-1"><span>Bank change</span><i class="red">held</i></button></div>
+    <article class="cpanel" role="tabpanel" id="panel-routine" aria-labelledby="tab-routine">
+      <div class="quote">
+        <span class="eyebrow">Routine notice · Slack Accounts Receivable &lt;ar@slack-billing.example&gt;</span>
+        <h3>Your invoice INV-20250201-1234 is ready</h3>
+        <p class="serif">“You can pay it through the usual checkout link in your account. Nothing about how you pay us has changed.”</p>
+        <p class="note">Claude found no request to change anything, and no rule fired. The approved payment went ahead.</p>
+      </div>
+      <dl class="kv">
+        <dt>Bank-detail rules</dt><dd><span class="dim">none fired</span></dd>
+        <dt>Claude read</dt><dd class="mono">ROUTINE</dd>
+        <dt>Policy</dt><dd><span class="chip green">noted, no hold</span></dd>
+        <dt>Approved checkout</dt><dd><b class="big green">1</b> confirmation, <b class="big">1</b> card credential</dd>
+      </dl>
+    </article><article class="cpanel" role="tabpanel" id="panel-unclear" aria-labelledby="tab-unclear">
+      <div class="quote">
+        <span class="eyebrow">Unclear forward · Priya Raman &lt;priya.raman@horos-demo.example&gt;</span>
+        <h3>Fwd: Slack - quick question</h3>
+        <p class="serif">“Hi Priya, before your team sends the next payment, can you confirm who I should speak to about where it goes? We are making some changes on our side and want to send the right instructions to the right person.”</p>
+        <p class="note">No bank-detail rule fired. The hold rests on Claude’s reading alone, and on the passage it quoted.</p>
+      </div>
+      <dl class="kv">
+        <dt>Bank-detail rules</dt><dd><span class="dim">none fired</span></dd>
+        <dt>Claude read</dt><dd class="mono">UNCLEAR</dd>
+        <dt>Policy</dt><dd><span class="chip red">held</span> Claude could not rule out a change to where payments go</dd>
+        <dt>Approved checkout</dt><dd><b class="big red">0</b> confirmations, <b class="big">0</b> card credentials</dd>
+      </dl>
+    </article><article class="cpanel" role="tabpanel" id="panel-bank" aria-labelledby="tab-bank">
+      <div class="quote">
+        <span class="eyebrow">Bank change · Slack Accounts Receivable &lt;ar@slack-billing.example&gt;</span>
+        <h3>Updated remittance details for INV-20250201-1234</h3>
+        <p class="serif">“Please update your records and send the payment for invoice INV-20250201-1234 (USD 100.00), and all future payments, to our new account:”</p>
+        <p class="note">A bank-detail rule fired on its own, and Claude read the same request. Either would have held it.</p>
+      </div>
+      <dl class="kv">
+        <dt>Bank-detail rules</dt><dd><span class="chip amber">IBAN</span> <span class="chip amber">CHANGED_PAYMENT_DETAILS</span></dd>
+        <dt>Claude read</dt><dd class="mono">BANK DETAILS CHANGE</dd>
+        <dt>Policy</dt><dd><span class="chip red">held</span> Claude read a request to move payments · bank-detail pattern in the text</dd>
+        <dt>Approved checkout</dt><dd><b class="big red">0</b> confirmations, <b class="big">0</b> card credentials</dd>
+      </dl>
+    </article>
+  </div>
 </div></section>
-<div class="wrap"><a class="next" href="judges.html" data-reveal><span><span class="eyebrow">Next</span><br><span class="serif">Run the attacks</span></span><span class="arrow" aria-hidden="true">→</span></a></div>
+<div class="wrap"><a class="next" href="judges.html" data-reveal><span><span class="eyebrow">Next</span><br><span class="serif">See the attacks</span></span><span class="arrow" aria-hidden="true">→</span></a></div>
 
 </main>
 <div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt · <a href="https://github.com/Cassxbt/horos">source</a></span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>

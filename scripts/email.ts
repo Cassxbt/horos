@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { randomUUID } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { emailDecision, EMAIL_MODEL, EMAIL_PROMPT_VERSION, parseEmail, parseReading, readingRequest, vendorReviewKey, type EmailReading } from '../src/email.ts';
 import { openLedger } from '../src/ledger.ts';
@@ -11,7 +12,7 @@ const USAGE = `usage (from horos/, with --env-file=.env):
       decides. An email that asks to move payments, or that cannot be read with confidence, holds every bill of that
       vendor record until a person verifies the vendor and destination again. Nothing in an email can change a payee
       or approve a payment. --model-output replays a reading recorded by an earlier run, for the same email, with no
-      API call. Exit 0 when the email is only noted, 4 when it holds payment.`;
+      API call. Exit 0 when the email is only noted, 4 when it holds payment, by this reading or an earlier one.`;
 
 const args = process.argv.slice(2);
 // A flag given without its value is a mistake, never a silent fall-back to a live call.
@@ -44,6 +45,8 @@ if (recording && (recording.emailSha256 !== email.sha256 || recording.promptVers
 // about both, and each is held.
 const sameSupplier = (r: { vendorName: string }) => normalizeName(r.vendorName) === normalizeName(row.vendorName);
 const vendorIds = [...new Set(queueFor(ledger).filter((r) => r.vendorId && sameSupplier(r)).map((r) => r.vendorId))];
+// Ties this run's decision to its own pending record, so concurrent readings of one email cannot resolve each other.
+const readingId = randomUUID();
 const review = (decision: string, by: string, evidence: Record<string, unknown>) =>
   ledger.atomically(() => {
     for (const vendorId of vendorIds) {
@@ -54,13 +57,14 @@ const review = (decision: string, by: string, evidence: Record<string, unknown>)
         destination: '',
         decision,
         by,
-        evidence: JSON.stringify({ from: email.from, subject: email.subject, date: email.date, emailSha256: email.sha256, ...evidence }),
+        evidence: JSON.stringify({ from: email.from, subject: email.subject, date: email.date, emailSha256: email.sha256, readingId, ...evidence }),
       });
     }
   });
 
 // The email is on record, and holding payment, before it is read: a payment begun while Claude reads, a crash, or a
-// slow answer all meet the hold. The reading's own decision then replaces it, for this email only.
+// slow answer all meet the hold. The reading's own decision then resolves it. A routine reading cannot undo a hold an
+// earlier reading of the same email established.
 review('SUPPLIER_EMAIL_PENDING', 'horos (received, not yet read)', { passage: '', reasons: ['READING_IN_PROGRESS'] });
 
 type Read = { reading: EmailReading | undefined; raw: string; model: string; source: string; response?: { stop_reason: string | null; usage: unknown } };
@@ -99,6 +103,7 @@ if (response) {
 }
 
 const affected = queueFor(ledger).filter((r) => vendorIds.includes(r.vendorId));
+const held = decision.outcome === 'HOLD' || affected.some((r) => r.flags.some((f) => f.kind === 'SUPPLIER_EMAIL' && f.emailSha256 === email.sha256));
 console.log(
   JSON.stringify(
     {
@@ -110,10 +115,11 @@ console.log(
       bills: affected.map((r) => ({ bill: r.billId, invoice: r.invoiceNumber, amount: `${r.currency} ${r.amount.toFixed(2)}`, action: r.action })),
       // A payment already reserved or made before this email was on record cannot be stopped by it; a person checks it.
       alreadyStarted: affected.filter((r) => r.state !== 'OPEN').map((r) => ({ bill: r.billId, invoice: r.invoiceNumber, state: r.state })),
-      release: decision.outcome === 'HOLD' ? 'a person confirms the vendor and the checkout destination through a known contact, then: scripts/queue.ts verify, and a new approval' : undefined,
+      standing: decision.outcome !== 'HOLD' && held ? 'an earlier reading of this email holds payment; this reading cannot release it' : undefined,
+      release: held ? 'a person confirms the vendor and the checkout destination through a known contact, then: scripts/queue.ts verify, and a new approval' : undefined,
     },
     null,
     2,
   ),
 );
-process.exit(decision.outcome === 'HOLD' ? 4 : 0);
+process.exit(held ? 4 : 0);

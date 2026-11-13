@@ -64,9 +64,11 @@ const control = (name: string) => {
   const { b } = approved();
   const read = readEmail(b, name);
   const pay = attempt(b, 'mdt_replay_1', `the approved checkout, after the ${name} email`);
-  return { email: { exit: read.code, ...json(read.stdout) }, queueAfterEmail: slackLine(b), attempt: pay, confirms: confirms(b) };
+  return { email: { exit: read.code, ...json(read.stdout) }, queueAfterEmail: slackLine(b), attempt: pay, credentialFetches: b.credentialFetches(), confirms: confirms(b) };
 };
 
+// Paths in command output are made relative to the repository, so the published file names no local folder.
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 writeFileSync(
   OUT,
   JSON.stringify(
@@ -78,6 +80,6 @@ writeFileSync(
     },
     null,
     2,
-  ),
+  ).replaceAll(ROOT, ''),
 );
 console.log(`saved ${OUT}: held with ${story.heldTotals.confirms} confirmations, then paid once (${story.totals.confirms} confirmation in total)`);

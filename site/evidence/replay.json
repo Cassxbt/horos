@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T01:50:36.253Z",
+  "generatedAt": "2026-11-13T03:01:54.720Z",
   "how": "Real Horos commands (queue.ts, email.ts, airi-pay.ts) in a fresh directory, against fake Airwallex, Airi and T:0, with Claude readings recorded from live runs (demo/emails/*.reading.json). Regenerate with `npm run demo`.",
   "story": {
     "preview": {
@@ -8,19 +8,19 @@
       "vendorRecord": "t0_vendor_prod_78e1a442b0eb63a0b44c (Slack Technologies, Inc.)",
       "destination": "https://pay.horos-sandbox.example/slack",
       "destinationNote": "team-controlled sandbox checkout standing in for the supplier; not the supplier itself",
-      "verifiedBy": "cass at 2026-11-13T01:50:34.635Z, on bill version 964c61b18fdf2dda: Slack AP confirmed this vendor record and checkout by phone",
+      "verifiedBy": "cass at 2026-11-13T03:01:53.276Z, on bill version 964c61b18fdf2dda: Slack AP confirmed this vendor record and checkout by phone",
       "receivedBy": "Airwallex account acct_sandbox_A (Fake Sandbox Business), read from the credentials that create the checkout",
       "amount": "USD 100.00",
       "dueDate": "2026-03-16",
-      "approvalExpires": "2026-11-16T01:50:34+0000",
+      "approvalExpires": "2026-11-16T03:01:53+0000",
       "action": "One Visa Intelligent Commerce checkout of USD 100.00 at https://pay.horos-sandbox.example/slack for invoice INV-20250201-1234, once; no other rail may pay it."
     },
     "approval": {
       "obligation": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_9a32a0da12fe3faf33e5",
       "state": "OPEN",
-      "digest": "74592e0950d0685850c07c3d7d8af3d3bc967803375276b86aefbb78bdb08e77",
+      "digest": "6a50590412c7a1d729148314ebcd60780244baaf5f3bce86c97374a59c1d9069",
       "approvedBy": "cassxbt",
-      "approvedAt": "2026-11-13T01:50:34.936Z"
+      "approvedAt": "2026-11-13T03:01:53.566Z"
     },
     "queueBefore": "READY_FOR_APPROVAL        Slack Technologies, Inc. INV-20250201-1234  USD 100.00  due 2026-03-16  [OPEN]",
     "queueAfter": "HOLD_FOR_REVIEW           Slack Technologies, Inc. INV-20250201-1234  USD 100.00  due 2026-03-16  [OPEN]",
@@ -37,7 +37,7 @@
         "summary": "The email asks us to send this Slack invoice and all future payments to a new Northbridge Commercial Bank IBAN, and to cancel any scheduled payment and resend it today. That pressure is a classic sign of payment fraud, so hold the payment until the change is confirmed with Slack using contact details we already have on file."
       },
       "model": "claude-opus-5-5",
-      "source": "recorded /Users/apple/Downloads/airwallex-agentic-banking-hackathon/horos/demo/emails/bank-change.reading.json",
+      "source": "recorded demo/emails/bank-change.reading.json",
       "decision": {
         "outcome": "HOLD",
         "reasons": [
@@ -128,16 +128,16 @@
       "reapproval": {
         "obligation": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_9a32a0da12fe3faf33e5",
         "state": "OPEN",
-        "digest": "cc2e2806779f1c93c731ae75a8768ea04d3ad9911d3d938d6d49bf272bdf517d",
+        "digest": "1771fc9b9ed800afd431c1a246eb36a7ec99358aa9cc270ea9b1bff5575eebb7",
         "approvedBy": "cassxbt",
-        "approvedAt": "2026-11-13T01:50:36.024Z"
+        "approvedAt": "2026-11-13T03:01:54.510Z"
       },
       "payment": {
         "exit": 0,
-        "at": "2026-11-13T01:50:36.214Z",
+        "at": "2026-11-13T03:01:54.685Z",
         "obligation": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_9a32a0da12fe3faf33e5",
         "state": "PAID",
-        "approvalDigest": "cc2e2806779f1c93c731ae75a8768ea04d3ad9911d3d938d6d49bf272bdf517d",
+        "approvalDigest": "1771fc9b9ed800afd431c1a246eb36a7ec99358aa9cc270ea9b1bff5575eebb7",
         "approvedBy": "cassxbt",
         "mandate": {
           "mandateId": "mdt_replay_2",
@@ -148,21 +148,21 @@
           "tokenType": "DPAN"
         },
         "airwallex": {
-          "paymentIntentId": "int_192b91c7",
-          "merchantOrderId": "t0_bill_prod_9a32a0da12fe3faf33e5-c8a2c4a2",
-          "intentId": "int_192b91c7",
+          "paymentIntentId": "int_404294d0",
+          "merchantOrderId": "t0_bill_prod_9a32a0da12fe3faf33e5-f2a76c7c",
+          "intentId": "int_404294d0",
           "expected": {
             "amount": 100,
             "currency": "USD"
           },
           "observed": {
-            "id": "int_192b91c7",
+            "id": "int_404294d0",
             "status": "SUCCEEDED",
             "amount": 100,
             "currency": "USD"
           },
           "confirmResponse": {
-            "id": "int_192b91c7",
+            "id": "int_404294d0",
             "status": "SUCCEEDED",
             "amount": 100,
             "currency": "USD"
@@ -193,7 +193,7 @@
           "summary": "Routine invoice notice from Slack for INV-20250201-1234 (USD 100.00) with no request to change payment details. Note that the email is dated November 2026 but gives a March 2026 due date, and the sender domain is slack-billing.example, so it is worth a quick check against known Slack billing contacts."
         },
         "model": "claude-opus-5-5",
-        "source": "recorded /Users/apple/Downloads/airwallex-agentic-banking-hackathon/horos/demo/emails/remittance.reading.json",
+        "source": "recorded demo/emails/remittance.reading.json",
         "decision": {
           "outcome": "NOTED",
           "reasons": [],
@@ -237,6 +237,7 @@
         "flags": [],
         "confirmsSoFar": 1
       },
+      "credentialFetches": 1,
       "confirms": 1
     },
     "forwarded": {
@@ -253,7 +254,7 @@
           "summary": "A forwarded message from a non-Slack domain (slack-notices.example) hints at upcoming changes to where payments go without giving details. Treat it as a possible precursor to a bank-details change and verify with Slack through known contacts before paying or replying."
         },
         "model": "claude-opus-5-5",
-        "source": "recorded /Users/apple/Downloads/airwallex-agentic-banking-hackathon/horos/demo/emails/forwarded-unclear.reading.json",
+        "source": "recorded demo/emails/forwarded-unclear.reading.json",
         "decision": {
           "outcome": "HOLD",
           "reasons": [
@@ -305,6 +306,7 @@
         ],
         "confirmsSoFar": 0
       },
+      "credentialFetches": 0,
       "confirms": 0
     }
   }

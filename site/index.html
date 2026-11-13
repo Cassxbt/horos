@@ -24,7 +24,7 @@
     <span class="eyebrow" data-intro>Accounts-payable agent · Airwallex Agentic Banking</span>
     <h1><span class="line-mask"><span>An email asked</span></span><span class="line-mask"><span>to move the money.</span></span><span class="line-mask"><span><em>Horos stopped it.</em></span></span></h1>
     <p class="lede" data-intro>Supplier bank-change fraud works because an email can redirect a payment someone already approved. Horos reads that email with Claude, holds the payment the moment the payee is in question, and pays only through a checkout a person verified, with a single-use Visa credential.</p>
-    <div class="actions" data-intro><a class="btn" href="case.html">See the case <span class="arrow">→</span></a><a class="btn ghost" href="judges.html">Run the attacks <span class="arrow">→</span></a></div>
+    <div class="actions" data-intro><a class="btn" href="case.html">See the case <span class="arrow">→</span></a><a class="btn ghost" href="judges.html">See the attacks <span class="arrow">→</span></a></div>
   </div>
   <div class="scene" aria-label="The supplier email, the approved payment it tried to redirect, and Horos's decision">
     <div class="glow" aria-hidden="true"></div>
@@ -45,7 +45,7 @@
     <div class="ai spot" data-reveal><span class="who">Claude</span><h3>Reads the email</h3><p>As untrusted data, never as instructions. It must quote, word for word, the passage its verdict rests on.</p><span class="tag">Can add a hold. Never remove one.</span></div>
     <div class="spot" data-reveal><span class="who">Policy</span><h3>Decides</h3><p>The quote must be in the email. Bank-detail patterns hold on their own. Nothing in an email can set a payee or approve a payment.</p><span class="tag">Deterministic</span></div>
     <div class="spot" data-reveal><span class="who">Executor</span><h3>Re-checks</h3><p>At the start, after the passkey and just before confirming: the bill in T:0, the approval, the destination, the mandate's time left.</p><span class="tag">Three fresh reads</span></div>
-    <div class="spot" data-reveal><span class="who">Visa · Airwallex</span><h3>Pays once</h3><p>A single-use Airi credential for the exact merchant, amount and approval. One bill, one payment, on any rail.</p><span class="tag">Airi VIC · Airwallex checkout</span></div>
+    <div class="spot" data-reveal><span class="who">Visa · Airwallex</span><h3>Pays once</h3><p>A single-use Airi credential for the exact merchant, amount and approval. At most one payment per bill, on either rail.</p><span class="tag">Airi VIC · Airwallex checkout</span></div>
   </div>
 </div></section>
 
@@ -53,13 +53,13 @@
   <div class="band-head"><span class="index"><b>02</b> / evidence</span><div><h2 data-reveal>Numbers you can <em>rebuild</em></h2><p data-reveal>Each figure is read from a file in the repository when this site is built.</p></div></div>
   <div class="figures">
     <div data-reveal><div class="n"><span data-count="0" data-from="8">0</span></div><p>confirmations sent in 7 of 8 attacks. The other one is the original payment, booked once.</p><span class="src mono eyebrow">demo/attacks.json</span></div>
-    <div data-reveal><div class="n"><span data-count="234">234</span></div><p>tests, each fix mutation-checked: reverted until a named test failed.</p><span class="src mono eyebrow">npm test</span></div>
+    <div data-reveal><div class="n"><span data-count="237">237</span></div><p>tests, each fix mutation-checked: reverted until a named test failed.</p><span class="src mono eyebrow">npm test</span></div>
     <div data-reveal><div class="n"><span data-count="15">15</span><small>/15</small></div><p>checks on a live Airwallex sandbox run, from card controls to the wallet balance.</p><span class="src mono eyebrow">evidence/issuing-run</span></div>
     <div data-reveal><div class="n"><span data-count="186.40">186.40</span><small>USD</small></div><p>paid with a single-use Visa Intelligent Commerce credential from Airi.</p><span class="src mono eyebrow">evidence/vic-payment</span></div>
   </div>
 </div></section>
 
-<div class="marquee" aria-label="Invariants"><div class="track"><span>Claude can add a hold, never remove one</span><span>Unknown is held, never paid</span><span>Approve once, re-check at payment</span><span>One bill, one payment, any rail</span><span>Nothing in an email changes the payee</span><span>Every refusal names its reason</span><span>Claude can add a hold, never remove one</span><span>Unknown is held, never paid</span><span>Approve once, re-check at payment</span><span>One bill, one payment, any rail</span><span>Nothing in an email changes the payee</span><span>Every refusal names its reason</span></div></div>
+<div class="marquee" aria-label="Invariants"><div class="track"><span>Claude can add a hold, never remove one</span><span>Unknown is held, never paid</span><span>Approve once, re-check at payment</span><span>At most one payment per bill</span><span>Nothing in an email changes the payee</span><span>Every refusal names its reason</span><span>Claude can add a hold, never remove one</span><span>Unknown is held, never paid</span><span>Approve once, re-check at payment</span><span>At most one payment per bill</span><span>Nothing in an email changes the payee</span><span>Every refusal names its reason</span></div></div>
 
 <section class="band"><div class="wrap">
   <div class="band-head"><span class="index"><b>03</b> / built on</span><div><h2 data-reveal>Each sponsor <em>does a job</em></h2><p data-reveal>Remove any one and a check disappears.</p></div></div>
@@ -71,7 +71,7 @@
   </div>
 </div></section>
 
-<section class="cta wrap"><h2 data-reveal>Watch it <em>refuse.</em></h2><div class="actions" data-reveal><a class="btn" href="judges.html">Run the attacks <span class="arrow">→</span></a><a class="btn ghost" href="proof.html">See the proof <span class="arrow">→</span></a></div></section>
+<section class="cta wrap"><h2 data-reveal>Watch it <em>refuse.</em></h2><div class="actions" data-reveal><a class="btn" href="judges.html">See the attacks <span class="arrow">→</span></a><a class="btn ghost" href="proof.html">See the proof <span class="arrow">→</span></a></div></section>
 
 </main>
 <div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt · <a href="https://github.com/Cassxbt/horos">source</a></span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>

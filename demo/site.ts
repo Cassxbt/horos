@@ -97,7 +97,7 @@ const overview = layout(
     <span class="eyebrow" data-intro>Accounts-payable agent · Airwallex Agentic Banking</span>
     <h1>${lines('An email asked', 'to move the money.', '<em>Horos stopped it.</em>')}</h1>
     <p class="lede" data-intro>Supplier bank-change fraud works because an email can redirect a payment someone already approved. Horos reads that email with Claude, holds the payment the moment the payee is in question, and pays only through a checkout a person verified, with a single-use Visa credential.</p>
-    <div class="actions" data-intro><a class="btn" href="case.html">See the case <span class="arrow">→</span></a><a class="btn ghost" href="judges.html">Run the attacks <span class="arrow">→</span></a></div>
+    <div class="actions" data-intro><a class="btn" href="case.html">See the case <span class="arrow">→</span></a><a class="btn ghost" href="judges.html">See the attacks <span class="arrow">→</span></a></div>
   </div>
   <div class="scene" aria-label="The supplier email, the approved payment it tried to redirect, and Horos's decision">
     <div class="glow" aria-hidden="true"></div>
@@ -118,7 +118,7 @@ const overview = layout(
     <div class="ai spot" data-reveal><span class="who">Claude</span><h3>Reads the email</h3><p>As untrusted data, never as instructions. It must quote, word for word, the passage its verdict rests on.</p><span class="tag">Can add a hold. Never remove one.</span></div>
     <div class="spot" data-reveal><span class="who">Policy</span><h3>Decides</h3><p>The quote must be in the email. Bank-detail patterns hold on their own. Nothing in an email can set a payee or approve a payment.</p><span class="tag">Deterministic</span></div>
     <div class="spot" data-reveal><span class="who">Executor</span><h3>Re-checks</h3><p>At the start, after the passkey and just before confirming: the bill in T:0, the approval, the destination, the mandate's time left.</p><span class="tag">Three fresh reads</span></div>
-    <div class="spot" data-reveal><span class="who">Visa · Airwallex</span><h3>Pays once</h3><p>A single-use Airi credential for the exact merchant, amount and approval. One bill, one payment, on any rail.</p><span class="tag">Airi VIC · Airwallex checkout</span></div>
+    <div class="spot" data-reveal><span class="who">Visa · Airwallex</span><h3>Pays once</h3><p>A single-use Airi credential for the exact merchant, amount and approval. At most one payment per bill, on either rail.</p><span class="tag">Airi VIC · Airwallex checkout</span></div>
   </div>
 </div></section>
 
@@ -132,7 +132,7 @@ const overview = layout(
   </div>
 </div></section>
 
-<div class="marquee" aria-label="Invariants"><div class="track">${[...Array(2)].map(() => ['Claude can add a hold, never remove one', 'Unknown is held, never paid', 'Approve once, re-check at payment', 'One bill, one payment, any rail', 'Nothing in an email changes the payee', 'Every refusal names its reason'].map((t) => `<span>${t}</span>`).join('')).join('')}</div></div>
+<div class="marquee" aria-label="Invariants"><div class="track">${[...Array(2)].map(() => ['Claude can add a hold, never remove one', 'Unknown is held, never paid', 'Approve once, re-check at payment', 'At most one payment per bill', 'Nothing in an email changes the payee', 'Every refusal names its reason'].map((t) => `<span>${t}</span>`).join('')).join('')}</div></div>
 
 <section class="band"><div class="wrap">
   <div class="band-head"><span class="index"><b>03</b> / built on</span><div><h2 data-reveal>Each sponsor <em>does a job</em></h2><p data-reveal>Remove any one and a check disappears.</p></div></div>
@@ -144,7 +144,7 @@ const overview = layout(
   </div>
 </div></section>
 
-<section class="cta wrap"><h2 data-reveal>Watch it <em>refuse.</em></h2><div class="actions" data-reveal><a class="btn" href="judges.html">Run the attacks <span class="arrow">→</span></a><a class="btn ghost" href="proof.html">See the proof <span class="arrow">→</span></a></div></section>
+<section class="cta wrap"><h2 data-reveal>Watch it <em>refuse.</em></h2><div class="actions" data-reveal><a class="btn" href="judges.html">See the attacks <span class="arrow">→</span></a><a class="btn ghost" href="proof.html">See the proof <span class="arrow">→</span></a></div></section>
 `,
 );
 
@@ -152,15 +152,44 @@ const overview = layout(
 const why: Record<string, string> = {
   BANK_DETAILS_CHANGE_CLAIMED: 'Claude read a request to move payments',
   BANK_DETAIL_SIGNALS: 'bank-detail pattern in the text',
-  UNCLEAR: 'Claude could not tell',
+  UNCLEAR: 'Claude could not rule out a change to where payments go',
 };
-const controlCard = (c: typeof replay.controls.remittance, label: string) => `
-  <article class="spot" data-reveal>
-    <div class="chips"><span class="eyebrow">${esc(label)}</span>${c.email.decision.outcome === 'HOLD' ? '<span class="chip red">held for review</span>' : '<span class="chip green">noted, no hold</span>'}</div>
-    <h3>${esc(c.email.email.subject)}</h3>
-    <p class="serif" style="font-size:20px;line-height:1.35;margin:0 0 16px">“${esc(c.email.reading.passage)}”</p>
-    <ul><li>Claude: <b>${esc(c.email.reading.kind.replace(/_/g, ' ').toLowerCase())}</b></li><li>The approved checkout ${c.confirms ? `paid, with <b>${c.confirms}</b> confirmation` : `sent <b>0</b> confirmations`}</li></ul>
-  </article>`;
+// The same approved bill, three emails: what each one's words, the bank-detail rules and Claude contributed, and what
+// the approved checkout then did. Read from the replay; nothing here is computed in the page.
+type Compared = { email: { email: { from: string; subject: string }; reading: { kind: string; passage: string }; decision: { outcome: string; reasons: string[]; signals: string[] } }; credentials: number; confirms: number };
+const compared: [string, string, Compared][] = [
+  ['routine', 'Routine notice', { email: replay.controls.remittance.email, credentials: replay.controls.remittance.credentialFetches, confirms: replay.controls.remittance.confirms }],
+  ['unclear', 'Unclear forward', { email: replay.controls.forwarded.email, credentials: replay.controls.forwarded.credentialFetches, confirms: replay.controls.forwarded.confirms }],
+  ['bank', 'Bank change', { email: s.email, credentials: s.heldTotals.credentialFetches, confirms: s.heldTotals.confirms }],
+];
+const contribution = (c: Compared) =>
+  c.email.decision.outcome !== 'HOLD'
+    ? 'Claude found no request to change anything, and no rule fired. The approved payment went ahead.'
+    : c.email.decision.signals.length
+      ? 'A bank-detail rule fired on its own, and Claude read the same request. Either would have held it.'
+      : 'No bank-detail rule fired. The hold rests on Claude’s reading alone, and on the passage it quoted.';
+const compare = `
+  <div class="compare" data-tabs>
+    <div class="tabs" role="tablist" aria-label="Three emails about the same approved bill">${compared.map(([id, label, c], n) => `<button role="tab" id="tab-${id}" aria-controls="panel-${id}" aria-selected="${n === 1}" tabindex="${n === 1 ? 0 : -1}"><span>${esc(label)}</span><i class="${c.email.decision.outcome === 'HOLD' ? 'red' : 'green'}">${c.email.decision.outcome === 'HOLD' ? 'held' : 'paid'}</i></button>`).join('')}</div>
+    ${compared
+      .map(
+        ([id, label, c]) => `<article class="cpanel" role="tabpanel" id="panel-${id}" aria-labelledby="tab-${id}">
+      <div class="quote">
+        <span class="eyebrow">${esc(label)} · ${esc(c.email.email.from)}</span>
+        <h3>${esc(c.email.email.subject)}</h3>
+        <p class="serif">“${esc(c.email.reading.passage)}”</p>
+        <p class="note">${contribution(c)}</p>
+      </div>
+      <dl class="kv">
+        <dt>Bank-detail rules</dt><dd>${c.email.decision.signals.length ? c.email.decision.signals.map((x) => `<span class="chip amber">${esc(x)}</span>`).join(' ') : '<span class="dim">none fired</span>'}</dd>
+        <dt>Claude read</dt><dd class="mono">${esc(c.email.reading.kind.replace(/_/g, ' '))}</dd>
+        <dt>Policy</dt><dd>${c.email.decision.outcome === 'HOLD' ? `<span class="chip red">held</span> ${c.email.decision.reasons.map((r) => esc(why[r] ?? r)).join(' · ')}` : '<span class="chip green">noted, no hold</span>'}</dd>
+        <dt>Approved checkout</dt><dd><b class="big ${c.confirms ? 'green' : 'red'}">${c.confirms}</b> confirmation${c.confirms === 1 ? '' : 's'}, <b class="big">${c.credentials}</b> card credential${c.credentials === 1 ? '' : 's'}</dd>
+      </dl>
+    </article>`,
+      )
+      .join('')}
+  </div>`;
 const casePage = layout(
   'case',
   'The case · Horos',
@@ -237,10 +266,10 @@ const casePage = layout(
 </div></section>
 
 <section class="band"><div class="wrap">
-  <div class="band-head"><span class="index"><b>Controls</b></span><div><h2 data-reveal>An ordinary email changes <em>nothing</em></h2><p data-reveal>The same approved bill, with two other emails, each read live by Claude and replayed here.</p></div></div>
-  <div class="split">${controlCard(replay.controls.remittance, 'Invoice notice')}${controlCard(replay.controls.forwarded, 'Forwarded, unclear')}</div>
+  <div class="band-head"><span class="index"><b>Compare</b> · replay</span><div><h2 data-reveal>Same bill, <em>three emails</em></h2><p data-reveal>One approved USD 100 bill. Each email was read once, live, by Claude, and is replayed here through the real commands. Switch between them to see what the rules caught, what only Claude caught, and what the checkout then did.</p></div></div>
+  ${compare}
 </div></section>
-${next('judges.html', 'Run the attacks')}
+${next('judges.html', 'See the attacks')}
 `,
 );
 

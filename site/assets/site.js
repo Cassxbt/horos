@@ -1,4 +1,27 @@
 // Motion for the Horos site. Every element is readable without this script; it only animates what it can.
+
+// Tabs for the email comparison, with or without motion: arrow keys move between them, as in any tab list.
+document.querySelectorAll('[data-tabs]').forEach((box) => {
+  const tabs = [...box.querySelectorAll('[role="tab"]')];
+  const select = (tab, focus) => {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    }
+    if (focus) tab.focus();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', (e) => {
+      const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (step) (e.preventDefault(), select(tabs[(i + step + tabs.length) % tabs.length], true));
+    });
+  });
+  select(tabs.find((t) => t.getAttribute('aria-selected') === 'true') ?? tabs[0]);
+  box.classList.add('tabs-ready');
+});
 (() => {
   const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

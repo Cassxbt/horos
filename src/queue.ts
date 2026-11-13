@@ -16,7 +16,7 @@ export type Flag =
   | { kind: 'OVERDUE'; daysPastDue: number }
   | { kind: 'UNSUPPORTED_MONEY' }
   | { kind: 'SOURCE_CONFLICT'; conflicts: string[] }
-  | { kind: 'SUPPLIER_EMAIL'; at: string; from: string; subject: string; passage: string; reasons: string[] };
+  | { kind: 'SUPPLIER_EMAIL'; at: string; from: string; subject: string; passage: string; reasons: string[]; emailSha256: string };
 
 export type Triaged = Bill & { action: Action; flags: Flag[] };
 
@@ -113,6 +113,22 @@ function decide(flags: Flag[]): Action {
 }
 
 export type Review = { bill_version: string; vendor_id: string; destination: string; decision: string; by: string; evidence: string; at: string };
+
+// A supplier email holds every bill of that vendor record while any reading of it is unfinished, and from its first
+// holding reading on, whatever a later reading says: only a person's verification made after the hold releases it, as
+// an earlier one cannot have accounted for the email. Each reading resolves only its own pending record, and a routine
+// reading of one email never clears another. One standing hold per email: its latest holding record. `reviews` is in
+// the ledger's order, oldest first.
+export function emailHolds(reviews: Review[]): Review[] {
+  const records = reviews.filter((r) => r.decision.startsWith('SUPPLIER_EMAIL_')).map((r) => ({ r, e: JSON.parse(r.evidence) as { emailSha256: string; readingId?: string } }));
+  const finished = new Set(records.filter(({ r }) => r.decision !== 'SUPPLIER_EMAIL_PENDING').map(({ e }) => e.readingId));
+  const standing = new Map<string, Review>();
+  for (const { r, e } of records) {
+    const holds = r.decision === 'SUPPLIER_EMAIL_HOLD' || (r.decision === 'SUPPLIER_EMAIL_PENDING' && !finished.has(e.readingId));
+    if (holds) standing.set(e.emailSha256, r);
+  }
+  return [...standing.values()];
+}
 export type StoredBill = { key: string; bill: Bill; current: Bill; changed: { fields: string[] } | null; state: string; reviews: Review[]; vendorReviews?: Review[] };
 
 // The one answer to "may this bill be paid", for import, show and the payment executor alike. It is computed from the
@@ -138,15 +154,10 @@ export function queueView(stored: StoredBill[], latestImport: { billIds: string[
     const latest = s.reviews.filter((r) => r.decision === 'VENDOR_VERIFIED').at(-1);
     const verified = latest && latest.bill_version === version && latest.vendor_id === s.current.vendorId ? latest : undefined;
     if (verified) flags.push({ kind: 'VENDOR_VERIFIED', by: verified.by, destination: verified.destination, at: verified.at });
-    // A supplier email holds every bill of that vendor record while it is being read, and after, if its reading holds,
-    // until a person verifies the vendor and destination again, after the email: an earlier verification cannot have
-    // accounted for it. Each email's latest record is its state; one email's routine reading clears only itself.
-    const latestPerEmail = new Map<string, Review>();
-    for (const r of s.vendorReviews ?? []) if (r.decision.startsWith('SUPPLIER_EMAIL_')) latestPerEmail.set(JSON.parse(r.evidence).emailSha256, r);
-    const email = [...latestPerEmail.values()].filter((r) => r.decision !== 'SUPPLIER_EMAIL_NOTED').sort((a, b) => a.at.localeCompare(b.at)).at(-1);
-    if (email && !(verified && verified.at > email.at)) {
-      const e = JSON.parse(email.evidence) as { from: string; subject: string; passage: string; reasons: string[] };
-      flags.push({ kind: 'SUPPLIER_EMAIL', at: email.at, from: e.from, subject: e.subject, passage: e.passage, reasons: e.reasons });
+    for (const hold of emailHolds(s.vendorReviews ?? [])) {
+      if (verified && verified.at > hold.at) continue;
+      const e = JSON.parse(hold.evidence) as { from: string; subject: string; passage: string; reasons: string[]; emailSha256: string };
+      flags.push({ kind: 'SUPPLIER_EMAIL', at: hold.at, from: e.from, subject: e.subject, passage: e.passage, reasons: e.reasons, emailSha256: e.emailSha256 });
     }
     // `eligibility` is the bill's own verdict; `action` also says whether its payable is free to start a payment.
     const eligibility = decide(flags);
