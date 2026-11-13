@@ -29,6 +29,7 @@ Supplier bank-change fraud works **after** the approval. The invoice is real and
 ## Contents
 
 - [The problem I set out to solve](#the-problem-i-set-out-to-solve)
+- [What an AP practitioner told us](#what-an-ap-practitioner-told-us)
 - [What Horos does](#what-horos-does)
 - [Judge it in 90 seconds](#judge-it-in-90-seconds)
 - [Live sandbox proof](#live-sandbox-proof)
@@ -46,6 +47,19 @@ Supplier bank-change fraud works **after** the approval. The invoice is real and
 An approval is a decision made once, about facts that keep moving. Between approval and payment the bill can be paid elsewhere, a duplicate can turn up, the mandate can expire, and the supplier's "new bank details" can arrive by email. A payment agent that only checks *approved: yes* will faithfully pay the fraudster.
 
 So I treated **"the facts behind the approval changed"** as a first-class state, next to approved and paid. The model's job is narrow: read the unstructured evidence, the supplier's email, and say what it asks for, in its own quoted words. Code decides what that means. Only a person can release a hold.
+
+## What an AP practitioner told us
+
+On 13 Nov we walked a cashier who handles supplier payments at Juliana Hotels and Restaurants through Horos (quoted with consent). One practitioner's view, not a survey.
+
+- **Bank-change emails are routine:** about 3 a month, sometimes 5. No money moves until the supplier is confirmed by email and phone, on a direct line obtained when the business relationship starts and re-confirmed every three months.
+- **Approval is layered:** goods checked, invoice checked, the cashier, then a second approval by finance before payment is released.
+- **The fraud is real to them:** someone they know was hit by what investigators called business email compromise.
+- **Card checkout is available:** their suppliers accept card, online checkout and bank transfer.
+- **They would trust the hold:** "it saves us from a huge error". It would save work by flagging errors fast that would otherwise need manual checking, and they would try it read-only on real cases.
+- **What they asked for:** a known supplier list, a memory of past activity, invoice cross-checks, and aggressive flags on costly mismatches. Horos has the supplier list (verified destinations), the memory (its ledger) and the flags (holds). Its invoice checks cover duplicates and changed bills, but not goods received against the order: that is the next gap.
+
+Limit: they heard Horos described; they did not use the demo unaided.
 
 ## What Horos does
 
