@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-13T03:09:07.976Z",
+  "how": "Read-only GET /api/v1/pa/payment_intents/{id} on the Airwallex sandbox, for the intent recorded in vic-payment-live-2026-11-10.json.",
+  "invoice": "INV-4417",
+  "paymentIntentId": "int_sgpvdzck4ho13ki6bak",
+  "merchantOrderId": "INV-4417-1794312033228",
+  "sameAsRecorded": true,
+  "status": "SUCCEEDED",
+  "amount": 186.4,
+  "currency": "USD",
+  "latestAttempt": {
+    "id": "att_sgpvdzck4ho13kioxtt_ki6bak",
+    "status": "SETTLED"
+  }
+}
