@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T03:01:54.720Z",
+  "generatedAt": "2026-11-13T07:15:17.427Z",
   "how": "Real Horos commands (queue.ts, email.ts, airi-pay.ts) in a fresh directory, against fake Airwallex, Airi and T:0, with Claude readings recorded from live runs (demo/emails/*.reading.json). Regenerate with `npm run demo`.",
   "story": {
     "preview": {
@@ -8,19 +8,19 @@
       "vendorRecord": "t0_vendor_prod_78e1a442b0eb63a0b44c (Slack Technologies, Inc.)",
       "destination": "https://pay.horos-sandbox.example/slack",
       "destinationNote": "team-controlled sandbox checkout standing in for the supplier; not the supplier itself",
-      "verifiedBy": "cass at 2026-11-13T03:01:53.276Z, on bill version 964c61b18fdf2dda: Slack AP confirmed this vendor record and checkout by phone",
+      "verifiedBy": "cass at 2026-11-13T07:15:15.612Z, on bill version 964c61b18fdf2dda: Slack AP confirmed this vendor record and checkout by phone",
       "receivedBy": "Airwallex account acct_sandbox_A (Fake Sandbox Business), read from the credentials that create the checkout",
       "amount": "USD 100.00",
       "dueDate": "2026-03-16",
-      "approvalExpires": "2026-11-16T03:01:53+0000",
+      "approvalExpires": "2026-11-16T07:15:15+0000",
       "action": "One Visa Intelligent Commerce checkout of USD 100.00 at https://pay.horos-sandbox.example/slack for invoice INV-20250201-1234, once; no other rail may pay it."
     },
     "approval": {
       "obligation": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_9a32a0da12fe3faf33e5",
       "state": "OPEN",
-      "digest": "6a50590412c7a1d729148314ebcd60780244baaf5f3bce86c97374a59c1d9069",
+      "digest": "f5fd2387b416832aa0804a8ce018ea5d3f98c6cd8c209af2fc20f1c7fd75c14e",
       "approvedBy": "cassxbt",
-      "approvedAt": "2026-11-13T03:01:53.566Z"
+      "approvedAt": "2026-11-13T07:15:16.000Z"
     },
     "queueBefore": "READY_FOR_APPROVAL        Slack Technologies, Inc. INV-20250201-1234  USD 100.00  due 2026-03-16  [OPEN]",
     "queueAfter": "HOLD_FOR_REVIEW           Slack Technologies, Inc. INV-20250201-1234  USD 100.00  due 2026-03-16  [OPEN]",
@@ -128,16 +128,16 @@
       "reapproval": {
         "obligation": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_9a32a0da12fe3faf33e5",
         "state": "OPEN",
-        "digest": "1771fc9b9ed800afd431c1a246eb36a7ec99358aa9cc270ea9b1bff5575eebb7",
+        "digest": "c36c7f029ab5745eef6f974c09b5cd833ab1dc25a951d9e454d0642c1f3f9c79",
         "approvedBy": "cassxbt",
-        "approvedAt": "2026-11-13T03:01:54.510Z"
+        "approvedAt": "2026-11-13T07:15:17.175Z"
       },
       "payment": {
         "exit": 0,
-        "at": "2026-11-13T03:01:54.685Z",
+        "at": "2026-11-13T07:15:17.386Z",
         "obligation": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_9a32a0da12fe3faf33e5",
         "state": "PAID",
-        "approvalDigest": "1771fc9b9ed800afd431c1a246eb36a7ec99358aa9cc270ea9b1bff5575eebb7",
+        "approvalDigest": "c36c7f029ab5745eef6f974c09b5cd833ab1dc25a951d9e454d0642c1f3f9c79",
         "approvedBy": "cassxbt",
         "mandate": {
           "mandateId": "mdt_replay_2",
@@ -148,21 +148,21 @@
           "tokenType": "DPAN"
         },
         "airwallex": {
-          "paymentIntentId": "int_404294d0",
-          "merchantOrderId": "t0_bill_prod_9a32a0da12fe3faf33e5-f2a76c7c",
-          "intentId": "int_404294d0",
+          "paymentIntentId": "int_4c4d7d45",
+          "merchantOrderId": "t0_bill_prod_9a32a0da12fe3faf33e5-c0ab2cea",
+          "intentId": "int_4c4d7d45",
           "expected": {
             "amount": 100,
             "currency": "USD"
           },
           "observed": {
-            "id": "int_404294d0",
+            "id": "int_4c4d7d45",
             "status": "SUCCEEDED",
             "amount": 100,
             "currency": "USD"
           },
           "confirmResponse": {
-            "id": "int_404294d0",
+            "id": "int_4c4d7d45",
             "status": "SUCCEEDED",
             "amount": 100,
             "currency": "USD"

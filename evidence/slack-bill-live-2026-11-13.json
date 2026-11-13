@@ -1,0 +1,159 @@
+{
+  "what": "One T:0 bill, live end to end: a person verifies and approves, a supplier email read live by Claude holds the payment, the approved checkout is refused before any credential, the person verifies again, the old approval is refused as stale, a new approval and one passkey pay it once through Airwallex with a single-use Visa Intelligent Commerce credential from Airi.",
+  "sandbox": "Airwallex sandbox, Airi VIC, T:0 sandbox. The checkout is the team-controlled sandbox checkout https://horos-rosy.vercel.app/checkout/slack.html standing in for Slack Technologies, Inc.; it is not Slack. The bank-change email is a test email the team wrote (demo/emails/bank-change.eml); Claude's reading of it was a live call.",
+  "bill": {
+    "entity": "entity_prod_ieEAMzvhgtHalvsm",
+    "invoice": "INV-20250201-1234 (T:0 bill t0_bill_prod_9a32a0da12fe3faf33e5, version 964c61b18fdf2dda)",
+    "vendorRecord": "t0_vendor_prod_78e1a442b0eb63a0b44c (Slack Technologies, Inc.)",
+    "amount": "USD 100.00",
+    "dueDate": "2026-03-16"
+  },
+  "steps": [
+    {
+      "step": "verified",
+      "by": "cassxbt",
+      "at": "2026-11-13T07:00:27.826Z",
+      "destination": "https://horos-rosy.vercel.app/checkout/slack.html",
+      "evidence": "I control this checkout: it is the Horos team's Airwallex sandbox account behind horos-rosy.vercel.app, standing in for Slack Technologies, Inc. Vendor record t0_vendor_prod_78e1a442b0eb63a0b44c is the one T:0 links to bill INV-20250201-1234 (USD 100.00)."
+    },
+    {
+      "step": "approved",
+      "by": "cassxbt",
+      "at": "2026-11-13T07:00:42.452Z",
+      "digest": "a42ed9846a358d12c14242d7833b758e1bcee68e9404457848c714c330b9a5ba",
+      "receivedBy": "Airwallex account acct_Q5Kn…Edyw (Sandbox Business), read from the credentials that create the checkout",
+      "action": "One Visa Intelligent Commerce checkout of USD 100.00 at https://horos-rosy.vercel.app/checkout/slack.html for invoice INV-20250201-1234, once; no other rail may pay it."
+    },
+    {
+      "step": "mandate created",
+      "mandateId": "mdt_nlpdc4bj4ho46drikq0",
+      "status": "CREATED",
+      "note": "passkey not opened"
+    },
+    {
+      "step": "supplier email read live",
+      "at": "2026-11-13T07:01:01.701Z",
+      "from": "Slack Accounts Receivable <ar@slack-billing.example>",
+      "subject": "Updated remittance details for INV-20250201-1234",
+      "model": "claude-opus-5-5",
+      "promptVersion": "supplier-email-1",
+      "stopReason": "end_turn",
+      "usage": {
+        "input_tokens": 938,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 163,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard",
+        "inference_geo": "global",
+        "speed": "standard"
+      },
+      "reading": {
+        "kind": "BANK_DETAILS_CHANGE",
+        "passage": "Please update your records and send the payment for invoice INV-20250201-1234 (USD 100.00), and all future payments, to our new account:",
+        "summary": "The email asks AP to send this invoice and all future payments to a new Northbridge Commercial Bank IBAN and to cancel any payment already scheduled, all with time pressure. Hold payment and verify the change with Slack using contact details already on file, not ones from this email."
+      },
+      "decision": {
+        "outcome": "HOLD",
+        "reasons": [
+          "BANK_DETAILS_CHANGE_CLAIMED",
+          "BANK_DETAIL_SIGNALS"
+        ],
+        "signals": [
+          "IBAN",
+          "CHANGED_PAYMENT_DETAILS"
+        ],
+        "quoted": true
+      },
+      "billsHeld": [
+        {
+          "invoice": "SLK-20261027",
+          "action": "HOLD_FOR_REVIEW"
+        },
+        {
+          "invoice": "SLK-20261020",
+          "action": "HOLD_FOR_REVIEW"
+        },
+        {
+          "invoice": "SLK-20261103",
+          "action": "HOLD_FOR_REVIEW"
+        },
+        {
+          "invoice": "INV-20250201-1234",
+          "action": "HOLD_FOR_REVIEW"
+        }
+      ]
+    },
+    {
+      "step": "approved checkout attempted",
+      "at": "2026-11-13T07:01:12.741Z",
+      "mandateId": "mdt_nlpdc4bj4ho46drikq0",
+      "refused": "BILL_HOLD_FOR_REVIEW",
+      "credentialsRequested": 0,
+      "paymentIntentsCreated": 0,
+      "note": "refused on the first check, before the mandate is read, a credential is requested or a payment intent exists"
+    },
+    {
+      "step": "mandate cancelled",
+      "mandateId": "mdt_nlpdc4bj4ho46drikq0",
+      "airiStatus": "DENIED"
+    },
+    {
+      "step": "verified again, after the email",
+      "by": "cassxbt",
+      "at": "2026-11-13T07:01:31.833Z",
+      "evidence": "I control this checkout: it is the Horos team's Airwallex sandbox account behind horos-rosy.vercel.app, standing in for Slack Technologies, Inc. Vendor record t0_vendor_prod_78e1a442b0eb63a0b44c is the one T:0 links to bill INV-20250201-1234 (USD 100.00). Re-confirmed after the supplier email of 13 Nov asking to move payments to a new account: payment stays at this checkout, and the account in the email is not used."
+    },
+    {
+      "step": "old approval retried",
+      "at": "2026-11-13T07:01:45.566Z",
+      "refused": "APPROVAL_STALE:verificationId"
+    },
+    {
+      "step": "approved again",
+      "by": "cassxbt",
+      "at": "2026-11-13T07:01:57.545Z",
+      "digest": "d69fb1556c61d356577d2d3cf5e3101ca333599ec9118a1817575c7b93297338"
+    },
+    {
+      "step": "passkey and payment",
+      "at": "2026-11-13T07:12:02.585Z",
+      "mandateId": "mdt_nlpdlr7dgho46ew2uxs",
+      "mandateChecks": "merchant portal and name, amount, currency, both expiries, VIC protocol and approval digest match the saved approval",
+      "airi": {
+        "protocolType": "VIC",
+        "tokenType": "DPAN"
+      },
+      "state": "PAID",
+      "airwallex": {
+        "paymentIntentId": "int_sgpvspvj9ho46otan8e",
+        "merchantOrderId": "t0_bill_prod_9a32a0da12fe3faf33e5-d7ba035e",
+        "status": "SUCCEEDED",
+        "amount": 100,
+        "currency": "USD"
+      },
+      "airiResult": "SUCCEEDED (mandate COMPLETED)"
+    }
+  ],
+  "readback": {
+    "at": "2026-11-13T07:13Z",
+    "how": "GET /api/v1/pa/payment_intents/int_sgpvspvj9ho46otan8e",
+    "status": "SUCCEEDED",
+    "amount": 100,
+    "currency": "USD",
+    "latestAttempt": {
+      "id": "att_sgpv8fbwkho46ouf491_otan8e",
+      "status": "CAPTURE_REQUESTED"
+    }
+  },
+  "books": {
+    "t0Record": "horos-payment-667da41558ba49cd653306db",
+    "status": "PENDING: built and checked, not written; T:0 writes wait on its write contract"
+  }
+}

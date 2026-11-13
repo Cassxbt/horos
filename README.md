@@ -24,7 +24,7 @@ Supplier bank-change fraud works **after** the approval. The invoice is real and
 
 Video: link added at submission.
 
-> **The replay** (`npm run demo`, on stand-in providers): a USD 100 Slack bill is verified and approved. Then an email arrives asking to send it, and all future payments, to a new account. Claude reads it and quotes the sentence; a fixed policy holds every bill from that supplier; the approved checkout is refused with no card credential issued. A person re-verifies the supplier through a contact they already trust and approves again, and the bill is paid once, through Airwallex, with a single-use Visa credential from Airi. The checkout is a team-controlled sandbox checkout standing in for Slack, and the live payment of this bill is [not run yet](#whats-real-vs-pending-the-honesty-table).
+> **The replay** (`npm run demo`, on stand-in providers): a USD 100 Slack bill is verified and approved. Then an email arrives asking to send it, and all future payments, to a new account. Claude reads it and quotes the sentence; a fixed policy holds every bill from that supplier; the approved checkout is refused with no card credential issued. A person re-verifies the supplier through a contact they already trust and approves again, and the bill is paid once, through Airwallex, with a single-use Visa credential from Airi. The checkout is a team-controlled sandbox checkout standing in for Slack. **On 13 Nov the same sequence ran live on this bill**: [the record](evidence/slack-bill-live-2026-11-13.json).
 
 ## Contents
 
@@ -58,7 +58,7 @@ So I treated **"the facts behind the approval changed"** as a first-class state,
 
 ## Judge it in 90 seconds
 
-**In the browser.** Open [the case](https://horos-rosy.vercel.app/case.html) and scroll to *Same bill, three emails*. Switch between a routine notice, an unclear forward and a bank change for the same approved bill. Each shows which rules fired, what Claude read, and how many confirmations the checkout sent.
+**In the browser.** Open [the case](https://horos-rosy.vercel.app/case.html): the replay, then *Then it ran live, on this bill*, with the live record. Scroll on to *Same bill, three emails*. Switch between a routine notice, an unclear forward and a bank change for the same approved bill. Each shows which rules fired, what Claude read, and how many confirmations the checkout sent.
 
 **On your machine, no keys:**
 
@@ -74,14 +74,15 @@ npm run demo    # replays the case, 8 attacks and a 12-email evaluation, then re
 ## Live sandbox proof
 
 ```bash
-curl -s https://horos-rosy.vercel.app/evidence/vic-readback-2026-11-13.json
-# "invoice": "INV-4417", "status": "SUCCEEDED", "amount": 186.4, "currency": "USD",
-# "latestAttempt": { "id": "att_sgpvdzck4ho13kioxtt_ki6bak", "status": "SETTLED" }
+curl -s https://horos-rosy.vercel.app/evidence/slack-bill-live-2026-11-13.json
+# the case, live on INV-20250201-1234: verified, approved, Claude BANK_DETAILS_CHANGE -> BILL_HOLD_FOR_REVIEW,
+# re-verified, APPROVAL_STALE, then PAID: int_sgpvspvj9ho46otan8e SUCCEEDED, USD 100, Airi SUCCEEDED
 ```
 
 | Run | What happened | Evidence |
 |---|---|---|
-| **Visa Intelligent Commerce payment**, INV-4417, USD 186.40 | Airi mandate `mdt_nlpdhwf6cho13dzi0y0` (VIC, DPAN) confirmed Airwallex intent `int_sgpvdzck4ho13ki6bak`; SUCCEEDED reported to Airi. Read back from Airwallex on 13 Nov: **settled**. | [`vic-payment-live-2026-11-10.json`](evidence/vic-payment-live-2026-11-10.json) · [`vic-readback-2026-11-13.json`](evidence/vic-readback-2026-11-13.json) |
+| **The case, live**: INV-20250201-1234, USD 100.00, 13 Nov | A person verified and approved the bill. Claude read the bank-change email live; the policy held it, and the approved checkout was refused before any credential. The person verified again, the old approval was refused as `APPROVAL_STALE`, and a new approval and one passkey paid it once: Airwallex intent `int_sgpvspvj9ho46otan8e` SUCCEEDED, Airi mandate `mdt_nlpdlr7dgho46ew2uxs` SUCCEEDED. | [`slack-bill-live-2026-11-13.json`](evidence/slack-bill-live-2026-11-13.json) |
+| **First Visa Intelligent Commerce payment**, INV-4417, USD 186.40 | Airi mandate `mdt_nlpdhwf6cho13dzi0y0` (VIC, DPAN) confirmed Airwallex intent `int_sgpvdzck4ho13ki6bak`; SUCCEEDED reported to Airi. Read back from Airwallex on 13 Nov: **settled**. | [`vic-payment-live-2026-11-10.json`](evidence/vic-payment-live-2026-11-10.json) · [`vic-readback-2026-11-13.json`](evidence/vic-readback-2026-11-13.json) |
 | **Issued card, Horos answering remote authorization** | 15 of 15 checks. Horos declined the lookalike merchant and the over-invoice amount at authorization; the wallet's drop equals the reconciled clearings. | [`issuing-run-live-2026-11-11.json`](evidence/issuing-run-live-2026-11-11.json) |
 | **T:0 queue**, read-only | 8 open bills triaged from the live T:0 sandbox, including the USD 100 Slack bill in the case. | [`t0-queue-live-2026-11-12.json`](evidence/t0-queue-live-2026-11-12.json) |
 
@@ -187,8 +188,9 @@ Every refusal is a code, and every held bill names the person's next step. An op
 | Issued card with Horos answering remote authorization | **Real.** Live sandbox, 15/15 checks. |
 | T:0 bill and vendor reads | **Real.** Live sandbox, read-only. |
 | Claude's email readings | **Real.** Recorded live calls, replayed with no key. |
-| The case, attacks and evaluation | **Replay** of the real commands on stand-in providers. The supplier checkout is a team-controlled sandbox checkout standing in for Slack. |
-| USD 100 Slack bill paid live | **Not run yet.** Waits for a person's verification and one passkey checkout. |
+| The case, attacks and evaluation | **Replay** of the real commands on stand-in providers, rerunnable with no keys. |
+| The supplier checkout | A [team-controlled sandbox checkout](https://horos-rosy.vercel.app/checkout/slack.html) standing in for Slack. It is not Slack. |
+| The case on the USD 100 Slack bill, live | **Real.** Live sandbox, 13 Nov: verification, Claude's live reading, the refusal, the re-verification and one payment, on one bill. The email is one we wrote. |
 | Payment record written to T:0 | **Not run yet.** Built and tested; waits on T:0's write contract. |
 
 **Limits.**

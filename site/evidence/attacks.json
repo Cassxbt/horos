@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T03:02:01.703Z",
+  "generatedAt": "2026-11-13T07:15:25.619Z",
   "how": "Each attack runs the real Horos commands in a fresh directory against fake Airwallex, Airi and T:0; counts come from the fakes. Regenerate with `npm run demo`.",
   "control": {
     "said": "PAID",

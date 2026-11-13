@@ -18,9 +18,9 @@ built-in demo invoice is used.
       Shows exactly what would be approved. For a T:0 bill it records the approval only with --approve-as, and only if
       the queue says the bill is ready (its vendor and destination verified). Prints the mandate to create with airi-cli.
   scripts/airi-pay.ts pay <mandate-id> [--bill <id>]
-      Reads the bill from T:0 again and checks it is still open, ready and unchanged since approval, checks the mandate
-      against the approval, asks Airi for that mandate's one-time credential (the passkey approval happens here), then
-      reads T:0 again before reserving and before confirming, and pays once.
+      Run once the passkey on the mandate is approved. Reads the bill from T:0 again and checks it is still open, ready
+      and unchanged since approval, checks the approved mandate against the approval, asks Airi for its one-time
+      credential, then reads T:0 again before reserving and before confirming, and pays once.
   scripts/airi-pay.ts reconcile [--bill <id>]
       Settles an unknown or interrupted payment from Airwallex and delivers every result Airi is owed.`;
 

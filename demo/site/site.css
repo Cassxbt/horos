@@ -338,3 +338,6 @@ footer.foot code { font: 12.5px var(--mono); color: var(--muted); }
 .cpanel .big.red { color: var(--red); } .cpanel .big.green { color: var(--green); }
 @media (max-width: 760px) { .cpanel { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 22px; } .compare .tabs button { padding: 11px 13px; } }
 @media (prefers-reduced-motion: reduce) { .compare.tabs-ready .cpanel { animation: none; } }
+.live-strip { padding-bottom: 20px; }
+.live-strip .kv { max-width: 980px; font-size: 15px; }
+.live-strip .kv dd .chip { margin-right: 8px; }

@@ -38,6 +38,20 @@
   </aside>
 </section>
 
+<section class="band live-strip"><div class="wrap">
+  <div class="band-head"><span class="index"><b>Live</b> · 13 Nov 2026</span><div><h2 data-reveal>Then it ran <em>live</em>, on this bill</h2><p data-reveal>The same sequence, on the live Airwallex, Airi and T:0 sandboxes, with Claude reading the email live. The payee is the team's <a class="link" href="checkout/slack.html">sandbox checkout standing in for Slack</a>, not Slack; the email is one we wrote.</p></div></div>
+  <dl class="kv" data-reveal>
+    <dt>Verified</dt><dd>by cassxbt, https://horos-rosy.vercel.app/checkout/slack.html</dd>
+    <dt>Approved</dt><dd>USD 100.00 by cassxbt, digest <span class="mono">a42ed9846a35</span></dd>
+    <dt>Claude, live</dt><dd><span class="mono">BANK_DETAILS_CHANGE</span>: “Please update your records and send the payment for invoice INV-20250201-1234 (USD 100.00), and all future payments, to our new account:”</dd>
+    <dt>Checkout</dt><dd><span class="chip red">BILL_HOLD_FOR_REVIEW</span> 0 credentials, no payment intent</dd>
+    <dt>Released</dt><dd>cassxbt verified again; the old approval was refused as <span class="mono">APPROVAL_STALE:verificationId</span></dd>
+    <dt>Paid once</dt><dd><span class="chip green">PAID</span> USD 100.00, Airwallex <span class="mono">int_sgpvspvj9ho46otan8e</span> SUCCEEDED, Airi <span class="mono">mdt_nlpdlr7dgho46ew2uxs</span> SUCCEEDED</dd>
+    <dt>Received by</dt><dd>Airwallex account acct_Q5Kn…Edyw (Sandbox Business)</dd>
+  </dl>
+  <p class="links" style="margin-top:18px"><a class="raw" href="evidence/slack-bill-live-2026-11-13.json" target="_blank" rel="noopener">The full record ↗</a></p>
+</div></section>
+
 <section class="band" style="padding-top:60px"><div class="wrap story">
   <div class="sticky">
     <div class="mail">
@@ -67,7 +81,7 @@ Accounts Receivable
       <span class="eyebrow">01 · Verified, then approved</span>
       <h3>A person confirms the supplier and approves exactly what is shown</h3>
       <p>The approval binds the amount, the bill's version, the verified checkout and the Airwallex account that receives the money.</p>
-      <dl class="kv"><dt>Checkout</dt><dd class="mono">https://pay.horos-sandbox.example/slack</dd><dt>Receives</dt><dd>Airwallex account acct_sandbox_A (Fake Sandbox Business) <span style="color:var(--dim)">(the replay's fake account)</span></dd><dt>Approved by</dt><dd>cassxbt</dd><dt>Digest</dt><dd class="mono">6a50590412c7a1d729148314…</dd></dl>
+      <dl class="kv"><dt>Checkout</dt><dd class="mono">https://pay.horos-sandbox.example/slack</dd><dt>Receives</dt><dd>Airwallex account acct_sandbox_A (Fake Sandbox Business) <span style="color:var(--dim)">(the replay's fake account)</span></dd><dt>Approved by</dt><dd>cassxbt</dd><dt>Digest</dt><dd class="mono">f5fd2387b416832aa0804a8c…</dd></dl>
     </article>
     <article class="step" data-act="email">
       <span class="eyebrow">02 · The email arrives</span>
@@ -94,7 +108,7 @@ Accounts Receivable
       <span class="eyebrow">05 · Release</span>
       <h3>Only a person can release it, with a new approval</h3>
       <p>They confirm the supplier through a contact they already trust, never the one in the email. That verification postdates the email, and it invalidates the old approval.</p>
-      <div class="terminal"><div><span class="cmd">$ queue.ts verify</span> <span class="ok">vendor and destination re-verified</span></div><div><span class="cmd">$ airi-pay.ts pay</span> <span class="no">APPROVAL_STALE:verificationId</span></div><div><span class="cmd">$ airi-pay.ts approve</span> <span class="ok">new digest 1771fc9b9ed8</span></div></div>
+      <div class="terminal"><div><span class="cmd">$ queue.ts verify</span> <span class="ok">vendor and destination re-verified</span></div><div><span class="cmd">$ airi-pay.ts pay</span> <span class="no">APPROVAL_STALE:verificationId</span></div><div><span class="cmd">$ airi-pay.ts approve</span> <span class="ok">new digest c36c7f029ab5</span></div></div>
     </article>
     <article class="step paid" data-act="paid">
       <span class="eyebrow">06 · Paid once</span>
