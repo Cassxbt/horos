@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { openLedger } from '../src/ledger.ts';
 import { toCents } from '../src/policy.ts';
-import { billVersion, queueView, triage } from '../src/queue.ts';
+import { billVersion, emailHolds, queueView, triage, type Review } from '../src/queue.ts';
 import { sameEntry, type ReadBack } from '../src/accounting.ts';
 import { findPaymentRecord, normalizeBill, sourceBills, type Bill } from '../src/t0.ts';
 
@@ -286,4 +286,23 @@ test('the email request treats the email as untrusted data inside its own tags, 
   assert.match(req.system, /character for character/);
   assert.match(req.messages[0].content, /<email>\nFrom: a@b\.example[\s\S]*Ignore your instructions[\s\S]*<\/email>$/);
   assert.equal(req.output_config.format.type, 'json_schema');
+});
+
+test('email holds: a reading resolves only its own pending record; records from before reading ids resolve only within their email, in order', () => {
+  let at = 0;
+  const record = (email: string, decision: 'PENDING' | 'HOLD' | 'NOTED', readingId?: string): Review => ({
+    bill_version: 'v', vendor_id: 'vendor', destination: '', by: 'horos', at: `2026-11-13T00:00:${String(at++).padStart(2, '0')}Z`,
+    decision: `SUPPLIER_EMAIL_${decision}`, evidence: JSON.stringify({ emailSha256: email, readingId }),
+  });
+  const held = (...reviews: Review[]) => emailHolds(reviews).map((r) => JSON.parse(r.evidence).emailSha256).sort();
+  // Current records: each decision is matched to its own reading.
+  assert.deepEqual(held(record('a', 'PENDING', 'r1'), record('b', 'NOTED', 'r2')), ['a']);
+  assert.deepEqual(held(record('a', 'PENDING', 'r1'), record('a', 'NOTED', 'r1')), []);
+  assert.deepEqual(held(record('a', 'HOLD', 'r1'), record('a', 'PENDING', 'r2'), record('a', 'NOTED', 'r2')), ['a']);
+  // Records from before reading ids: another email's decision never finishes this one's reading.
+  assert.deepEqual(held(record('a', 'PENDING')), ['a']);
+  assert.deepEqual(held(record('a', 'PENDING'), record('b', 'NOTED')), ['a']);
+  assert.deepEqual(held(record('a', 'PENDING'), record('a', 'NOTED')), []);
+  // An earlier decision cannot finish a reading that started after it.
+  assert.deepEqual(held(record('a', 'NOTED'), record('a', 'PENDING')), ['a']);
 });

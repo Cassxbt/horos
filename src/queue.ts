@@ -120,12 +120,20 @@ export type Review = { bill_version: string; vendor_id: string; destination: str
 // reading of one email never clears another. One standing hold per email: its latest holding record. `reviews` is in
 // the ledger's order, oldest first.
 export function emailHolds(reviews: Review[]): Review[] {
-  const records = reviews.filter((r) => r.decision.startsWith('SUPPLIER_EMAIL_')).map((r) => ({ r, e: JSON.parse(r.evidence) as { emailSha256: string; readingId?: string } }));
-  const finished = new Set(records.filter(({ r }) => r.decision !== 'SUPPLIER_EMAIL_PENDING').map(({ e }) => e.readingId));
+  // Records from before readings carried an id belong to their email alone, as they did then: a later decision about
+  // the same email finishes its pending reading, and nothing about another email does.
+  const records = reviews
+    .filter((r) => r.decision.startsWith('SUPPLIER_EMAIL_'))
+    .map((r) => {
+      const e = JSON.parse(r.evidence) as { emailSha256: string; readingId?: string };
+      return { r, email: e.emailSha256, reading: e.readingId ?? `before reading ids: ${e.emailSha256}` };
+    });
   const standing = new Map<string, Review>();
-  for (const { r, e } of records) {
-    const holds = r.decision === 'SUPPLIER_EMAIL_HOLD' || (r.decision === 'SUPPLIER_EMAIL_PENDING' && !finished.has(e.readingId));
-    if (holds) standing.set(e.emailSha256, r);
+  const decidedLater = new Set<string>();
+  for (const { r, email, reading } of records.reverse()) {
+    if (r.decision !== 'SUPPLIER_EMAIL_PENDING') decidedLater.add(reading);
+    const holds = r.decision === 'SUPPLIER_EMAIL_HOLD' || (r.decision === 'SUPPLIER_EMAIL_PENDING' && !decidedLater.has(reading));
+    if (holds && !standing.has(email)) standing.set(email, r);
   }
   return [...standing.values()];
 }

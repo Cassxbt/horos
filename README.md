@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/Cassxbt/horos/actions/workflows/ci.yml/badge.svg)](https://github.com/Cassxbt/horos/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Tests](https://img.shields.io/badge/tests-237%20passing-74dbb0)
+![Tests](https://img.shields.io/badge/tests-238%20passing-74dbb0)
 ![Airwallex](https://img.shields.io/badge/Airwallex-Issuing%20%C2%B7%20Payment%20Acceptance-e9b44c)
 ![Visa](https://img.shields.io/badge/Visa%20Intelligent%20Commerce-via%20Airi-e9b44c)
 ![Claude](https://img.shields.io/badge/Claude-opus--5.5-ece7da)
@@ -24,7 +24,7 @@ Supplier bank-change fraud works **after** the approval. The invoice is real and
 
 Video: link added at submission.
 
-> A USD 100 Slack bill is verified and approved. Then an email arrives asking to send it, and all future payments, to a new account. Claude reads it and quotes the sentence; a fixed policy holds every bill from that supplier; the approved checkout is refused with no card credential issued. A person re-verifies the supplier through a contact they already trust and approves again, and the bill is paid once, through Airwallex, with a single-use Visa credential from Airi.
+> **The replay** (`npm run demo`, on stand-in providers): a USD 100 Slack bill is verified and approved. Then an email arrives asking to send it, and all future payments, to a new account. Claude reads it and quotes the sentence; a fixed policy holds every bill from that supplier; the approved checkout is refused with no card credential issued. A person re-verifies the supplier through a contact they already trust and approves again, and the bill is paid once, through Airwallex, with a single-use Visa credential from Airi. The checkout is a team-controlled sandbox checkout standing in for Slack, and the live payment of this bill is [not run yet](#whats-real-vs-pending-the-honesty-table).
 
 ## Contents
 
@@ -65,7 +65,7 @@ So I treated **"the facts behind the approval changed"** as a first-class state,
 ```bash
 git clone https://github.com/Cassxbt/horos && cd horos
 npm install
-npm test        # 237 tests, about a minute
+npm test        # 238 tests, about a minute
 npm run demo    # replays the case, 8 attacks and a 12-email evaluation, then rebuilds site/
 ```
 
@@ -214,13 +214,13 @@ Copy `.env.example` to `.env` and fill in the sandbox keys. Every command runs f
 
 ## Tests
 
-237 tests, run in [CI](https://github.com/Cassxbt/horos/actions/workflows/ci.yml) on every push, against in-process stand-ins for Airwallex, Airi and T:0. They mirror the claims above.
+238 tests, run in [CI](https://github.com/Cassxbt/horos/actions/workflows/ci.yml) on every push, against in-process stand-ins for Airwallex, Airi and T:0. They mirror the claims above.
 
 | Area | Tests | What they hold to |
 |---|---:|---|
 | Issuing run, end to end | 42 | A clean run pays once; a decline closes the card with no retry; a stop signal starts nothing new and closes every card |
 | Card authorization, signed endpoint, reconciliation | 55 | Lookalike merchants refused at the invoice amount; unsigned or replayed requests refused; paid only when the approved lifecycle cleared exactly |
-| Bills and the queue | 44 | A bill paid elsewhere is caught before the passkey, before reserving and before confirming; duplicates across every bill ever seen; shared vendor names never pick a payee |
+| Bills and the queue | 45 | A bill paid elsewhere is caught before the passkey, before reserving and before confirming; duplicates across every bill ever seen; shared vendor names never pick a payee |
 | Recovery and the ledger | 41 | Five processes racing for one bill: exactly one wins; an unknown payment blocks every rail until reconciled; state survives a restart |
 | Payment policy and the Visa mandate | 27 | A new IBAN or a bank-change claim holds; every mismatch between the passkey-approved mandate and the approval is refused |
 | Supplier email | 16 | Held before reading; holds latched across rereads and concurrent readers; quotes checked against the email; Claude unreachable holds |
@@ -231,7 +231,7 @@ Copy `.env.example` to `.env` and fill in the sandbox keys. Every command runs f
 ```
 src/        policy, ledger, queue, email, executor helpers, provider clients
 scripts/    the commands above
-test/       237 tests; stand-ins for Airwallex, Airi and T:0 in test/fixtures
+test/       238 tests; stand-ins for Airwallex, Airi and T:0 in test/fixtures
 demo/       replay, attacks, email evaluation, site generator, demo emails
 evidence/   records of the live sandbox runs
 assets/     the cover image
