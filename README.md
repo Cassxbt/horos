@@ -16,13 +16,13 @@
 
 Supplier bank-change fraud works **after** the approval. The invoice is real and a person approved it correctly. Then an email "from the supplier" asks for this and all future payments to go to a new account. Most AP tools answer one question: *was this invoice approved?* Horos answers the harder one: **is everything the approval rested on still true at the moment of payment?**
 
-**[ Live site ↗ ](https://horos-rosy.vercel.app)** · **[ The case ↗ ](https://horos-rosy.vercel.app/case.html)** · **[ Attacks ↗ ](https://horos-rosy.vercel.app/judges.html)** · **[ Proof ↗ ](https://horos-rosy.vercel.app/proof.html)** · **[ Judge it in 90 seconds ](#judge-it-in-90-seconds)** · **[ hackathon.md ](hackathon.md)**
+**[ ▶ Watch the demo (2:38) ↗ ](https://youtu.be/ICrOhecF07w)** · **[ Live site ↗ ](https://horos-rosy.vercel.app)** · **[ The case ↗ ](https://horos-rosy.vercel.app/case.html)** · **[ Attacks ↗ ](https://horos-rosy.vercel.app/judges.html)** · **[ Proof ↗ ](https://horos-rosy.vercel.app/proof.html)** · **[ Judge it in 90 seconds ](#judge-it-in-90-seconds)** · **[ hackathon.md ](hackathon.md)**
 
 </div>
 
 ## ▶ Demo
 
-Video: link added at submission.
+**[Watch the 2:38 walkthrough on YouTube](https://youtu.be/ICrOhecF07w)**. Its terminal lines are excerpts of real output from the 13 Nov live run; the three-email comparison is labelled as a replay.
 
 > **The replay** (`npm run demo`, on stand-in providers): a USD 100 Slack bill is verified and approved. Then an email arrives asking to send it, and all future payments, to a new account. Claude reads it and quotes the sentence; a fixed policy holds every bill from that supplier; the approved checkout is refused with no card credential issued. A person re-verifies the supplier through a contact they already trust and approves again, and the bill is paid once, through Airwallex, with a single-use Visa credential from Airi. The checkout is a team-controlled sandbox checkout standing in for Slack. **On 13 Nov the same sequence ran live on this bill**: [the record](evidence/slack-bill-live-2026-11-13.json).
 

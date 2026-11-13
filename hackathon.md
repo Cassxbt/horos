@@ -12,6 +12,7 @@
 
 ## Five-minute path
 
+0. **[The video](https://youtu.be/ICrOhecF07w)** (2:38): the case, live on one bill.
 1. **[The case](https://horos-rosy.vercel.app/case.html)**: one bill, approved, then the bank-change email, the refused checkout, the release and the single payment: replayed, then run live on the same bill on 13 Nov. At the end, switch between three emails about the same bill to see what the rules caught, what only Claude caught, and what the checkout did.
 2. **[Attacks](https://horos-rosy.vercel.app/judges.html)**: eight attempts to make Horos pay wrongly, with the counts.
 3. **[Proof](https://horos-rosy.vercel.app/proof.html)**: what ran live, what is a recorded Claude reading, what is a replay, and what has not run. Every entry links to its raw file.
