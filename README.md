@@ -5,6 +5,7 @@
 &nbsp;
 
 [![CI](https://github.com/Cassxbt/horos/actions/workflows/ci.yml/badge.svg)](https://github.com/Cassxbt/horos/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Tests](https://img.shields.io/badge/tests-237%20passing-74dbb0)
 ![Airwallex](https://img.shields.io/badge/Airwallex-Issuing%20%C2%B7%20Payment%20Acceptance-e9b44c)
 ![Visa](https://img.shields.io/badge/Visa%20Intelligent%20Commerce-via%20Airi-e9b44c)
@@ -237,4 +238,4 @@ assets/     the cover image
 site/       the generated judge site (deployed to Vercel)
 ```
 
-Built by [cassxbt](https://x.com/cassxbt) for the **Airwallex Agentic Banking Hackathon**, 2026. The four judging areas, mapped to evidence: [hackathon.md](hackathon.md).
+Built by [cassxbt](https://x.com/cassxbt) for the **Airwallex Agentic Banking Hackathon**, 2026. The four judging areas, mapped to evidence: [hackathon.md](hackathon.md). Released under the [MIT License](LICENSE).
