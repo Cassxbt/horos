@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T18:11:58.699Z",
+  "generatedAt": "2026-11-13T01:50:43.342Z",
   "how": "Each attack runs the real Horos commands in a fresh directory against fake Airwallex, Airi and T:0; counts come from the fakes. Regenerate with `npm run demo`.",
   "control": {
     "said": "PAID",
@@ -66,7 +66,7 @@
     {
       "id": "reopen-after-lost-ack",
       "title": "An operator retries a payment that went through",
-      "attack": "The charge succeeds but its acknowledgement is lost. An operator reopens the bill and pays it with a second mandate.",
+      "attack": "The charge succeeds but its acknowledgement is lost. An operator tries to reopen the bill and pay it again with a second mandate.",
       "result": {
         "said": "not reopened: the provider does not prove this attempt unpaid; resolve PAID if it paid, or run reconcile when the provider is readable; second mandate: OBLIGATION_PAYMENT_UNKNOWN",
         "confirms": 1,

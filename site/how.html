@@ -65,17 +65,17 @@
   <div class="band-head"><span class="index"><b>02</b> / invariants</span><div><h2 data-reveal>Rules the tests <em>enforce</em></h2><p data-reveal>234 tests. Each fix was reverted until a named test failed.</p></div></div>
   <ol class="invariants">
     <li data-reveal><div><b>One bill, one payment</b><span>A single ledger reservation covers both rails. A second attempt is refused while the first is unresolved.</span></div></li>
-    <li data-reveal><div><b>Unknown is never paid</b><span>A lost response, an unreadable provider or an unreachable model leaves the bill held, not reopened.</span></div></li>
+    <li data-reveal><div><b>Unknown is not paid</b><span>A lost response or an unreadable provider leaves the bill unresolved, and an email still being read, or unreadable, holds it. Each case is a named test.</span></div></li>
     <li data-reveal><div><b>Approvals expire on change</b><span>A new bill version, destination, verification or receiving account makes the old approval stale.</span></div></li>
     <li data-reveal><div><b>Authority must outlast the call</b><span>The mandate and approval must have a minute left after the last read, or nothing is confirmed.</span></div></li>
-    <li data-reveal><div><b>Duplicates stay held</b><span>A copy of the invoice that was paid, voided or dropped keeps the other copy held.</span></div></li>
+    <li data-reveal><div><b>Duplicates stay held</b><span>A copy of the invoice Horos has once seen keeps the other held after it is paid, voided or dropped from T:0, until a person decides.</span></div></li>
     <li data-reveal><div><b>The books follow the provider</b><span>An accounting record is sent only when the provider settled exactly what was approved.</span></div></li>
   </ol>
 </div></section>
 <section class="cta wrap"><h2 data-reveal>See it <em>stop a payment.</em></h2><div class="actions" data-reveal><a class="btn" href="case.html">The case <span class="arrow">→</span></a><a class="btn ghost" href="index.html">Overview <span class="arrow">→</span></a></div></section>
 
 </main>
-<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt</span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
+<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt · <a href="https://github.com/Cassxbt/horos">source</a></span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>

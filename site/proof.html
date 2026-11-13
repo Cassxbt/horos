@@ -61,32 +61,32 @@
     <div class="amount">3</div>
   </article>
   <article class="entry spot" data-reveal>
-    <div><span class="chip amber">Recorded Claude output</span><p class="when" style="margin-top:14px">12 Nov 2026</p></div>
+    <div><span class="chip amber">Recorded Claude output</span><p class="when" style="margin-top:14px">13 Nov 2026</p></div>
     <div><h3>Twelve emails, labelled before Claude read them</h3><p>Four ordinary receipts, four real changes to where payments go, four ambiguous messages. We wrote them and their expected outcome first, then Claude read each once and the policy decided. 0 false holds, 0 missed. The 4 ambiguous ones were held on Claude's reading alone: no bank-detail pattern appears in them. A small set we wrote ourselves, not a measured error rate.</p>
       <table class="eval"><thead><tr><th>Email</th><th>Expected</th><th>Claude read</th><th>Decision</th></tr></thead><tbody><tr><td>Important: remittance update</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>Remittance information</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>New way to pay your invoices</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>Updated ACH instructions</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>Payment received for INV-20250115-0871</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>New invoice SLK-20261110</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>Your November statement</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>Wire received, thank you</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>Re: invoice INV-2000001</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr><tr><td>Fwd: quick one about payments</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr><tr><td>Heads up: banking changes next quarter</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr><tr><td>Slack payment today</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr></tbody></table>
       <p class="links"><a class="raw" href="evidence/eval.json" target="_blank" rel="noopener">eval.json ↗</a><a class="raw" href="evidence/emails/eval/labels.json" target="_blank" rel="noopener">labels.json ↗</a></p></div>
     <div class="amount">12/12</div>
   </article>
   <article class="entry spot" data-reveal>
-    <div><span class="chip ">Replay on fakes</span><p class="when" style="margin-top:14px">12 Nov 2026</p></div>
+    <div><span class="chip ">Replay on fakes</span><p class="when" style="margin-top:14px">13 Nov 2026</p></div>
     <div><h3>The case and eight attacks, replayed</h3><p>The real Horos commands against stand-ins for Airwallex, Airi and T:0. Counts come from the stand-ins' records. Anyone can rerun them with <span class="mono">npm run demo</span>.</p><p class="links"><a class="raw" href="evidence/replay.json" target="_blank" rel="noopener">replay.json ↗</a><a class="raw" href="evidence/attacks.json" target="_blank" rel="noopener">attacks.json ↗</a></p></div>
     <div class="amount">9</div>
   </article>
   <article class="entry pending" data-reveal>
     <div><span class="chip red">Not run yet</span></div>
-    <div><h3>The USD 100 Slack bill, paid live</h3><p>Waits for a person's real verification of the supplier and checkout, then one supervised passkey checkout to the team's labelled sandbox checkout, which stands in for Slack and is not Slack.</p></div>
+    <div><h3>The USD 100 Slack bill, paid live: not run yet</h3><p>Waits for a person's real verification of the supplier and checkout, then one supervised passkey checkout to the team's labelled sandbox checkout, which stands in for Slack and is not Slack.</p></div>
     <div class="amount">—</div>
   </article>
   <article class="entry pending" data-reveal>
     <div><span class="chip red">Not run yet</span></div>
-    <div><h3>The payment record written back to T:0</h3><p>Horos prepares exactly one record and will say “accepted by T:0, awaiting processing” only when T:0's acknowledgement counts that record. Confirmation after T:0's nightly processing waits on how T:0 exposes it.</p></div>
+    <div><h3>The payment record written back to T:0: not run yet</h3><p>Horos prepares exactly one record and will say “accepted by T:0, awaiting processing” only when T:0's acknowledgement counts that record. Confirmation after T:0's nightly processing waits on how T:0 exposes it.</p></div>
     <div class="amount">—</div>
   </article>
 </div></section>
 <div class="wrap"><a class="next" href="how.html" data-reveal><span><span class="eyebrow">Next</span><br><span class="serif">How it works</span></span><span class="arrow" aria-hidden="true">→</span></a></div>
 
 </main>
-<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt</span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
+<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt · <a href="https://github.com/Cassxbt/horos">source</a></span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>

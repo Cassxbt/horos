@@ -69,7 +69,7 @@ function layout(slug: (typeof PAGES)[number][0], title: string, description: str
 <main>
 ${body}
 </main>
-<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt</span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
+<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt · <a href="https://github.com/Cassxbt/horos">source</a></span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
@@ -102,7 +102,7 @@ const overview = layout(
   <div class="scene" aria-label="The supplier email, the approved payment it tried to redirect, and Horos's decision">
     <div class="glow" aria-hidden="true"></div>
     <div class="card mailcard"><div class="from">${esc(bankEmail.from)}<br>${esc(bankEmail.subject)}</div><p><mark>${esc(s.email.reading.passage)}</mark></p></div>
-    <div class="card paycard"><span class="eyebrow">Approved checkout · Airi VIC</span><div class="amt">${esc(s.preview.amount)}</div><div class="row"><span>Invoice</span><b class="mono">INV-20250201-1234</b></div><div class="row"><span>Approved by</span><b>${esc(s.approval.approvedBy)}</b></div><div class="row"><span>Confirmations sent</span><b class="mono">${s.heldTotals.confirms}</b></div><div class="stamp"><big>Stopped</big>held for review</div></div>
+    <div class="card paycard"><span class="eyebrow">Approved checkout · replay</span><div class="amt">${esc(s.preview.amount)}</div><div class="row"><span>Invoice</span><b class="mono">INV-20250201-1234</b></div><div class="row"><span>Approved by</span><b>${esc(s.approval.approvedBy)}</b></div><div class="row"><span>Confirmations sent</span><b class="mono">${s.heldTotals.confirms}</b></div><div class="stamp"><big>Stopped</big>held for review</div></div>
     <div class="card policycard"><span class="eyebrow">Claude read · policy decided</span><div class="chips">${s.email.decision.reasons.map((r: string) => `<span class="chip red">${esc(r.toLowerCase().replace(/_/g, ' '))}</span>`).join('')}<span class="chip amber">${esc(s.email.decision.signals.join(' · ').toLowerCase().replace(/_/g, ' '))}</span></div></div>
   </div>
   <div class="scroll-cue eyebrow" aria-hidden="true"><span></span>Scroll</div>
@@ -270,7 +270,7 @@ const judges = layout(
     <span class="eyebrow">Run it yourself</span>
     <div class="terminal" style="margin-top:16px"><div><span class="cmd">$ cd horos &amp;&amp; npm install</span></div><div><span class="cmd">$ npm run demo</span></div><div><span class="ok">  replays the case and every attack,</span></div><div><span class="ok">  rebuilds this site</span></div><div><span class="cmd">$ npm test</span></div><div><span class="ok">  ${testCount} tests</span></div></div>
     <div class="mini"><div><span data-count="${heldAttacks}">${heldAttacks}</span><small>of ${attacks.attacks.length} held at zero</small></div><div><span data-count="${testCount}">${testCount}</span><small>tests</small></div></div>
-    <p class="links" style="margin-top:18px">${raw('attacks.json', 'Raw results: attacks.json')}</p>
+    <p class="links" style="margin-top:18px">${raw('attacks.json', 'Raw results: attacks.json')}<a class="raw" href="https://github.com/Cassxbt/horos" target="_blank" rel="noopener">Source ↗</a></p>
   </aside>
 </section>
 <section class="band" style="padding-top:60px"><div class="wrap">
@@ -347,12 +347,12 @@ const proof = layout(
   </article>
   <article class="entry pending" data-reveal>
     <div>${chip('pending')}</div>
-    <div><h3>The USD 100 Slack bill, paid live</h3><p>Waits for a person's real verification of the supplier and checkout, then one supervised passkey checkout to the team's labelled sandbox checkout, which stands in for Slack and is not Slack.</p></div>
+    <div><h3>The USD 100 Slack bill, paid live: not run yet</h3><p>Waits for a person's real verification of the supplier and checkout, then one supervised passkey checkout to the team's labelled sandbox checkout, which stands in for Slack and is not Slack.</p></div>
     <div class="amount">—</div>
   </article>
   <article class="entry pending" data-reveal>
     <div>${chip('pending')}</div>
-    <div><h3>The payment record written back to T:0</h3><p>Horos prepares exactly one record and will say “accepted by T:0, awaiting processing” only when T:0's acknowledgement counts that record. Confirmation after T:0's nightly processing waits on how T:0 exposes it.</p></div>
+    <div><h3>The payment record written back to T:0: not run yet</h3><p>Horos prepares exactly one record and will say “accepted by T:0, awaiting processing” only when T:0's acknowledgement counts that record. Confirmation after T:0's nightly processing waits on how T:0 exposes it.</p></div>
     <div class="amount">—</div>
   </article>
 </div></section>
@@ -414,10 +414,10 @@ const how = layout(
   <div class="band-head"><span class="index"><b>02</b> / invariants</span><div><h2 data-reveal>Rules the tests <em>enforce</em></h2><p data-reveal>${testCount} tests. Each fix was reverted until a named test failed.</p></div></div>
   <ol class="invariants">
     <li data-reveal><div><b>One bill, one payment</b><span>A single ledger reservation covers both rails. A second attempt is refused while the first is unresolved.</span></div></li>
-    <li data-reveal><div><b>Unknown is never paid</b><span>A lost response, an unreadable provider or an unreachable model leaves the bill held, not reopened.</span></div></li>
+    <li data-reveal><div><b>Unknown is not paid</b><span>A lost response or an unreadable provider leaves the bill unresolved, and an email still being read, or unreadable, holds it. Each case is a named test.</span></div></li>
     <li data-reveal><div><b>Approvals expire on change</b><span>A new bill version, destination, verification or receiving account makes the old approval stale.</span></div></li>
     <li data-reveal><div><b>Authority must outlast the call</b><span>The mandate and approval must have a minute left after the last read, or nothing is confirmed.</span></div></li>
-    <li data-reveal><div><b>Duplicates stay held</b><span>A copy of the invoice that was paid, voided or dropped keeps the other copy held.</span></div></li>
+    <li data-reveal><div><b>Duplicates stay held</b><span>A copy of the invoice Horos has once seen keeps the other held after it is paid, voided or dropped from T:0, until a person decides.</span></div></li>
     <li data-reveal><div><b>The books follow the provider</b><span>An accounting record is sent only when the provider settled exactly what was approved.</span></div></li>
   </ol>
 </div></section>

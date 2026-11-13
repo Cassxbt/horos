@@ -67,7 +67,7 @@ Accounts Receivable
       <span class="eyebrow">01 · Verified, then approved</span>
       <h3>A person confirms the supplier and approves exactly what is shown</h3>
       <p>The approval binds the amount, the bill's version, the verified checkout and the Airwallex account that receives the money.</p>
-      <dl class="kv"><dt>Checkout</dt><dd class="mono">https://pay.horos-sandbox.example/slack</dd><dt>Receives</dt><dd>Airwallex account acct_sandbox_A (Fake Sandbox Business) <span style="color:var(--dim)">(the replay's fake account)</span></dd><dt>Approved by</dt><dd>cassxbt</dd><dt>Digest</dt><dd class="mono">dfdf01971d9f875517a8247e…</dd></dl>
+      <dl class="kv"><dt>Checkout</dt><dd class="mono">https://pay.horos-sandbox.example/slack</dd><dt>Receives</dt><dd>Airwallex account acct_sandbox_A (Fake Sandbox Business) <span style="color:var(--dim)">(the replay's fake account)</span></dd><dt>Approved by</dt><dd>cassxbt</dd><dt>Digest</dt><dd class="mono">74592e0950d0685850c07c3d…</dd></dl>
     </article>
     <article class="step" data-act="email">
       <span class="eyebrow">02 · The email arrives</span>
@@ -94,7 +94,7 @@ Accounts Receivable
       <span class="eyebrow">05 · Release</span>
       <h3>Only a person can release it, with a new approval</h3>
       <p>They confirm the supplier through a contact they already trust, never the one in the email. That verification postdates the email, and it invalidates the old approval.</p>
-      <div class="terminal"><div><span class="cmd">$ queue.ts verify</span> <span class="ok">vendor and destination re-verified</span></div><div><span class="cmd">$ airi-pay.ts pay</span> <span class="no">APPROVAL_STALE:verificationId</span></div><div><span class="cmd">$ airi-pay.ts approve</span> <span class="ok">new digest b3a82ce79f4a</span></div></div>
+      <div class="terminal"><div><span class="cmd">$ queue.ts verify</span> <span class="ok">vendor and destination re-verified</span></div><div><span class="cmd">$ airi-pay.ts pay</span> <span class="no">APPROVAL_STALE:verificationId</span></div><div><span class="cmd">$ airi-pay.ts approve</span> <span class="ok">new digest cc2e2806779f</span></div></div>
     </article>
     <article class="step paid" data-act="paid">
       <span class="eyebrow">06 · Paid once</span>
@@ -123,7 +123,7 @@ Accounts Receivable
 <div class="wrap"><a class="next" href="judges.html" data-reveal><span><span class="eyebrow">Next</span><br><span class="serif">Run the attacks</span></span><span class="arrow" aria-hidden="true">→</span></a></div>
 
 </main>
-<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt</span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
+<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt · <a href="https://github.com/Cassxbt/horos">source</a></span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>

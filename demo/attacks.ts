@@ -99,7 +99,7 @@ const attacks = [
   {
     id: 'reopen-after-lost-ack',
     title: 'An operator retries a payment that went through',
-    attack: "The charge succeeds but its acknowledgement is lost. An operator reopens the bill and pays it with a second mandate.",
+    attack: "The charge succeeds but its acknowledgement is lost. An operator tries to reopen the bill and pay it again with a second mandate.",
     run() {
       const b = approved();
       b.pay('mdt_attack_1', { FAKE_AWX_MODE: 'provider-down-after-confirm' });

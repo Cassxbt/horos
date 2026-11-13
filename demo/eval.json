@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T18:11:58.932Z",
+  "generatedAt": "2026-11-13T01:50:43.474Z",
   "how": "demo/emails/eval: emails and labels.json written first; each read once by Claude (recorded beside it); decided by src/email.ts. Rerun with `node demo/eval.ts`.",
   "summary": {
     "emails": 12,
