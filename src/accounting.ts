@@ -10,6 +10,20 @@ export type T0Writer = {
 };
 // The provider's own reading of a payment: what was actually charged, as opposed to what was approved.
 export type ProviderPayment = { id: string; status: string; amount: unknown; currency: unknown };
+// The provider's reading of that payment now, including how far its attempt has gone (SETTLED is the end).
+export type ProviderReadback = ProviderPayment & { attemptStatus?: string };
+
+// The books follow settlement, not acceptance: an entry is first sent only once the provider reports this payment's
+// attempt SETTLED, for the same payment, status, amount and currency the entry was recorded from. Until then it waits;
+// a payment the provider now describes differently goes to a person.
+function settlementGate(rec: AccountingRecord, now: ProviderReadback | undefined): { wait?: string; problem?: string } {
+  if (!now) return { wait: 'settlement not readable from the provider; will retry' };
+  const recorded = parsed(rec.settlement).value as ProviderPayment | null;
+  const same = recorded && now.id === recorded.id && now.status === recorded.status && now.amount === recorded.amount && now.currency === recorded.currency;
+  if (!same) return { problem: `PROVIDER_NOW_REPORTS_${now.status} ${now.currency} ${now.amount}` };
+  if (now.attemptStatus !== 'SETTLED') return { wait: `waiting for settlement: the payment attempt is ${now.attemptStatus ?? 'unknown'}` };
+  return {};
+}
 
 // The one shape of the record a paid bill owes T:0: built from what was approved, the attempt that paid, the
 // provider's payment and the day it was recorded paid. Nothing else goes into it.
@@ -124,9 +138,9 @@ export function auditEntry(ledger: Ledger, rec: AccountingRecord) {
 
 // Moves the selected accounting records one step toward CONFIRMED. It sends only the exact payload stored when the
 // payment was recorded, so a retry after a lost acknowledgement is a duplicate, never a second or different entry,
-// and only after that payload passes the same check a new entry does. It reads and writes accounting state only:
-// nothing here can start, repeat or reverse a payment.
-export async function syncAccounting(ledger: Ledger, t0: T0Writer, keys: string[]) {
+// and only after that payload passes the same check a new entry does and the provider reports the payment settled.
+// It reads and writes accounting state only: nothing here can start, repeat or reverse a payment.
+export async function syncAccounting(ledger: Ledger, t0: T0Writer, keys: string[], readback: (providerRef: string) => Promise<ProviderReadback>) {
   const results: { key: string; recordId: string; from: string; to: string; detail?: string }[] = [];
   for (const rec of ledger.accounting().filter((r) => keys.includes(r.key) && ['PENDING', 'ACCEPTED', 'CONFIRMED'].includes(r.status))) {
     let status = rec.status;
@@ -143,6 +157,15 @@ export async function syncAccounting(ledger: Ledger, t0: T0Writer, keys: string[
     }
     const payload = JSON.parse(rec.payload) as Payload;
     if (status === 'PENDING') {
+      const gate = settlementGate(rec, await readback(rec.provider_ref).catch(() => undefined));
+      if (gate.problem) {
+        move('NEEDS_REVIEW', reviewNote(rec, [gate.problem]));
+        continue;
+      }
+      if (gate.wait) {
+        results.push({ key: rec.key, recordId: rec.record_id, from: status, to: status, detail: gate.wait });
+        continue;
+      }
       ledger.setAccounting(rec.key, 'PENDING', 'PENDING', SENT_UNACKNOWLEDGED);
       const sent = await t0.post([payload]).catch((e) => ({ status: 0, body: (e as Error).message }));
       if (sent.status === 202 && acknowledges(sent.body)) move('ACCEPTED', JSON.stringify(sent.body));

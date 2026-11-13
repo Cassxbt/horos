@@ -16,6 +16,7 @@ const vicReadback = load('../evidence/vic-readback-2026-11-13.json');
 const live = load('../evidence/slack-bill-live-2026-11-13.json');
 const liveStep = (name: string) => live.steps.find((x: { step: string }) => x.step === name);
 const livePaid = liveStep('passkey and payment');
+const liveSettled = live.readback.observations.at(-1);
 const issuing = load('../evidence/issuing-run-live-2026-11-11.json');
 const readings = ['bank-change', 'remittance', 'forwarded-unclear'].map((n) => ({ name: n, ...load(`./emails/${n}.reading.json`) }));
 const bankEmail = parseEmail(readFileSync(here('./emails/bank-change.eml'), 'utf8'));
@@ -121,7 +122,7 @@ const overview = layout(
   <div class="mech">
     <div class="ai spot" data-reveal><span class="who">Claude</span><h3>Reads the email</h3><p>As untrusted data, never as instructions. It must quote, word for word, the passage its verdict rests on.</p><span class="tag">Can add a hold. Never remove one.</span></div>
     <div class="spot" data-reveal><span class="who">Policy</span><h3>Decides</h3><p>The quote must be in the email. Bank-detail patterns hold on their own. Nothing in an email can set a payee or approve a payment.</p><span class="tag">Deterministic</span></div>
-    <div class="spot" data-reveal><span class="who">Executor</span><h3>Re-checks</h3><p>At the start, after the passkey and just before confirming: the bill in T:0, the approval, the destination, the mandate's time left.</p><span class="tag">Three fresh reads</span></div>
+    <div class="spot" data-reveal><span class="who">Executor</span><h3>Re-checks</h3><p>At the start, after the one-time credential is issued, and just before confirming: the bill in T:0, the approval, the destination, the mandate's time left.</p><span class="tag">Three fresh reads</span></div>
     <div class="spot" data-reveal><span class="who">Visa · Airwallex</span><h3>Pays once</h3><p>A single-use Airi credential for the exact merchant, amount and approval. At most one payment per bill, on either rail.</p><span class="tag">Airi VIC · Airwallex checkout</span></div>
   </div>
 </div></section>
@@ -220,13 +221,14 @@ const casePage = layout(
 
 <section class="band live-strip"><div class="wrap">
   <div class="band-head"><span class="index"><b>Live</b> · ${esc(day(livePaid.at))}</span><div><h2 data-reveal>Then it ran <em>live</em>, on this bill</h2><p data-reveal>The same sequence, on the live Airwallex, Airi and T:0 sandboxes, with Claude reading the email live. The payee is the team's <a class="link" href="checkout/slack.html">sandbox checkout standing in for Slack</a>, not Slack; the email is one we wrote.</p></div></div>
+  <p class="outcome" data-reveal><span>First mandate <b class="no">denied</b></span><i aria-hidden="true">→</i><span>replacement <b>completed</b></span><i aria-hidden="true">→</i><span>Airwallex <b>${esc(liveSettled.latestAttempt.status.toLowerCase())}</b> USD ${money(liveSettled.amount)}</span><i aria-hidden="true">→</i><span>T:0 write <b class="wait">pending</b></span></p>
   <dl class="kv" data-reveal>
     <dt>Verified</dt><dd>by ${esc(liveStep('verified').by)}, ${esc(liveStep('verified').destination)}</dd>
     <dt>Approved</dt><dd>${esc(live.bill.amount)} by ${esc(liveStep('approved').by)}, digest <span class="mono">${esc(liveStep('approved').digest.slice(0, 12))}</span></dd>
     <dt>Claude, live</dt><dd><span class="mono">${esc(liveStep('supplier email read live').reading.kind)}</span>: “${esc(liveStep('supplier email read live').reading.passage)}”</dd>
     <dt>Checkout</dt><dd><span class="chip red">${esc(liveStep('approved checkout attempted').refused)}</span> 0 credentials, no payment intent</dd>
     <dt>Released</dt><dd>${esc(liveStep('verified again, after the email').by)} verified again; the old approval was refused as <span class="mono">${esc(liveStep('old approval retried').refused)}</span></dd>
-    <dt>Paid once</dt><dd><span class="chip green">${esc(livePaid.state)}</span> USD ${money(livePaid.airwallex.amount)}, Airwallex <span class="mono">${esc(livePaid.airwallex.paymentIntentId)}</span> ${esc(livePaid.airwallex.status)}, Airi <span class="mono">${esc(livePaid.mandateId)}</span> ${esc(livePaid.airiResult.split(' ')[0])}</dd>
+    <dt>Paid once</dt><dd><span class="chip green">${esc(livePaid.state)}</span> USD ${money(livePaid.airwallex.amount)}, Airwallex <span class="mono">${esc(livePaid.airwallex.paymentIntentId)}</span> ${esc(livePaid.airwallex.status)}, Airi <span class="mono">${esc(livePaid.mandateId)}</span> ${esc(livePaid.airiResult.split(' ')[0])}; attempt ${esc(liveSettled.latestAttempt.status)} at ${esc(liveSettled.at.slice(11, 16))} UTC</dd>
     <dt>Received by</dt><dd>${esc(liveStep('approved').receivedBy.replace(/, read from.*$/, ''))}</dd>
   </dl>
   <p class="links" style="margin-top:18px">${raw('slack-bill-live-2026-11-13.json', 'The full record')}</p>
@@ -326,7 +328,7 @@ const judges = layout(
   </div>
   <div class="attacks" style="margin-top:14px">
     <article class="attack control spot" data-reveal><header><span class="num">Control</span><span class="chip green">paid once</span></header><h3>Nothing wrong</h3><p class="threat">The same approved bill, no email and no change anywhere.</p><div class="said">${esc(attacks.control.said)}</div><div class="counts"><div><span data-count="${attacks.control.confirms}">${attacks.control.confirms}</span><small>confirmation</small></div><div><span data-count="${attacks.control.charges}">${attacks.control.charges}</span><small>charge</small></div><div><span data-count="${attacks.control.credentials}">${attacks.control.credentials}</span><small>credential</small></div></div></article>
-    <article class="attack spot" data-reveal><header><span class="num">Rule</span></header><h3>What a refusal means</h3><p class="threat">A refusal before the passkey asks for nothing. After it, the intent is cancelled before anything is confirmed. Anything Horos cannot prove stays held, never paid.</p><p class="note">Generated ${esc(day(attacks.generatedAt))} · <span class="mono">demo/attacks.json</span></p></article>
+    <article class="attack spot" data-reveal><header><span class="num">Rule</span></header><h3>What a refusal means</h3><p class="threat">A refusal before the credential asks Airi for nothing. After it, the intent is cancelled before anything is confirmed. Anything Horos cannot prove stays held, never paid.</p><p class="note">Generated ${esc(day(attacks.generatedAt))} · <span class="mono">demo/attacks.json</span></p></article>
   </div>
 </div></section>
 ${next('proof.html', 'See the proof')}
@@ -360,7 +362,7 @@ const proof = layout(
     <div>${chip('live')}<p class="when" style="margin-top:14px">${esc(day(livePaid.at))}</p></div>
     <div><h3>The case, live: the USD 100 Slack bill</h3><p>The same bill as the case, end to end on the live sandboxes. A person verified and approved it; Claude read the bank-change email live and the policy held it; the approved checkout was refused before any credential; the person verified again; the old approval was refused as stale; a new approval and one passkey paid it once. The checkout is the team's <a class="link" href="checkout/slack.html">sandbox checkout standing in for Slack</a>, not Slack, and the email is one we wrote.</p>
       <ul class="checks">${live.steps.map((x: { step: string; refused?: string; state?: string }) => `<li><span aria-hidden="true">${x.refused ? '×' : '✓'}</span>${esc(x.step)}${x.refused ? `: <span class="mono">${esc(x.refused)}</span>` : x.state ? `: <span class="mono">${esc(x.state)}</span>` : ''}</li>`).join('')}</ul>
-      <div class="ids"><code>${esc(livePaid.mandateId)}</code><code>${esc(livePaid.airwallex.paymentIntentId)}</code><code>${esc(livePaid.airwallex.status)}</code><code>Airi ${esc(livePaid.airiResult.split(' ')[0])}</code></div><p class="links">${raw('slack-bill-live-2026-11-13.json')}</p></div>
+      <div class="ids"><code>${esc(livePaid.mandateId)}</code><code>${esc(livePaid.airwallex.paymentIntentId)}</code><code>${esc(livePaid.airwallex.status)}</code><code>attempt ${esc(liveSettled.latestAttempt.status)}</code><code>Airi ${esc(livePaid.airiResult.split(' ')[0])}</code></div><p class="links">${raw('slack-bill-live-2026-11-13.json')}</p></div>
     <div class="amount">${money(livePaid.airwallex.amount)}</div>
   </article>
   <article class="entry spot" data-reveal>

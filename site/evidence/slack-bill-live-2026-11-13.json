@@ -1,5 +1,6 @@
 {
   "what": "One T:0 bill, live end to end: a person verifies and approves, a supplier email read live by Claude holds the payment, the approved checkout is refused before any credential, the person verifies again, the old approval is refused as stale, a new approval and one passkey pay it once through Airwallex with a single-use Visa Intelligent Commerce credential from Airi.",
+  "outcome": "First mandate DENIED -> replacement mandate COMPLETED -> Airwallex SETTLED USD 100.00 -> T:0 write pending",
   "sandbox": "Airwallex sandbox, Airi VIC, T:0 sandbox. The checkout is the team-controlled sandbox checkout https://horos-rosy.vercel.app/checkout/slack.html standing in for Slack Technologies, Inc.; it is not Slack. The bank-change email is a test email the team wrote (demo/emails/bank-change.eml); Claude's reading of it was a live call.",
   "bill": {
     "entity": "entity_prod_ieEAMzvhgtHalvsm",
@@ -21,7 +22,7 @@
       "by": "cassxbt",
       "at": "2026-11-13T07:00:42.452Z",
       "digest": "a42ed9846a358d12c14242d7833b758e1bcee68e9404457848c714c330b9a5ba",
-      "receivedBy": "Airwallex account acct_Q5Kn…Edyw (Sandbox Business), read from the credentials that create the checkout",
+      "receivedBy": "Airwallex account acct_Q5Kn\u2026Edyw (Sandbox Business), read from the credentials that create the checkout",
       "action": "One Visa Intelligent Commerce checkout of USD 100.00 at https://horos-rosy.vercel.app/checkout/slack.html for invoice INV-20250201-1234, once; no other rail may pay it."
     },
     {
@@ -142,15 +143,29 @@
     }
   ],
   "readback": {
-    "at": "2026-11-13T07:13Z",
-    "how": "GET /api/v1/pa/payment_intents/int_sgpvspvj9ho46otan8e",
-    "status": "SUCCEEDED",
-    "amount": 100,
-    "currency": "USD",
-    "latestAttempt": {
-      "id": "att_sgpv8fbwkho46ouf491_otan8e",
-      "status": "CAPTURE_REQUESTED"
-    }
+    "how": "Read-only GET /api/v1/pa/payment_intents/int_sgpvspvj9ho46otan8e on the Airwallex sandbox, after the payment.",
+    "observations": [
+      {
+        "at": "2026-11-13T07:13Z",
+        "status": "SUCCEEDED",
+        "amount": 100,
+        "currency": "USD",
+        "latestAttempt": {
+          "id": "att_sgpv8fbwkho46ouf491_otan8e",
+          "status": "CAPTURE_REQUESTED"
+        }
+      },
+      {
+        "at": "2026-11-13T07:52:06.326Z",
+        "status": "SUCCEEDED",
+        "amount": 100,
+        "currency": "USD",
+        "latestAttempt": {
+          "id": "att_sgpv8fbwkho46ouf491_otan8e",
+          "status": "SETTLED"
+        }
+      }
+    ]
   },
   "books": {
     "t0Record": "horos-payment-667da41558ba49cd653306db",

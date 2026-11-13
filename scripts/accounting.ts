@@ -1,4 +1,5 @@
 import { auditEntry, syncAccounting } from '../src/accounting.ts';
+import { getPaymentIntent } from '../src/airwallex.ts';
 import { openLedger } from '../src/ledger.ts';
 import { T0_ENTITY } from '../src/payable.ts';
 import { findPaymentRecord, postRecords } from '../src/t0.ts';
@@ -8,7 +9,8 @@ const USAGE = `usage (from horos/, with --env-file=.env):
       Lists the accounting records owed to T:0 for this entity's paid bills, with their state and anything that keeps
       one from being posted as it stands (checked against the approval and the provider's settlement).
   scripts/accounting.ts sync --bill <t0-bill-id>
-      Sends that one bill's owed record (its exact stored content) and reads it back. Needs T0_WRITE_ENABLED=1.
+      Sends that one bill's owed record (its exact stored content), only once Airwallex reports the payment's attempt
+      SETTLED, and reads it back. Needs T0_WRITE_ENABLED=1.
       Exit 0 when it is confirmed, 3 while it is in flight, 4 when a person must look at it.`;
 
 const ledger = openLedger(process.env.HOROS_DB ?? 'data/horos.db');
@@ -37,7 +39,11 @@ if (args[0] === 'status') {
     console.error(`no accounting record owed for ${key}`);
     process.exit(1);
   }
-  const moved = await syncAccounting(ledger, { post: postRecords, find: (id) => findPaymentRecord(T0_ENTITY, id) }, [key]);
+  const readback = async (id: string) => {
+    const pi = await getPaymentIntent(id);
+    return { id: pi.id, status: pi.status, amount: pi.amount, currency: pi.currency, attemptStatus: pi.latest_payment_attempt?.status };
+  };
+  const moved = await syncAccounting(ledger, { post: postRecords, find: (id) => findPaymentRecord(T0_ENTITY, id) }, [key], readback);
   const rows = summary([key]);
   console.log(JSON.stringify({ moved, records: rows }, null, 2));
   process.exit(exitCode(rows));

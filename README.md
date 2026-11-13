@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/Cassxbt/horos/actions/workflows/ci.yml/badge.svg)](https://github.com/Cassxbt/horos/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Tests](https://img.shields.io/badge/tests-238%20passing-74dbb0)
+![Tests](https://img.shields.io/badge/tests-239%20passing-74dbb0)
 ![Airwallex](https://img.shields.io/badge/Airwallex-Issuing%20%C2%B7%20Payment%20Acceptance-e9b44c)
 ![Visa](https://img.shields.io/badge/Visa%20Intelligent%20Commerce-via%20Airi-e9b44c)
 ![Claude](https://img.shields.io/badge/Claude-opus--5.5-ece7da)
@@ -52,9 +52,9 @@ So I treated **"the facts behind the approval changed"** as a first-class state,
 1. **Import.** Reads every bill for the entity from T:0, open or already paid. Possible duplicates, and bills whose vendor name is shared by two vendor records, go to a person.
 2. **Verify, then approve.** A person verifies who the bill pays and through which checkout, then approves exactly what Horos shows. The approval binds the amount, the bill version, the verified destination and the Airwallex account that receives the money.
 3. **Read the email.** `scripts/email.ts` records the email as pending, and holding payment, *before* Claude reads it. Claude classifies it and must quote the passage it relied on; the quote must appear in the email. Bank-detail patterns hold whatever the model says. Claude can add a reason to hold and can never remove one: once any reading of an email holds, no later or concurrent reading of it releases the hold.
-4. **Re-check.** `scripts/airi-pay.ts` re-reads T:0 three times: at the start, after the passkey, and just before confirming. It refuses if anything the approval rested on changed, and requires the mandate and the approval to outlast the confirm call.
+4. **Re-check.** `scripts/airi-pay.ts` is run after the passkey and re-reads T:0 three times: at the start, after Airi issues the one-time credential, and just before confirming. It refuses if anything the approval rested on changed, and requires the mandate and the approval to outlast the confirm call.
 5. **Pay once.** Confirms one Airwallex checkout with a single-use Visa Intelligent Commerce credential from Airi. Horos pays a bill at most once, across both of its rails.
-6. **Book.** The paid bill owes T:0 exactly one payment record, sent only when the provider settled exactly what was approved.
+6. **Book.** The paid bill owes T:0 exactly one payment record. `accounting.ts sync` sends it only once Airwallex reports the payment's attempt SETTLED, for exactly what was approved.
 
 ## Judge it in 90 seconds
 
@@ -65,7 +65,7 @@ So I treated **"the facts behind the approval changed"** as a first-class state,
 ```bash
 git clone https://github.com/Cassxbt/horos && cd horos
 npm install
-npm test        # 238 tests, about a minute
+npm test        # 239 tests, about a minute
 npm run demo    # replays the case, 8 attacks and a 12-email evaluation, then rebuilds site/
 ```
 
@@ -77,11 +77,12 @@ npm run demo    # replays the case, 8 attacks and a 12-email evaluation, then re
 curl -s https://horos-rosy.vercel.app/evidence/slack-bill-live-2026-11-13.json
 # the case, live on INV-20250201-1234: verified, approved, Claude BANK_DETAILS_CHANGE -> BILL_HOLD_FOR_REVIEW,
 # re-verified, APPROVAL_STALE, then PAID: int_sgpvspvj9ho46otan8e SUCCEEDED, USD 100, Airi SUCCEEDED
+# outcome: first mandate DENIED -> replacement COMPLETED -> Airwallex SETTLED USD 100.00 -> T:0 write pending
 ```
 
 | Run | What happened | Evidence |
 |---|---|---|
-| **The case, live**: INV-20250201-1234, USD 100.00, 13 Nov | A person verified and approved the bill. Claude read the bank-change email live; the policy held it, and the approved checkout was refused before any credential. The person verified again, the old approval was refused as `APPROVAL_STALE`, and a new approval and one passkey paid it once: Airwallex intent `int_sgpvspvj9ho46otan8e` SUCCEEDED, Airi mandate `mdt_nlpdlr7dgho46ew2uxs` SUCCEEDED. | [`slack-bill-live-2026-11-13.json`](evidence/slack-bill-live-2026-11-13.json) |
+| **The case, live**: INV-20250201-1234, USD 100.00, 13 Nov | A person verified and approved the bill. Claude read the bank-change email live; the policy held it, and the approved checkout was refused before any credential. The person verified again, the old approval was refused as `APPROVAL_STALE`, and a new approval and one passkey paid it once: Airwallex intent `int_sgpvspvj9ho46otan8e` SUCCEEDED, Airi mandate `mdt_nlpdlr7dgho46ew2uxs` SUCCEEDED. Read back: attempt CAPTURE_REQUESTED at 07:13 UTC, **settled** by 07:52 UTC. | [`slack-bill-live-2026-11-13.json`](evidence/slack-bill-live-2026-11-13.json) |
 | **First Visa Intelligent Commerce payment**, INV-4417, USD 186.40 | Airi mandate `mdt_nlpdhwf6cho13dzi0y0` (VIC, DPAN) confirmed Airwallex intent `int_sgpvdzck4ho13ki6bak`; SUCCEEDED reported to Airi. Read back from Airwallex on 13 Nov: **settled**. | [`vic-payment-live-2026-11-10.json`](evidence/vic-payment-live-2026-11-10.json) · [`vic-readback-2026-11-13.json`](evidence/vic-readback-2026-11-13.json) |
 | **Issued card, Horos answering remote authorization** | 15 of 15 checks. Horos declined the lookalike merchant and the over-invoice amount at authorization; the wallet's drop equals the reconciled clearings. | [`issuing-run-live-2026-11-11.json`](evidence/issuing-run-live-2026-11-11.json) |
 | **T:0 queue**, read-only | 8 open bills triaged from the live T:0 sandbox, including the USD 100 Slack bill in the case. | [`t0-queue-live-2026-11-12.json`](evidence/t0-queue-live-2026-11-12.json) |
@@ -174,9 +175,9 @@ Every refusal is a code, and every held bill names the person's next step. An op
 
 **Unknown is not paid.** A payment whose outcome is unknown stays unknown until the provider proves it either way. A person can reopen a bill only on proof that nothing moved, and never one the provider shows succeeded.
 
-**Re-read the source, not a cache.** The executor re-reads T:0 at the start, after the passkey and just before confirming. The mandate and the approval must outlast the confirm call itself.
+**Re-read the source, not a cache.** The executor re-reads T:0 at the start, after the one-time credential is issued, and just before confirming. The mandate and the approval must outlast the confirm call itself.
 
-**Book only what settled.** The T:0 entry is built from the provider's settlement, compared field by field with the approval, and sent once. A lost acknowledgement is recorded as `SENT_UNACKNOWLEDGED`, never retried blind.
+**Book only what settled.** The T:0 entry is built from the provider's record of the payment, compared field by field with the approval, and sent once, only after Airwallex reports the attempt SETTLED. A lost acknowledgement is recorded as `SENT_UNACKNOWLEDGED`, never retried blind.
 
 **Every fix is mutation-checked.** Each fix was reverted until a named test failed.
 
@@ -216,24 +217,24 @@ Copy `.env.example` to `.env` and fill in the sandbox keys. Every command runs f
 
 ## Tests
 
-238 tests, run in [CI](https://github.com/Cassxbt/horos/actions/workflows/ci.yml) on every push, against in-process stand-ins for Airwallex, Airi and T:0. They mirror the claims above.
+239 tests, run in [CI](https://github.com/Cassxbt/horos/actions/workflows/ci.yml) on every push, against in-process stand-ins for Airwallex, Airi and T:0. They mirror the claims above.
 
 | Area | Tests | What they hold to |
 |---|---:|---|
 | Issuing run, end to end | 42 | A clean run pays once; a decline closes the card with no retry; a stop signal starts nothing new and closes every card |
 | Card authorization, signed endpoint, reconciliation | 55 | Lookalike merchants refused at the invoice amount; unsigned or replayed requests refused; paid only when the approved lifecycle cleared exactly |
-| Bills and the queue | 45 | A bill paid elsewhere is caught before the passkey, before reserving and before confirming; duplicates across every bill ever seen; shared vendor names never pick a payee |
+| Bills and the queue | 45 | A bill paid elsewhere is caught before any credential, before reserving and before confirming; duplicates across every bill ever seen; shared vendor names never pick a payee |
 | Recovery and the ledger | 41 | Five processes racing for one bill: exactly one wins; an unknown payment blocks every rail until reconciled; state survives a restart |
 | Payment policy and the Visa mandate | 27 | A new IBAN or a bank-change claim holds; every mismatch between the passkey-approved mandate and the approval is refused |
 | Supplier email | 16 | Held before reading; holds latched across rereads and concurrent readers; quotes checked against the email; Claude unreachable holds |
-| Books | 12 | One exact record per paid bill; a lost acknowledgement, a race or a delay never sends a second |
+| Books | 13 | One exact record per paid bill, sent only once the payment settled; a lost acknowledgement, a race or a delay never sends a second |
 
 ## Layout
 
 ```
 src/        policy, ledger, queue, email, executor helpers, provider clients
 scripts/    the commands above
-test/       238 tests; stand-ins for Airwallex, Airi and T:0 in test/fixtures
+test/       239 tests; stand-ins for Airwallex, Airi and T:0 in test/fixtures
 demo/       replay, attacks, email evaluation, site generator, demo emails
 evidence/   records of the live sandbox runs
 assets/     the cover image

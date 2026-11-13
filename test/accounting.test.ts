@@ -4,7 +4,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import { join } from 'node:path';
-import { ACCOUNTING, AIRI, billSandbox, FAKE_T0, KEY, SLACK100, SLACK_VENDOR, T0_PAGE } from './harness.ts';
+import { ACCOUNTING, AIRI, billSandbox, FAKE, FAKE_T0, KEY, SLACK100, SLACK_VENDOR, T0_PAGE } from './harness.ts';
 
 // What a paid bill owes the accounting system, and what Horos will and will not tell T:0.
 test('accounting: a paid bill owes T:0 exactly one record; a lost acknowledgement, a race and a delay never make a second', async () => {
@@ -15,7 +15,7 @@ test('accounting: a paid bill owes T:0 exactly one record; a lost acknowledgemen
   assert.equal(b.pay('mdt_bill1').code, 0);
   const store = join(b.cwd, 't0-store.json');
   const acct = (args: string[], mode = '') => {
-    const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, ...args], {
+    const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, ...args], {
       cwd: b.cwd,
       env: { ...b.env, T0_API_KEY: 'fake', T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store, FAKE_T0_MODE: mode },
       encoding: 'utf8',
@@ -30,7 +30,7 @@ test('accounting: a paid bill owes T:0 exactly one record; a lost acknowledgemen
 
   assert.equal(acct(['sync', '--bill', SLACK100], 'lose-ack').code, 3, 'stored by T:0, acknowledgement lost: still owed');
   const [w1, w2] = await Promise.all([0, 1].map(() => new Promise<number | null>((done) => {
-    const c = spawn(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], {
+    const c = spawn(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], {
       cwd: b.cwd,
       env: { ...b.env, T0_API_KEY: 'fake', T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store, FAKE_T0_MODE: 'not-yet-visible' },
       stdio: 'ignore',
@@ -57,7 +57,7 @@ test('accounting: a refused record or a read-back that does not match goes to a 
     b.verify();
     b.mandateFor('mdt_bill1', b.digestOf(b.approveAs('cass').stdout));
     assert.equal(b.pay('mdt_bill1').code, 0);
-    const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], {
+    const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], {
       cwd: b.cwd,
       env: { ...b.env, T0_API_KEY: 'fake', T0_WRITE_ENABLED: '1', FAKE_T0_STORE: join(b.cwd, 't0-store.json'), FAKE_T0_MODE: mode },
       encoding: 'utf8',
@@ -73,7 +73,7 @@ test('accounting: writing to T:0 needs the explicit switch', () => {
   b.verify();
   b.mandateFor('mdt_bill1', b.digestOf(b.approveAs('cass').stdout));
   b.pay('mdt_bill1');
-  const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env: { ...b.env, T0_API_KEY: 'fake', FAKE_T0_STORE: join(b.cwd, 't0-store.json') }, encoding: 'utf8' });
+  const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env: { ...b.env, T0_API_KEY: 'fake', FAKE_T0_STORE: join(b.cwd, 't0-store.json') }, encoding: 'utf8' });
   assert.equal(r.status, 3);
   assert.match(r.stderr, /not synced: set T0_WRITE_ENABLED=1/);
   assert.equal(existsSync(join(b.cwd, 't0-store.json')), false, 'nothing was sent');
@@ -104,7 +104,7 @@ test('accounting: a bill changed in T:0 after approval is still booked as approv
   db.close();
   const store = join(b.cwd, 't0-store.json');
   const sync = (mode = '') =>
-    spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], {
+    spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], {
       cwd: b.cwd,
       env: { ...b.env, T0_API_KEY: 'fake', T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store, FAKE_T0_MODE: mode },
       encoding: 'utf8',
@@ -150,7 +150,7 @@ test('accounting: a stored entry that no longer matches the approval and settlem
     const audit = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', ACCOUNTING, 'status'], { cwd: b.cwd, env, encoding: 'utf8' });
     assert.equal(audit.status, 4, status);
     assert.deepEqual(JSON.parse(audit.stdout)[0].problems, ['PAYLOAD_DIFFERS:data.currencyCode,links'], status);
-    const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env, encoding: 'utf8' });
+    const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env, encoding: 'utf8' });
     assert.equal(sync.status, 4, status);
     const [record] = JSON.parse(sync.stdout).records;
     assert.equal(record.status, 'NEEDS_REVIEW', status);
@@ -173,7 +173,7 @@ test('accounting: a stored entry edited anywhere, even in fields T:0 might not e
   db.prepare('UPDATE accounting SET payload = ?').run(JSON.stringify(edited));
   db.close();
   const store = join(b.cwd, 't0-store.json');
-  const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env: { ...b.env, T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store }, encoding: 'utf8' });
+  const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env: { ...b.env, T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store }, encoding: 'utf8' });
   assert.equal(sync.status, 4);
   assert.equal(JSON.parse(sync.stdout).records[0].detail, 'not sent: PAYLOAD_DIFFERS:id,data.date,data.type,data.memo');
   assert.equal(existsSync(store), false);
@@ -186,7 +186,7 @@ test('accounting: a malformed read-back from T:0 is a mismatch for a person, not
   b.mandateFor('mdt_bill1', b.digestOf(b.approveAs('cass').stdout));
   assert.equal(b.pay('mdt_bill1').code, 0);
   const store = join(b.cwd, 't0-store.json');
-  const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], {
+  const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], {
     cwd: b.cwd,
     env: { ...b.env, T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store, FAKE_T0_MODE: 'malformed' },
     encoding: 'utf8',
@@ -205,7 +205,7 @@ test('accounting: an entry stored before settlement evidence was kept is held fo
   db.exec('UPDATE accounting SET settlement = NULL');
   db.close();
   const store = join(b.cwd, 't0-store.json');
-  const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env: { ...b.env, T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store }, encoding: 'utf8' });
+  const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env: { ...b.env, T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store }, encoding: 'utf8' });
   assert.equal(sync.status, 4);
   assert.match(JSON.parse(sync.stdout).records[0].detail, /NO_PROVIDER_SETTLEMENT/);
   assert.equal(existsSync(store), false);
@@ -219,7 +219,7 @@ test('accounting: an entry held after a send whose acknowledgement was lost says
   assert.equal(b.pay('mdt_bill1').code, 0);
   const store = join(b.cwd, 't0-store.json');
   const sync = (mode = '') =>
-    spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], {
+    spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], {
       cwd: b.cwd,
       env: { ...b.env, T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store, FAKE_T0_MODE: mode },
       encoding: 'utf8',
@@ -256,7 +256,7 @@ test('accounting: an entry whose stored payload or settlement no longer parses i
     const rows = JSON.parse(status.stdout);
     assert.equal(rows.length, 2, `${column}: both entries listed`);
     assert.ok(rows.find((r: any) => r.obligation === KEY).problems.includes(`${column.toUpperCase()}_UNREADABLE`), column);
-    const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env, encoding: 'utf8' });
+    const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env, encoding: 'utf8' });
     assert.equal(sync.status, 4, `${column}: ${sync.stderr}`);
     assert.equal(JSON.parse(sync.stdout).records[0].status, 'NEEDS_REVIEW', column);
     assert.equal(existsSync(env.FAKE_T0_STORE), false, `${column}: nothing sent`);
@@ -280,7 +280,7 @@ test('accounting: a stored approval that no longer parses holds that entry for r
   const rows = JSON.parse(status.stdout);
   assert.equal(rows.length, 2);
   assert.deepEqual(rows.find((r: any) => r.obligation === KEY).problems, ['NO_APPROVAL']);
-  const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env, encoding: 'utf8' });
+  const sync = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], { cwd: b.cwd, env, encoding: 'utf8' });
   assert.equal(sync.status, 4, sync.stderr);
   assert.equal(existsSync(env.FAKE_T0_STORE), false);
 });
@@ -292,7 +292,7 @@ test('accounting: a 202 counts as accepted only when its counters account for th
     b.verify();
     b.mandateFor('mdt_bill1', b.digestOf(b.approveAs('cass').stdout));
     assert.equal(b.pay('mdt_bill1').code, 0);
-    const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE_T0, ACCOUNTING, 'sync', '--bill', SLACK100], {
+    const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], {
       cwd: b.cwd,
       env: { ...b.env, T0_WRITE_ENABLED: '1', FAKE_T0_STORE: join(b.cwd, 't0-store.json'), FAKE_T0_MODE: mode || 'not-yet-visible' },
       encoding: 'utf8',
@@ -303,4 +303,30 @@ test('accounting: a 202 counts as accepted only when its counters account for th
     if (status === 'ACCEPTED') assert.deepEqual(JSON.parse(out.records[0].detail), { received: 1, inserted: 1, duplicates: 0 }, 'the counters are kept');
     else assert.match(out.moved.at(-1).detail, /^delivery unverified: 202 without a count for this record/, mode);
   }
+});
+
+test('accounting: nothing goes to the books until the provider reports the payment settled; then exactly one record', () => {
+  const b = billSandbox();
+  b.queue(['import']);
+  b.verify();
+  b.mandateFor('mdt_bill1', b.digestOf(b.approveAs('cass').stdout));
+  assert.equal(b.pay('mdt_bill1').code, 0);
+  const store = join(b.cwd, 't0-store.json');
+  const sync = (attempt?: string) => {
+    const r = spawnSync(process.execPath, ['--disable-warning=ExperimentalWarning', '--import', FAKE, ACCOUNTING, 'sync', '--bill', SLACK100], {
+      cwd: b.cwd,
+      env: { ...b.env, T0_API_KEY: 'fake', T0_WRITE_ENABLED: '1', FAKE_T0_STORE: store, FAKE_PA_ATTEMPT: attempt ?? '' },
+      encoding: 'utf8',
+    });
+    return { code: r.status, out: JSON.parse(r.stdout) };
+  };
+  const early = sync('CAPTURE_REQUESTED');
+  assert.equal(early.code, 3, 'still owed');
+  assert.match(early.out.moved[0].detail, /waiting for settlement: the payment attempt is CAPTURE_REQUESTED/);
+  assert.deepEqual([early.out.records[0].status, early.out.records[0].detail], ['PENDING', null], 'never marked as sent');
+  assert.equal(existsSync(store), false, 'nothing reached T:0');
+  const settled = sync();
+  assert.equal(settled.code, 0);
+  assert.equal(settled.out.records[0].status, 'CONFIRMED');
+  assert.equal(Object.keys(JSON.parse(readFileSync(store, 'utf8')).records).length, 1);
 });

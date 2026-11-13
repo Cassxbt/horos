@@ -253,6 +253,11 @@ async function route(method, path, query, body) {
   if (m && mode === 'provider-down-after-confirm' && intentById(m[1])?.status === 'SUCCEEDED') throw new Error('injected: provider unreachable');
   // kill-on-readback: the process dies after the confirmation was journaled, before the outcome is committed.
   if (m && mode === 'kill-on-readback' && intentById(m[1])?.status === 'SUCCEEDED') process.kill(process.pid, 'SIGKILL');
+  // FAKE_PA_ATTEMPT reports the paid attempt at another stage, such as CAPTURE_REQUESTED before settlement.
+  if (m && intentById(m[1])?.latest_payment_attempt && process.env.FAKE_PA_ATTEMPT) {
+    const intent = intentById(m[1]);
+    return { ...intent, latest_payment_attempt: { ...intent.latest_payment_attempt, status: process.env.FAKE_PA_ATTEMPT } };
+  }
   if (m && intentById(m[1])) return intentById(m[1]);
   throw new Error(`fake airwallex: unexpected ${method} ${path}`);
 }
