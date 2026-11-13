@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-12T18:10:17.869Z",
+  "emailSha256": "2e31ebb1d57274d49617fd30cab5d793498e62303cc8ab94051ccc27c4d8b9f0",
+  "model": "claude-opus-5-5",
+  "promptVersion": "supplier-email-1",
+  "stopReason": "end_turn",
+  "usage": {
+    "input_tokens": 776,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 126,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  },
+  "raw": "{\"kind\":\"ROUTINE\",\"passage\":\"Please continue to pay through your usual method.\",\"summary\":\"A routine monthly statement from HP listing one open invoice (INV-20260301-003); it does not ask to change payment details, though the stated due date of 31 March 2026 is odd for a November statement and the bill amount shows USD 0.00, so confirm the balance before paying.\"}"
+}

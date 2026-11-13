@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proof · Horos</title>
+<meta name="description" content="What ran against the live sandbox, what Claude read, what is a replay, and what has not been run yet.">
+<meta name="theme-color" content="#0a0b09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0b09'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%2374dbb0'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<script>document.documentElement.classList.add('js');setTimeout(function(){if(!window.__horosReady)document.documentElement.classList.remove('js')},2500);</script>
+</head>
+<body>
+<div class="progress" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<nav class="nav" aria-label="Site"><a class="brand" href="index.html"><i aria-hidden="true"></i>HOROS</a><a class="link" href="case.html">The case</a><a class="link" href="judges.html">Judges</a><a class="link" href="proof.html" aria-current="page">Proof</a><a class="link" href="how.html">How it works</a><span class="run">npm run demo</span></nav>
+<main>
+
+<section class="hero sub wrap">
+  <div>
+    <span class="eyebrow" data-intro>Proof</span>
+    <h1><span class="line-mask"><span>What is real,</span></span><span class="line-mask"><span><em>and what is not yet.</em></span></span></h1>
+    <p class="lede" data-intro>Honesty has more than two states. Every item is labelled by where its evidence comes from. Nothing here claims a check that did not run.</p>
+  </div>
+  <aside class="panel" data-intro>
+    <span class="eyebrow">Four kinds of evidence</span>
+    <dl class="key">
+      <dt><span class="chip green">Live sandbox</span></dt><dd>Run against the live Airwallex, Airi or T:0 sandbox, and recorded.</dd>
+      <dt><span class="chip amber">Recorded Claude output</span></dt><dd>A live call to Claude, saved with the exact email it read.</dd>
+      <dt><span class="chip ">Replay on fakes</span></dt><dd>The real Horos commands against stand-in providers. Rerun it yourself.</dd>
+      <dt><span class="chip red">Not run yet</span></dt><dd>Planned, and not claimed until it has run.</dd>
+    </dl>
+  </aside>
+</section>
+<section class="band" style="padding-top:60px"><div class="wrap ledger">
+  <article class="entry spot" data-reveal>
+    <div><span class="chip green">Live sandbox</span><p class="when" style="margin-top:14px">10 Nov 2026</p></div>
+    <div><h3>A Visa Intelligent Commerce payment</h3><p>Invoice INV-4417 paid at an Airwallex checkout with a single-use Airi VIC credential (DPAN), approved by passkey. Airi was told the result.</p>
+      <div class="ids"><code>mdt_nlpdhwf6cho13dzi0y0</code><code>int_sgpvdzck4ho13ki6bak</code><code>SUCCEEDED</code></div><p class="links"><a class="raw" href="evidence/vic-payment-live-2026-11-10.json" target="_blank" rel="noopener">vic-payment-live-2026-11-10.json ↗</a></p></div>
+    <div class="amount">186.40</div>
+  </article>
+  <article class="entry spot" data-reveal>
+    <div><span class="chip green">Live sandbox</span><p class="when" style="margin-top:14px">11 Nov 2026</p></div>
+    <div><h3>An issued card that asks Horos first</h3><p>Airwallex calls Horos on every authorization. The wallet moved by exactly the clearings Horos reconciled: USD 562.80 down, USD 562.80 reconciled.</p>
+      <ul class="checks"><li><span aria-hidden="true">✓</span>bank-change email holds the wire</li><li><span aria-hidden="true">✓</span>Horos answers authorizations before any armed card exists</li><li><span aria-hidden="true">✓</span>lookalike merchant refused by Horos</li><li><span aria-hidden="true">✓</span>above-invoice charge inside the card cap refused by Horos</li><li><span aria-hidden="true">✓</span>surcharge above the card cap refused by card controls</li><li><span aria-hidden="true">✓</span>invoice marked PAID only from a matching provider clearing</li><li><span aria-hidden="true">✓</span>replay on the paid card refused (card closed by Airwallex after clearing)</li><li><span aria-hidden="true">✓</span>the shared ledger refuses the VIC rail for the obligation the card paid</li><li><span aria-hidden="true">✓</span>a single-message charge reaches Horos as a CLEARING, is approved, and reconciles PAID</li><li><span aria-hidden="true">✓</span>a clearing above the approval is flagged as an exception with a remediation</li><li><span aria-hidden="true">✓</span>concurrent duplicates: exactly one authorized</li><li><span aria-hidden="true">✓</span>race hold released</li><li><span aria-hidden="true">✓</span>Horos silent: Airwallex declines by default</li><li><span aria-hidden="true">✓</span>wallet moved by exactly the reconciled clearings</li><li><span aria-hidden="true">✓</span>every card closed and remote auth restored to its previous setting</li></ul>
+      <p style="margin-top:16px;font-size:13px">On 3 of 8 recorded live runs, Airwallex logged MALFORMED_RESPONSE in 0 ms for one charge that never reached Horos. It was declined by default, and the check refuses to credit Horos. This is the latest run that completed cleanly.</p><p class="links"><a class="raw" href="evidence/issuing-run-live-2026-11-11.json" target="_blank" rel="noopener">issuing-run-live-2026-11-11.json ↗</a></p></div>
+    <div class="amount">15/15</div>
+  </article>
+  <article class="entry spot" data-reveal>
+    <div><span class="chip green">Live sandbox</span><p class="when" style="margin-top:14px">12 Nov 2026</p></div>
+    <div><h3>The accounting queue, read from T:0</h3><p>Every bill for entity <span class="mono">entity_prod_ieEAMzvhgtHalvsm</span>, read only. 8 open bills: two Dell bills held as possible duplicates, Slack bills waiting for a person because two vendor records share the name.</p><p class="links"><a class="raw" href="evidence/t0-queue-live-2026-11-12.json" target="_blank" rel="noopener">t0-queue-live-2026-11-12.json ↗</a></p></div>
+    <div class="amount">8</div>
+  </article>
+  <article class="entry spot" data-reveal>
+    <div><span class="chip amber">Recorded Claude output</span><p class="when" style="margin-top:14px">12 Nov 2026</p></div>
+    <div><h3>Claude's readings of three emails</h3><p>Live calls to <span class="mono">claude-opus-5-5</span>, recorded with the email's SHA-256 so a replay can only use a reading of that exact email. 3,087 tokens in total.</p>
+      <div class="ids"><code>bank-change → BANK_DETAILS_CHANGE</code><code>remittance → ROUTINE</code><code>forwarded-unclear → UNCLEAR</code></div><p class="links"><a class="raw" href="evidence/emails/bank-change.eml" target="_blank" rel="noopener">bank-change.eml ↗</a><a class="raw" href="evidence/emails/bank-change.reading.json" target="_blank" rel="noopener">reading ↗</a><a class="raw" href="evidence/emails/remittance.eml" target="_blank" rel="noopener">remittance.eml ↗</a><a class="raw" href="evidence/emails/remittance.reading.json" target="_blank" rel="noopener">reading ↗</a><a class="raw" href="evidence/emails/forwarded-unclear.eml" target="_blank" rel="noopener">forwarded-unclear.eml ↗</a><a class="raw" href="evidence/emails/forwarded-unclear.reading.json" target="_blank" rel="noopener">reading ↗</a></p></div>
+    <div class="amount">3</div>
+  </article>
+  <article class="entry spot" data-reveal>
+    <div><span class="chip amber">Recorded Claude output</span><p class="when" style="margin-top:14px">12 Nov 2026</p></div>
+    <div><h3>Twelve emails, labelled before Claude read them</h3><p>Four ordinary receipts, four real changes to where payments go, four ambiguous messages. We wrote them and their expected outcome first, then Claude read each once and the policy decided. 0 false holds, 0 missed. The 4 ambiguous ones were held on Claude's reading alone: no bank-detail pattern appears in them. A small set we wrote ourselves, not a measured error rate.</p>
+      <table class="eval"><thead><tr><th>Email</th><th>Expected</th><th>Claude read</th><th>Decision</th></tr></thead><tbody><tr><td>Important: remittance update</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>Remittance information</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>New way to pay your invoices</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>Updated ACH instructions</td><td class="mono">HOLD</td><td class="mono">bank details change</td><td><span class="chip red">hold</span></td></tr><tr><td>Payment received for INV-20250115-0871</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>New invoice SLK-20261110</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>Your November statement</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>Wire received, thank you</td><td class="mono">NOTED</td><td class="mono">routine</td><td><span class="chip green">noted</span></td></tr><tr><td>Re: invoice INV-2000001</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr><tr><td>Fwd: quick one about payments</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr><tr><td>Heads up: banking changes next quarter</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr><tr><td>Slack payment today</td><td class="mono">HOLD</td><td class="mono">unclear</td><td><span class="chip red">hold</span></td></tr></tbody></table>
+      <p class="links"><a class="raw" href="evidence/eval.json" target="_blank" rel="noopener">eval.json ↗</a><a class="raw" href="evidence/emails/eval/labels.json" target="_blank" rel="noopener">labels.json ↗</a></p></div>
+    <div class="amount">12/12</div>
+  </article>
+  <article class="entry spot" data-reveal>
+    <div><span class="chip ">Replay on fakes</span><p class="when" style="margin-top:14px">12 Nov 2026</p></div>
+    <div><h3>The case and eight attacks, replayed</h3><p>The real Horos commands against stand-ins for Airwallex, Airi and T:0. Counts come from the stand-ins' records. Anyone can rerun them with <span class="mono">npm run demo</span>.</p><p class="links"><a class="raw" href="evidence/replay.json" target="_blank" rel="noopener">replay.json ↗</a><a class="raw" href="evidence/attacks.json" target="_blank" rel="noopener">attacks.json ↗</a></p></div>
+    <div class="amount">9</div>
+  </article>
+  <article class="entry pending" data-reveal>
+    <div><span class="chip red">Not run yet</span></div>
+    <div><h3>The USD 100 Slack bill, paid live</h3><p>Waits for a person's real verification of the supplier and checkout, then one supervised passkey checkout to the team's labelled sandbox checkout, which stands in for Slack and is not Slack.</p></div>
+    <div class="amount">—</div>
+  </article>
+  <article class="entry pending" data-reveal>
+    <div><span class="chip red">Not run yet</span></div>
+    <div><h3>The payment record written back to T:0</h3><p>Horos prepares exactly one record and will say “accepted by T:0, awaiting processing” only when T:0's acknowledgement counts that record. Confirmation after T:0's nightly processing waits on how T:0 exposes it.</p></div>
+    <div class="amount">—</div>
+  </article>
+</div></section>
+<div class="wrap"><a class="next" href="how.html" data-reveal><span><span class="eyebrow">Next</span><br><span class="serif">How it works</span></span><span class="arrow" aria-hidden="true">→</span></a></div>
+
+</main>
+<div class="wrap"><footer class="foot"><span>Horos · accounts-payable agent on Airwallex, built for the Agentic Banking hackathon by cassxbt</span><span>Built from <code>demo/replay.json</code>, <code>demo/attacks.json</code> and <code>evidence/</code> · rebuild with <code>npm run demo</code></span></footer></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

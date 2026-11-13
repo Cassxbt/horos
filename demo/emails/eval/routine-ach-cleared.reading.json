@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-12T18:10:11.050Z",
+  "emailSha256": "13de8d04988ba5ac3b2b921a419e6d50d77baefb382538cf9a1207a7e13e1c32",
+  "model": "claude-opus-5-5",
+  "promptVersion": "supplier-email-1",
+  "stopReason": "end_turn",
+  "usage": {
+    "input_tokens": 774,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 151,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  },
+  "raw": "{\"kind\":\"ROUTINE\",\"passage\":\"Your ACH payment of USD 150.00 for invoice INV-20250115-0871 cleared yesterday. Thank you for paying on time.\",\"summary\":\"Payment confirmation from Slack Billing for invoice INV-20250115-0871 (USD 150.00) with no request to change payment details; note the sender domain is slack-billing.example and the amount differs from the USD 0.00 bill on file.\"}"
+}

@@ -1,0 +1,265 @@
+{
+  "at": "2026-11-12T13:07:03.493Z",
+  "entity": "entity_prod_ieEAMzvhgtHalvsm",
+  "source": "T:0 GET /v1/vendor-bills?expand=vendor, every status (read-only)",
+  "rows": [
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_36b6e84b60aea8b47b00",
+      "billId": "t0_bill_prod_36b6e84b60aea8b47b00",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_1304a031646fcba3d7f4",
+      "vendorName": "Slack Technologies, Inc.",
+      "invoiceNumber": "SLK-20261027",
+      "amount": 150,
+      "currency": "USD",
+      "billDate": "2026-10-27",
+      "dueDate": "2026-11-11",
+      "status": "open",
+      "sourcePlatform": "api",
+      "conflicts": [],
+      "version": "1ca5977278c6d99f",
+      "state": "OPEN",
+      "action": "NEEDS_VENDOR_VERIFICATION",
+      "eligibility": "NEEDS_VENDOR_VERIFICATION",
+      "flags": [
+        {
+          "kind": "VENDOR_NAME_SHARED",
+          "otherVendorIds": [
+            "t0_vendor_prod_78e1a442b0eb63a0b44c"
+          ]
+        },
+        {
+          "kind": "RECURRING",
+          "series": [
+            "SLK-20261020",
+            "SLK-20261027",
+            "SLK-20261103"
+          ]
+        },
+        {
+          "kind": "OVERDUE",
+          "daysPastDue": 1
+        }
+      ]
+    },
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_50108354b6811eab7244",
+      "billId": "t0_bill_prod_50108354b6811eab7244",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_977b06bc8a38df3db67d",
+      "vendorName": "Dell Inc.",
+      "invoiceNumber": "INV-20260301-001",
+      "amount": 10000,
+      "currency": "USD",
+      "billDate": "2026-03-01",
+      "dueDate": "2026-03-31",
+      "status": "open",
+      "sourcePlatform": "ramp",
+      "conflicts": [],
+      "version": "ec02111d64a12338",
+      "state": "OPEN",
+      "action": "HOLD_FOR_REVIEW",
+      "eligibility": "HOLD_FOR_REVIEW",
+      "flags": [
+        {
+          "kind": "POSSIBLE_DUPLICATE",
+          "others": [
+            "t0_bill_prod_ec7c5a03906762661501"
+          ],
+          "evidence": "Dell Technologies Inc. INV-2000001 (vendor different record), same amount and due date"
+        },
+        {
+          "kind": "OVERDUE",
+          "daysPastDue": 226
+        }
+      ]
+    },
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_58a1f4d87f8bd68715d2",
+      "billId": "t0_bill_prod_58a1f4d87f8bd68715d2",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_1304a031646fcba3d7f4",
+      "vendorName": "Slack Technologies, Inc.",
+      "invoiceNumber": "SLK-20261020",
+      "amount": 150,
+      "currency": "USD",
+      "billDate": "2026-10-20",
+      "dueDate": "2026-11-04",
+      "status": "open",
+      "sourcePlatform": "api",
+      "conflicts": [],
+      "version": "53224cc537b96b7f",
+      "state": "OPEN",
+      "action": "NEEDS_VENDOR_VERIFICATION",
+      "eligibility": "NEEDS_VENDOR_VERIFICATION",
+      "flags": [
+        {
+          "kind": "VENDOR_NAME_SHARED",
+          "otherVendorIds": [
+            "t0_vendor_prod_78e1a442b0eb63a0b44c"
+          ]
+        },
+        {
+          "kind": "RECURRING",
+          "series": [
+            "SLK-20261020",
+            "SLK-20261027",
+            "SLK-20261103"
+          ]
+        },
+        {
+          "kind": "OVERDUE",
+          "daysPastDue": 8
+        }
+      ]
+    },
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_6f3f948454ee3b41cabe",
+      "billId": "t0_bill_prod_6f3f948454ee3b41cabe",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_a2a719a007455be92031",
+      "vendorName": "Hewlett-Packard Inc.",
+      "invoiceNumber": "INV-20260301-003",
+      "amount": 10000,
+      "currency": "USD",
+      "billDate": "2026-03-01",
+      "dueDate": "2026-03-31",
+      "status": "open",
+      "sourcePlatform": "ramp",
+      "conflicts": [],
+      "version": "9bf236400a586662",
+      "state": "OPEN",
+      "action": "READY_FOR_APPROVAL",
+      "eligibility": "READY_FOR_APPROVAL",
+      "flags": [
+        {
+          "kind": "OVERDUE",
+          "daysPastDue": 226
+        }
+      ]
+    },
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_8379a9df7488692eacb3",
+      "billId": "t0_bill_prod_8379a9df7488692eacb3",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_1304a031646fcba3d7f4",
+      "vendorName": "Slack Technologies, Inc.",
+      "invoiceNumber": "SLK-20261103",
+      "amount": 150,
+      "currency": "USD",
+      "billDate": "2026-11-03",
+      "dueDate": "2026-11-18",
+      "status": "open",
+      "sourcePlatform": "api",
+      "conflicts": [],
+      "version": "1980fa73c090cd5c",
+      "state": "OPEN",
+      "action": "NEEDS_VENDOR_VERIFICATION",
+      "eligibility": "NEEDS_VENDOR_VERIFICATION",
+      "flags": [
+        {
+          "kind": "VENDOR_NAME_SHARED",
+          "otherVendorIds": [
+            "t0_vendor_prod_78e1a442b0eb63a0b44c"
+          ]
+        },
+        {
+          "kind": "RECURRING",
+          "series": [
+            "SLK-20261020",
+            "SLK-20261027",
+            "SLK-20261103"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_847bebcd862b528f6d01",
+      "billId": "t0_bill_prod_847bebcd862b528f6d01",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_4254f1fd089b79059539",
+      "vendorName": "Atlassian",
+      "invoiceNumber": "INV-20250201-001",
+      "amount": 5000,
+      "currency": "USD",
+      "billDate": "2026-03-01",
+      "dueDate": "2026-03-31",
+      "status": "open",
+      "sourcePlatform": "ramp",
+      "conflicts": [],
+      "version": "62250248128a7f0f",
+      "state": "OPEN",
+      "action": "READY_FOR_APPROVAL",
+      "eligibility": "READY_FOR_APPROVAL",
+      "flags": [
+        {
+          "kind": "OVERDUE",
+          "daysPastDue": 226
+        }
+      ]
+    },
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_9a32a0da12fe3faf33e5",
+      "billId": "t0_bill_prod_9a32a0da12fe3faf33e5",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_78e1a442b0eb63a0b44c",
+      "vendorName": "Slack Technologies, Inc.",
+      "invoiceNumber": "INV-20250201-1234",
+      "amount": 100,
+      "currency": "USD",
+      "billDate": "2026-03-01",
+      "dueDate": "2026-03-16",
+      "status": "open",
+      "sourcePlatform": "ramp",
+      "conflicts": [],
+      "version": "964c61b18fdf2dda",
+      "state": "OPEN",
+      "action": "NEEDS_VENDOR_VERIFICATION",
+      "eligibility": "NEEDS_VENDOR_VERIFICATION",
+      "flags": [
+        {
+          "kind": "VENDOR_NAME_SHARED",
+          "otherVendorIds": [
+            "t0_vendor_prod_1304a031646fcba3d7f4"
+          ]
+        },
+        {
+          "kind": "OVERDUE",
+          "daysPastDue": 241
+        }
+      ]
+    },
+    {
+      "key": "entity_prod_ieEAMzvhgtHalvsm/t0_bill_prod_ec7c5a03906762661501",
+      "billId": "t0_bill_prod_ec7c5a03906762661501",
+      "entityId": "entity_prod_ieEAMzvhgtHalvsm",
+      "vendorId": "t0_vendor_prod_7d6050202f6ea56979d5",
+      "vendorName": "Dell Technologies Inc.",
+      "invoiceNumber": "INV-2000001",
+      "amount": 10000,
+      "currency": "USD",
+      "billDate": "2026-03-01",
+      "dueDate": "2026-03-31",
+      "status": "open",
+      "sourcePlatform": "ramp",
+      "conflicts": [],
+      "version": "1f01f83fe41bd3a5",
+      "state": "OPEN",
+      "action": "HOLD_FOR_REVIEW",
+      "eligibility": "HOLD_FOR_REVIEW",
+      "flags": [
+        {
+          "kind": "POSSIBLE_DUPLICATE",
+          "others": [
+            "t0_bill_prod_50108354b6811eab7244"
+          ],
+          "evidence": "Dell Inc. INV-20260301-001 (vendor different record), same amount and due date"
+        },
+        {
+          "kind": "OVERDUE",
+          "daysPastDue": 226
+        }
+      ]
+    }
+  ]
+}

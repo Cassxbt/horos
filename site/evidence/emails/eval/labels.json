@@ -1,0 +1,17 @@
+{
+  "note": "Labels were written with each email, before any model read it. Expected outcome: NOTED for an ordinary message, HOLD for anything that changes or may change where payments go.",
+  "expected": {
+    "routine-ach-cleared": "NOTED",
+    "routine-wire-arrived": "NOTED",
+    "routine-statement": "NOTED",
+    "routine-invoice-sent": "NOTED",
+    "change-new-iban": "HOLD",
+    "change-us-routing": "HOLD",
+    "change-portal-link": "HOLD",
+    "change-no-numbers": "HOLD",
+    "unclear-forwarded-question": "HOLD",
+    "unclear-urgent-request": "HOLD",
+    "unclear-future-migration": "HOLD",
+    "unclear-as-discussed": "HOLD"
+  }
+}

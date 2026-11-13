@@ -1,0 +1,198 @@
+{
+  "generatedAt": "2026-11-12T18:11:58.932Z",
+  "how": "demo/emails/eval: emails and labels.json written first; each read once by Claude (recorded beside it); decided by src/email.ts. Rerun with `node demo/eval.ts`.",
+  "summary": {
+    "emails": 12,
+    "agree": 12,
+    "falseHolds": 0,
+    "missedHolds": 0,
+    "heldWithoutPattern": 4
+  },
+  "rows": [
+    {
+      "name": "change-new-iban",
+      "subject": "Important: remittance update",
+      "expected": "HOLD",
+      "kind": "BANK_DETAILS_CHANGE",
+      "passage": "Following a change of banking partner, please direct all payments for our invoices to the account below with immediate effect.",
+      "outcome": "HOLD",
+      "reasons": [
+        "BANK_DETAILS_CHANGE_CLAIMED",
+        "BANK_DETAIL_SIGNALS"
+      ],
+      "signals": [
+        "IBAN",
+        "CHANGED_PAYMENT_DETAILS"
+      ],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 996
+    },
+    {
+      "name": "change-no-numbers",
+      "subject": "Remittance information",
+      "expected": "HOLD",
+      "kind": "BANK_DETAILS_CHANGE",
+      "passage": "Please find our new payment instructions in the attached letter on company letterhead and apply them to the outstanding invoice and all future invoices.",
+      "outcome": "HOLD",
+      "reasons": [
+        "BANK_DETAILS_CHANGE_CLAIMED",
+        "BANK_DETAIL_SIGNALS"
+      ],
+      "signals": [
+        "CHANGED_PAYMENT_DETAILS"
+      ],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 907
+    },
+    {
+      "name": "change-portal-link",
+      "subject": "New way to pay your invoices",
+      "expected": "HOLD",
+      "kind": "BANK_DETAILS_CHANGE",
+      "passage": "From now on please pay all open invoices at https://slack-paylink.example/pay instead of the checkout link you used before.",
+      "outcome": "HOLD",
+      "reasons": [
+        "BANK_DETAILS_CHANGE_CLAIMED",
+        "BANK_DETAIL_SIGNALS"
+      ],
+      "signals": [
+        "CHANGED_PAYMENT_DETAILS"
+      ],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 924
+    },
+    {
+      "name": "change-us-routing",
+      "subject": "Updated ACH instructions",
+      "expected": "HOLD",
+      "kind": "BANK_DETAILS_CHANGE",
+      "passage": "Please update our ACH details on file. Going forward, remit all payments to routing number 021000021 and account number 483920175, Chase Bank.",
+      "outcome": "HOLD",
+      "reasons": [
+        "BANK_DETAILS_CHANGE_CLAIMED",
+        "BANK_DETAIL_SIGNALS"
+      ],
+      "signals": [
+        "ACCOUNT_OR_ROUTING_NUMBER"
+      ],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 943
+    },
+    {
+      "name": "routine-ach-cleared",
+      "subject": "Payment received for INV-20250115-0871",
+      "expected": "NOTED",
+      "kind": "ROUTINE",
+      "passage": "Your ACH payment of USD 150.00 for invoice INV-20250115-0871 cleared yesterday. Thank you for paying on time.",
+      "outcome": "NOTED",
+      "reasons": [],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 925
+    },
+    {
+      "name": "routine-invoice-sent",
+      "subject": "New invoice SLK-20261110",
+      "expected": "NOTED",
+      "kind": "ROUTINE",
+      "passage": "Your weekly invoice SLK-20261110 for USD 150.00 is now available in your billing portal. It is due on 25 November.",
+      "outcome": "NOTED",
+      "reasons": [],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 914
+    },
+    {
+      "name": "routine-statement",
+      "subject": "Your November statement",
+      "expected": "NOTED",
+      "kind": "ROUTINE",
+      "passage": "Please continue to pay through your usual method.",
+      "outcome": "NOTED",
+      "reasons": [],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 902
+    },
+    {
+      "name": "routine-wire-arrived",
+      "subject": "Wire received, thank you",
+      "expected": "NOTED",
+      "kind": "ROUTINE",
+      "passage": "Your wire transfer for invoice INV-20250201-001 has arrived and has been applied to your account.",
+      "outcome": "NOTED",
+      "reasons": [],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 868
+    },
+    {
+      "name": "unclear-as-discussed",
+      "subject": "Re: invoice INV-2000001",
+      "expected": "HOLD",
+      "kind": "UNCLEAR",
+      "passage": "As discussed on the call, please use the updated details for this one.",
+      "outcome": "HOLD",
+      "reasons": [
+        "UNCLEAR"
+      ],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 831
+    },
+    {
+      "name": "unclear-forwarded-question",
+      "subject": "Fwd: quick one about payments",
+      "expected": "HOLD",
+      "kind": "UNCLEAR",
+      "passage": "Hi Marco, who on your side handles supplier payment details? We need to send something over before your next payment.",
+      "outcome": "HOLD",
+      "reasons": [
+        "UNCLEAR"
+      ],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 924
+    },
+    {
+      "name": "unclear-future-migration",
+      "subject": "Heads up: banking changes next quarter",
+      "expected": "HOLD",
+      "kind": "UNCLEAR",
+      "passage": "Next quarter we will be consolidating our banks. Nothing changes yet. We will write to you separately before anything about how you pay us is affected.",
+      "outcome": "HOLD",
+      "reasons": [
+        "UNCLEAR"
+      ],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 917
+    },
+    {
+      "name": "unclear-urgent-request",
+      "subject": "Slack payment today",
+      "expected": "HOLD",
+      "kind": "UNCLEAR",
+      "passage": "Their team called me and said there is a problem with the usual route. They will send the details directly to you shortly, just go with whatever they send.",
+      "outcome": "HOLD",
+      "reasons": [
+        "UNCLEAR"
+      ],
+      "signals": [],
+      "agrees": true,
+      "model": "claude-opus-5-5",
+      "tokens": 895
+    }
+  ]
+}

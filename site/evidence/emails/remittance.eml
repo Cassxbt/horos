@@ -1,0 +1,15 @@
+From: Slack Accounts Receivable <ar@slack-billing.example>
+To: ap@horos-demo.example
+Subject: Your invoice INV-20250201-1234 is ready
+Date: Wed, 12 Nov 2026 09:20:00 +0000
+
+Hello Accounts Payable team,
+
+Your invoice INV-20250201-1234 for USD 100.00 is attached and is due on 16 March 2026.
+
+You can pay it through the usual checkout link in your account. Nothing about how you pay us has changed.
+
+If you have questions about the line items, reply to this email and we will help.
+
+Thank you,
+Slack Billing

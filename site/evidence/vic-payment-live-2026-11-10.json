@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-10T12:00:39.063Z",
+  "invoice": "INV-4417",
+  "approvalDigest": "323a99bbab923a61f8d80d68d37b42ba9273f22936b6ca59d759ceaffebf45b4",
+  "airi": {
+    "mandateId": "mdt_nlpdhwf6cho13dzi0y0",
+    "protocolType": "VIC",
+    "tokenType": "DPAN",
+    "resultReported": "{\"mandateId\":\"mdt_nlpdhwf6cho13dzi0y0\",\"status\":\"SUCCEEDED\"}"
+  },
+  "airwallex": {
+    "paymentIntentId": "int_sgpvdzck4ho13ki6bak",
+    "merchantOrderId": "INV-4417-1794312033228",
+    "status": "SUCCEEDED",
+    "paymentAttemptId": "att_sgpvdzck4ho13kioxtt_ki6bak",
+    "attemptStatus": "AUTHORIZED",
+    "amount": 186.4,
+    "currency": "USD"
+  }
+}

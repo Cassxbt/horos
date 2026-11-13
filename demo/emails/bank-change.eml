@@ -1,0 +1,20 @@
+From: Slack Accounts Receivable <ar@slack-billing.example>
+To: ap@horos-demo.example
+Subject: Updated remittance details for INV-20250201-1234
+Date: Wed, 12 Nov 2026 09:14:00 +0000
+
+Hello Accounts Payable team,
+
+Thank you for being a valued customer. As part of our annual treasury review we have moved our banking to a new provider, effective immediately.
+
+Please update your records and send the payment for invoice INV-20250201-1234 (USD 100.00), and all future payments, to our new account:
+
+Bank: Northbridge Commercial Bank
+Account name: Slack Technologies Receivables
+IBAN: GB33 BUKB 2020 1555 5555 55
+
+Our previous account will be closed at the end of this week, so please do not use it. If the payment has already been scheduled, kindly cancel it and resend to the new details today.
+
+Best regards,
+Dana Whitfield
+Accounts Receivable

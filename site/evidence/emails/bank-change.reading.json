@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-12T13:12:28.105Z",
+  "emailSha256": "bda373147251bd14424697250e10c08e60f7625bd06e333ef74babfe09e4089e",
+  "model": "claude-opus-5-5",
+  "promptVersion": "supplier-email-1",
+  "stopReason": "end_turn",
+  "usage": {
+    "input_tokens": 938,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 179,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  },
+  "raw": "{\"kind\":\"BANK_DETAILS_CHANGE\",\"passage\":\"Please update your records and send the payment for invoice INV-20250201-1234 (USD 100.00), and all future payments, to our new account:\",\"summary\":\"The email asks us to send this Slack invoice and all future payments to a new Northbridge Commercial Bank IBAN, and to cancel any scheduled payment and resend it today. That pressure is a classic sign of payment fraud, so hold the payment until the change is confirmed with Slack using contact details we already have on file.\"}"
+}

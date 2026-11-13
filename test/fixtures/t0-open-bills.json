@@ -1,0 +1,294 @@
+{
+ "note": "T:0 sandbox open vendor bills, entity entity_prod_ieEAMzvhgtHalvsm, shape as read live on Nov 11 2026 (bill dates simplified)",
+ "data": [
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_8379a9df7488692eacb3"
+   },
+   "data": {
+    "total": 150,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-11-18",
+    "status": "open",
+    "customFields": {
+     "bill_number": "SLK-20261103",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_1304a031646fcba3d7f4"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_1304a031646fcba3d7f4"
+      },
+      "data": {
+       "name": "Slack Technologies, Inc."
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_36b6e84b60aea8b47b00"
+   },
+   "data": {
+    "total": 150,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-11-11",
+    "status": "open",
+    "customFields": {
+     "bill_number": "SLK-20261027",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_1304a031646fcba3d7f4"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_1304a031646fcba3d7f4"
+      },
+      "data": {
+       "name": "Slack Technologies, Inc."
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_58a1f4d87f8bd68715d2"
+   },
+   "data": {
+    "total": 150,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-11-04",
+    "status": "open",
+    "customFields": {
+     "bill_number": "SLK-20261020",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_1304a031646fcba3d7f4"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_1304a031646fcba3d7f4"
+      },
+      "data": {
+       "name": "Slack Technologies, Inc."
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_50108354b6811eab7244"
+   },
+   "data": {
+    "total": 10000,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-03-31",
+    "status": "open",
+    "customFields": {
+     "bill_number": "INV-20260301-001",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_977b06bc8a38df3db67d"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_977b06bc8a38df3db67d"
+      },
+      "data": {
+       "name": "Dell Inc."
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_6f3f948454ee3b41cabe"
+   },
+   "data": {
+    "total": 10000,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-03-31",
+    "status": "open",
+    "customFields": {
+     "bill_number": "INV-20260301-003",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_a2a719a007455be92031"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_a2a719a007455be92031"
+      },
+      "data": {
+       "name": "Hewlett-Packard Inc."
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_847bebcd862b528f6d01"
+   },
+   "data": {
+    "total": 5000,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-03-31",
+    "status": "open",
+    "customFields": {
+     "bill_number": "INV-20250201-001",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_4254f1fd089b79059539"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_4254f1fd089b79059539"
+      },
+      "data": {
+       "name": "Atlassian"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_9a32a0da12fe3faf33e5"
+   },
+   "data": {
+    "total": 100,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-03-16",
+    "status": "open",
+    "customFields": {
+     "bill_number": "INV-20250201-1234",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_78e1a442b0eb63a0b44c"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_78e1a442b0eb63a0b44c"
+      },
+      "data": {
+       "name": "Slack Technologies, Inc."
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": {
+    "dataType": "VendorBill",
+    "externalId": "t0_bill_prod_ec7c5a03906762661501"
+   },
+   "data": {
+    "total": 10000,
+    "currencyCode": "USD",
+    "date": "2026-03-01",
+    "dueDate": "2026-03-31",
+    "status": "open",
+    "customFields": {
+     "bill_number": "INV-2000001",
+     "t0_primary_source_platform": "ramp"
+    }
+   },
+   "links": [
+    {
+     "dataType": "Vendor",
+     "externalId": "t0_vendor_prod_7d6050202f6ea56979d5"
+    }
+   ],
+   "expanded": {
+    "vendor": [
+     {
+      "id": {
+       "dataType": "Vendor",
+       "externalId": "t0_vendor_prod_7d6050202f6ea56979d5"
+      },
+      "data": {
+       "name": "Dell Technologies Inc."
+      }
+     }
+    ]
+   }
+  }
+ ],
+ "next_cursor": null
+}

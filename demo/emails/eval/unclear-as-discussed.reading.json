@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-12T18:10:24.120Z",
+  "emailSha256": "9ad55ee42193882cc0677e68259ccc739f08432c36681b30a25a6e8c04bd4fe1",
+  "model": "claude-opus-5-5",
+  "promptVersion": "supplier-email-1",
+  "stopReason": "end_turn",
+  "usage": {
+    "input_tokens": 728,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 103,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  },
+  "raw": "{\"kind\":\"UNCLEAR\",\"passage\":\"As discussed on the call, please use the updated details for this one.\",\"summary\":\"The email asks AP to use \\\"updated details\\\" agreed on a call but never says what changed. Treat it as a possible payment-detail change and confirm with Dell through a known contact before paying.\"}"
+}

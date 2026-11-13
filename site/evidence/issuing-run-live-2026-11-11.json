@@ -1,0 +1,741 @@
+{
+  "startedAt": "2026-11-11T06:56:48.810Z",
+  "obligation": "sandbox:demo-1794380208810/VND-0192/INV-4417",
+  "invoice": {
+    "id": "INV-4417",
+    "entityId": "sandbox:demo-1794380208810",
+    "vendorId": "VND-0192",
+    "amount": 186.4,
+    "currency": "USD",
+    "dueDate": "2026-11-20"
+  },
+  "vendor": {
+    "id": "VND-0192",
+    "name": "Tessaline Systems Inc.",
+    "iban": "on file, ending 9921",
+    "portalDomain": "pay.tessaline.example",
+    "merchantDescriptor": "TESSALINE SYSTEMS INC",
+    "mcc": "5045",
+    "currency": "USD"
+  },
+  "remoteAuthBeforeRun": {
+    "enabled": false,
+    "url": "https://83d4-129-205-124-205.ngrok-free.app/remote-auth",
+    "default_action": "DECLINED"
+  },
+  "email": {
+    "from": "accounts@tessaline-billing.example",
+    "claim": {
+      "vendorName": "Tessaline Systems Inc.",
+      "newIban": "US-ACH-026009593-8810023341",
+      "portalUrl": "https://pay.tessaline-billing.example/inv/4417"
+    },
+    "holdWire": true,
+    "findings": [
+      "IBAN_DIFFERS_FROM_VENDOR_MASTER",
+      "PORTAL_NOT_IN_VENDOR_MASTER"
+    ],
+    "wire": "HELD"
+  },
+  "approval": {
+    "terms": {
+      "obligation": "sandbox:demo-1794380208810/VND-0192/INV-4417",
+      "invoiceId": "INV-4417",
+      "vendorId": "VND-0192",
+      "vendorName": "Tessaline Systems Inc.",
+      "amount": 186.4,
+      "currency": "USD",
+      "merchantDescriptor": "TESSALINE SYSTEMS INC",
+      "acceptorId": null,
+      "mcc": "5045",
+      "portalDomain": "pay.tessaline.example",
+      "expiresAt": "2026-11-14T06:56:52+0000",
+      "policyVersion": "ap-policy-1",
+      "contextHash": "540d07d98756cb1c5e724bf33ce4c100719704081a750fdac1983b28737e7818",
+      "controls": {
+        "allowed_transaction_count": "SINGLE",
+        "allowed_merchant_categories": [
+          "5045"
+        ],
+        "allowed_currencies": [
+          "USD"
+        ],
+        "active_to": "2026-11-14T06:56:52+0000",
+        "transaction_limits": {
+          "currency": "USD",
+          "limits": [
+            {
+              "amount": 191.99,
+              "interval": "ALL_TIME"
+            }
+          ]
+        }
+      }
+    },
+    "digest": "fe7ab74f22de0963745210ca2132a09b84e6934f2bafb6840db5964bc5e28c46",
+    "approvedBy": "operator (simulated in this run)",
+    "counterparty": "DESCRIPTOR_ONLY: the payee is matched by network name, MCC and amount, not by a verified merchant id"
+  },
+  "remoteAuth": {
+    "enabled": true,
+    "url": "https://7b75-129-205-124-205.ngrok-free.app/remote-auth",
+    "default_action": "DECLINED"
+  },
+  "readiness": [
+    {
+      "network": "APPROVED",
+      "horos": "not called"
+    },
+    {
+      "network": "DECLINED",
+      "horos": "UNKNOWN_CARD"
+    },
+    {
+      "network": "DECLINED",
+      "horos": "UNKNOWN_CARD"
+    },
+    {
+      "network": "DECLINED",
+      "horos": "UNKNOWN_CARD"
+    }
+  ],
+  "gateTest": {
+    "note": "gate test on its own card and approval; not a payment of the invoice",
+    "cardId": "a9552731-5cf3-4a91-bd07-8605a71b1ded",
+    "attempts": [
+      {
+        "label": "phishing portal (lookalike merchant), invoice amount",
+        "merchant": "TESSALLNE SYSTEMS",
+        "amount": 186.4,
+        "network": "DECLINED",
+        "reason": "REMOTE_AUTH_DECLINED",
+        "transactionId": "01a1c965-9241-7000-a3dc-d3f437dce522",
+        "lifecycleId": "01a1c965-9241-7000-99bd-9d5070a04eb7",
+        "horos": {
+          "decision": {
+            "response_status": "DECLINED",
+            "status_reason": "MERCHANT_MISMATCH"
+          },
+          "transactionType": "AUTHORIZATION",
+          "signed": true,
+          "serverMs": 2,
+          "merchantId": "269311974685348"
+        }
+      },
+      {
+        "label": "real supplier, above invoice but inside card cap",
+        "merchant": "TESSALINE SYSTEMS INC",
+        "amount": 190,
+        "network": "DECLINED",
+        "reason": "REMOTE_AUTH_DECLINED",
+        "transactionId": "01a1c965-9e53-7000-9483-4b5dbea035ec",
+        "lifecycleId": "01a1c965-9e53-7000-9252-4a965e88ef2c",
+        "horos": {
+          "decision": {
+            "response_status": "DECLINED",
+            "status_reason": "AMOUNT_EXCEEDS_APPROVAL"
+          },
+          "transactionType": "AUTHORIZATION",
+          "signed": true,
+          "serverMs": 2,
+          "merchantId": "139861468405753"
+        }
+      },
+      {
+        "label": "real supplier, hidden surcharge above card cap",
+        "merchant": "TESSALINE SYSTEMS INC",
+        "amount": 192.74,
+        "network": "DECLINED",
+        "reason": "LIMIT_EXCEEDED",
+        "transactionId": "01a1c965-ae80-7000-9dbb-e4ed3e167cc0",
+        "lifecycleId": "01a1c965-ae80-7000-a6c2-2a24835ed5de",
+        "horos": "not called"
+      }
+    ]
+  },
+  "capture": {
+    "result": "APPROVED"
+  },
+  "payment": {
+    "cardId": "63cee0d0-0cbb-41ba-9993-57e7ea4c04b2",
+    "attempt": {
+      "label": "real supplier, invoice amount",
+      "merchant": "TESSALINE SYSTEMS INC",
+      "amount": 186.4,
+      "network": "APPROVED",
+      "transactionId": "01a1c965-c693-7000-ac17-f41ade15bc47",
+      "lifecycleId": "01a1c965-c693-7000-aa0d-08d631f2dd51",
+      "horos": {
+        "decision": {
+          "response_status": "AUTHORIZED",
+          "status_reason": "MATCHES_APPROVAL"
+        },
+        "transactionType": "AUTHORIZATION",
+        "signed": true,
+        "serverMs": 1,
+        "merchantId": "530128804849371"
+      }
+    },
+    "reconciliation": {
+      "state": "PAID",
+      "clearedCents": 18640,
+      "transactionId": "31ae3dce-0ef0-4512-894b-7bea3f5c03b0",
+      "notes": [
+        "clearing booked under MCC 7531"
+      ]
+    }
+  },
+  "afterPayment": {
+    "replay": {
+      "label": "replay: second charge on the paid card",
+      "merchant": "TESSALINE SYSTEMS INC",
+      "amount": 186.4,
+      "network": "DECLINED",
+      "reason": "CARD_CLOSED",
+      "transactionId": "01a1c965-ede7-7000-bf1f-f40a3579687c",
+      "lifecycleId": "01a1c965-ede7-7000-ac08-e9345b1df261",
+      "horos": "not called"
+    },
+    "obligationState": "PAID"
+  },
+  "singleMessageTest": {
+    "note": "gate test: authorization and clearing in one message",
+    "cardId": "800d48f0-c6c2-49f6-b7a8-341de6b1db6a",
+    "attempt": {
+      "label": "single-message charge at the invoice amount",
+      "merchant": "TESSALINE SYSTEMS INC",
+      "amount": 186.4,
+      "network": "APPROVED",
+      "transactionId": "01a1c966-03f4-7000-878e-dd32ccbe3758",
+      "lifecycleId": "01a1c966-03f4-7000-ae7a-08c1d59aeb77",
+      "horos": {
+        "decision": {
+          "response_status": "AUTHORIZED",
+          "status_reason": "MATCHES_APPROVAL"
+        },
+        "transactionType": "CLEARING",
+        "signed": true,
+        "serverMs": 1,
+        "merchantId": "874810551695137"
+      }
+    },
+    "reconciliation": {
+      "state": "PAID",
+      "clearedCents": 18640,
+      "transactionId": "fa98eb31-1027-4245-a47c-5bba4e2f51d4",
+      "notes": [
+        "clearing booked under MCC 5045"
+      ]
+    }
+  },
+  "overcaptureTest": {
+    "note": "gate test: a clearing above the approved authorization",
+    "cardId": "49b1a69e-3e92-4629-a35e-446ecceba573",
+    "authorization": {
+      "label": "authorization at the invoice amount",
+      "merchant": "TESSALINE SYSTEMS INC",
+      "amount": 186.4,
+      "network": "APPROVED",
+      "transactionId": "01a1c966-211e-7000-823e-e3a4f3aca1d3",
+      "lifecycleId": "01a1c966-211e-7000-b9b3-eccd47520121",
+      "horos": {
+        "decision": {
+          "response_status": "AUTHORIZED",
+          "status_reason": "MATCHES_APPROVAL"
+        },
+        "transactionType": "AUTHORIZATION",
+        "signed": true,
+        "serverMs": 12,
+        "merchantId": "360408230371848"
+      }
+    },
+    "capture": {
+      "amount": 190,
+      "result": "APPROVED"
+    },
+    "reconciliation": {
+      "state": "EXCEPTION",
+      "reason": "CLEARED_ABOVE_APPROVAL",
+      "clearedCents": 19000,
+      "remediation": "Dispute the excess over the approved amount; the invoice stays open for review.",
+      "notes": []
+    }
+  },
+  "race": {
+    "note": "gate test; the one approved hold is reversed",
+    "cardId": "f3e0918e-ca99-4804-86fd-7c2ec7ad1cb4",
+    "approved": 1,
+    "attempts": [
+      {
+        "label": "duplicate charge 1 of 3, fired concurrently",
+        "merchant": "TESSALINE SYSTEMS INC",
+        "amount": 186.4,
+        "network": "APPROVED",
+        "transactionId": "01a1c966-4717-7000-bc07-8a100490570e",
+        "lifecycleId": "01a1c966-4717-7000-a2d6-5994bf219d9a",
+        "horos": {
+          "decision": {
+            "response_status": "AUTHORIZED",
+            "status_reason": "MATCHES_APPROVAL"
+          },
+          "transactionType": "AUTHORIZATION",
+          "signed": true,
+          "serverMs": 2,
+          "merchantId": "907444970368796"
+        }
+      },
+      {
+        "label": "duplicate charge 2 of 3, fired concurrently",
+        "merchant": "TESSALINE SYSTEMS INC",
+        "amount": 186.4,
+        "network": "DECLINED",
+        "reason": "REMOTE_AUTH_DECLINED",
+        "transactionId": "01a1c966-48ce-7000-a6cc-d14ee6a2a0c5",
+        "lifecycleId": "01a1c966-48ce-7000-a999-27fd9227067c",
+        "horos": {
+          "decision": {
+            "response_status": "DECLINED",
+            "status_reason": "APPROVAL_ALREADY_USED"
+          },
+          "transactionType": "AUTHORIZATION",
+          "signed": true,
+          "serverMs": 1,
+          "merchantId": "038870109441290"
+        }
+      },
+      {
+        "label": "duplicate charge 3 of 3, fired concurrently",
+        "merchant": "TESSALINE SYSTEMS INC",
+        "amount": 186.4,
+        "network": "DECLINED",
+        "reason": "REMOTE_AUTH_DECLINED",
+        "transactionId": "01a1c966-4897-7000-baae-6435226d926e",
+        "lifecycleId": "01a1c966-4897-7000-82cd-933afd9d2164",
+        "horos": {
+          "decision": {
+            "response_status": "DECLINED",
+            "status_reason": "APPROVAL_ALREADY_USED"
+          },
+          "transactionType": "AUTHORIZATION",
+          "signed": true,
+          "serverMs": 1,
+          "merchantId": "719587774132793"
+        }
+      }
+    ],
+    "reversals": [
+      {
+        "lifecycleId": "01a1c966-4717-7000-a2d6-5994bf219d9a",
+        "result": "APPROVED"
+      }
+    ]
+  },
+  "outage": {
+    "note": "gate test",
+    "cardId": "06be3a87-b8b4-4106-88bd-4cb68cc14e2c",
+    "label": "Horos stops answering (simulated outage), real supplier, invoice amount",
+    "merchant": "TESSALINE SYSTEMS INC",
+    "amount": 186.4,
+    "network": "DECLINED",
+    "reason": "REMOTE_AUTH_DECLINED",
+    "transactionId": "01a1c966-702c-7000-b5a3-ef13d97d7b3f",
+    "lifecycleId": "01a1c966-702c-7000-8fc3-80a51750c5b5",
+    "horos": {
+      "decision": "NO_RESPONSE",
+      "transactionType": "AUTHORIZATION",
+      "signed": true,
+      "serverMs": 1,
+      "merchantId": "791438606252910"
+    }
+  },
+  "wallet": {
+    "currency": "USD",
+    "totalBefore": 9995811.2,
+    "totalAfter": 9995248.4,
+    "totalDrop": 562.8,
+    "reconciledClearings": 562.8
+  },
+  "airwallexLedger": {
+    "a9552731-5cf3-4a91-bd07-8605a71b1ded": [
+      {
+        "transactionId": "fe1cd7d0-917a-46d7-bb2c-b5d2512e8d18",
+        "lifecycleId": "01a1c965-9241-7000-99bd-9d5070a04eb7",
+        "type": "AUTHORIZATION",
+        "status": "FAILED",
+        "amount": -186.4,
+        "merchant": "TESSALLNE SYSTEMS________",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "269311974685348",
+        "failureReason": "REMOTE_AUTH_DECLINED",
+        "remoteAuth": {
+          "default_action_used": false,
+          "duration": 361,
+          "response_status": "DECLINED",
+          "status_reason": "MERCHANT_MISMATCH",
+          "timed_out": false
+        }
+      },
+      {
+        "transactionId": "ec257fe5-6232-42fc-b04e-21996698e4ff",
+        "lifecycleId": "01a1c965-9e53-7000-9252-4a965e88ef2c",
+        "type": "AUTHORIZATION",
+        "status": "FAILED",
+        "amount": -190,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "139861468405753",
+        "failureReason": "REMOTE_AUTH_DECLINED",
+        "remoteAuth": {
+          "default_action_used": false,
+          "duration": 342,
+          "response_status": "DECLINED",
+          "status_reason": "AMOUNT_EXCEEDS_APPROVAL",
+          "timed_out": false
+        }
+      },
+      {
+        "transactionId": "d4db9823-b766-4d72-987e-25063e01ec71",
+        "lifecycleId": "01a1c965-ae80-7000-a6c2-2a24835ed5de",
+        "type": "AUTHORIZATION",
+        "status": "FAILED",
+        "amount": -192.74,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "899168608022210",
+        "failureReason": "LIMIT_EXCEEDED"
+      }
+    ],
+    "63cee0d0-0cbb-41ba-9993-57e7ea4c04b2": [
+      {
+        "transactionId": "31ae3dce-0ef0-4512-894b-7bea3f5c03b0",
+        "lifecycleId": "01a1c965-c693-7000-aa0d-08d631f2dd51",
+        "type": "CLEARING",
+        "status": "APPROVED",
+        "amount": -186.4,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "7531",
+        "merchantIdentifier": "122897818717369"
+      },
+      {
+        "transactionId": "b3273596-d8b4-4dd3-a6ea-b04d254a190b",
+        "lifecycleId": "01a1c965-ede7-7000-ac08-e9345b1df261",
+        "type": "AUTHORIZATION",
+        "status": "FAILED",
+        "amount": -186.4,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "622306101856280",
+        "failureReason": "CARD_CLOSED"
+      }
+    ],
+    "800d48f0-c6c2-49f6-b7a8-341de6b1db6a": [
+      {
+        "transactionId": "fa98eb31-1027-4245-a47c-5bba4e2f51d4",
+        "lifecycleId": "01a1c966-03f4-7000-ae7a-08c1d59aeb77",
+        "type": "CLEARING",
+        "status": "APPROVED",
+        "amount": -186.4,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "874810551695137",
+        "remoteAuth": {
+          "default_action_used": false,
+          "duration": 525,
+          "response_status": "AUTHORIZED",
+          "status_reason": "MATCHES_APPROVAL",
+          "timed_out": false
+        }
+      }
+    ],
+    "49b1a69e-3e92-4629-a35e-446ecceba573": [
+      {
+        "transactionId": "8be9fd2e-63eb-4349-b4e1-48cb53c3992a",
+        "lifecycleId": "01a1c966-211e-7000-b9b3-eccd47520121",
+        "type": "CLEARING",
+        "status": "APPROVED",
+        "amount": -190,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "7531",
+        "merchantIdentifier": "597033061451714"
+      }
+    ],
+    "f3e0918e-ca99-4804-86fd-7c2ec7ad1cb4": [
+      {
+        "transactionId": "d2340e8d-3fda-496e-824d-3a8b9d1152cb",
+        "lifecycleId": "01a1c966-4717-7000-a2d6-5994bf219d9a",
+        "type": "AUTHORIZATION",
+        "status": "REVERSED",
+        "amount": -186.4,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "907444970368796",
+        "remoteAuth": {
+          "default_action_used": false,
+          "duration": 606,
+          "response_status": "AUTHORIZED",
+          "status_reason": "MATCHES_APPROVAL",
+          "timed_out": false
+        }
+      },
+      {
+        "transactionId": "f753a82b-499c-4fd7-938e-b84cf8cde8bd",
+        "lifecycleId": "01a1c966-4897-7000-82cd-933afd9d2164",
+        "type": "AUTHORIZATION",
+        "status": "FAILED",
+        "amount": -186.4,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "719587774132793",
+        "failureReason": "REMOTE_AUTH_DECLINED",
+        "remoteAuth": {
+          "default_action_used": false,
+          "duration": 524,
+          "response_status": "DECLINED",
+          "status_reason": "APPROVAL_ALREADY_USED",
+          "timed_out": false
+        }
+      },
+      {
+        "transactionId": "166cc38e-800c-4bc7-a6cb-165299e5aab1",
+        "lifecycleId": "01a1c966-48ce-7000-a999-27fd9227067c",
+        "type": "AUTHORIZATION",
+        "status": "FAILED",
+        "amount": -186.4,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "038870109441290",
+        "failureReason": "REMOTE_AUTH_DECLINED",
+        "remoteAuth": {
+          "default_action_used": false,
+          "duration": 651,
+          "response_status": "DECLINED",
+          "status_reason": "APPROVAL_ALREADY_USED",
+          "timed_out": false
+        }
+      }
+    ],
+    "06be3a87-b8b4-4106-88bd-4cb68cc14e2c": [
+      {
+        "transactionId": "b4a45529-1c6f-47af-9218-7e30a4e29cb7",
+        "lifecycleId": "01a1c966-702c-7000-8fc3-80a51750c5b5",
+        "type": "AUTHORIZATION",
+        "status": "FAILED",
+        "amount": -186.4,
+        "merchant": "TESSALINE SYSTEMS INC____",
+        "merchantMcc": "5045",
+        "merchantIdentifier": "791438606252910",
+        "failureReason": "REMOTE_AUTH_DECLINED",
+        "remoteAuth": {
+          "default_action_used": true,
+          "duration": 2502,
+          "response_status": "DECLINED",
+          "status_reason": "TIMEOUT",
+          "timed_out": true
+        }
+      }
+    ]
+  },
+  "cleanup": {
+    "drained": true,
+    "allClosed": true,
+    "cards": [
+      {
+        "requestId": "ffb46e3e-5180-48db-8916-6dd3a9ff4270",
+        "id": "892cd91b-4bf1-4d97-bfb4-e7301226e5bb",
+        "status": "CLOSED"
+      },
+      {
+        "requestId": "8f96df1e-e0e0-4485-8397-268afe5dcac8",
+        "id": "a9552731-5cf3-4a91-bd07-8605a71b1ded",
+        "status": "CLOSED"
+      },
+      {
+        "requestId": "db0e3c50-f725-4050-bea7-de8048b2f63b",
+        "id": "63cee0d0-0cbb-41ba-9993-57e7ea4c04b2",
+        "status": "CLOSED"
+      },
+      {
+        "requestId": "d91171cf-a182-4e08-9ec4-3996dab7fb9a",
+        "id": "800d48f0-c6c2-49f6-b7a8-341de6b1db6a",
+        "status": "CLOSED"
+      },
+      {
+        "requestId": "c6954640-288e-4025-8f91-d85e97fcf928",
+        "id": "49b1a69e-3e92-4629-a35e-446ecceba573",
+        "status": "CLOSED"
+      },
+      {
+        "requestId": "85750f75-a22a-4b16-9296-637e369db2d9",
+        "id": "f3e0918e-ca99-4804-86fd-7c2ec7ad1cb4",
+        "status": "CLOSED"
+      },
+      {
+        "requestId": "a760c233-f739-45f4-ab27-6cdedb16c1e5",
+        "id": "06be3a87-b8b4-4106-88bd-4cb68cc14e2c",
+        "status": "CLOSED"
+      }
+    ]
+  },
+  "remoteAuthAfterRun": {
+    "enabled": false,
+    "url": "https://83d4-129-205-124-205.ngrok-free.app/remote-auth",
+    "default_action": "DECLINED",
+    "readBackAfterMs": 4000
+  },
+  "checks": [
+    {
+      "check": "bank-change email holds the wire",
+      "pass": true,
+      "detail": [
+        "IBAN_DIFFERS_FROM_VENDOR_MASTER",
+        "PORTAL_NOT_IN_VENDOR_MASTER"
+      ]
+    },
+    {
+      "check": "Horos answers authorizations before any armed card exists",
+      "pass": true,
+      "detail": "4 probe(s)"
+    },
+    {
+      "check": "lookalike merchant refused by Horos",
+      "pass": true
+    },
+    {
+      "check": "above-invoice charge inside the card cap refused by Horos",
+      "pass": true
+    },
+    {
+      "check": "surcharge above the card cap refused by card controls",
+      "pass": true
+    },
+    {
+      "check": "invoice marked PAID only from a matching provider clearing",
+      "pass": true,
+      "detail": {
+        "state": "PAID",
+        "clearedCents": 18640,
+        "transactionId": "31ae3dce-0ef0-4512-894b-7bea3f5c03b0",
+        "notes": [
+          "clearing booked under MCC 7531"
+        ]
+      }
+    },
+    {
+      "check": "replay on the paid card refused (card closed by Airwallex after clearing)",
+      "pass": true,
+      "detail": "CARD_CLOSED"
+    },
+    {
+      "check": "the shared ledger refuses the VIC rail for the obligation the card paid",
+      "pass": true
+    },
+    {
+      "check": "a single-message charge reaches Horos as a CLEARING, is approved, and reconciles PAID",
+      "pass": true,
+      "detail": {
+        "transactionType": "CLEARING",
+        "reconciliation": "PAID"
+      }
+    },
+    {
+      "check": "a clearing above the approval is flagged as an exception with a remediation",
+      "pass": true,
+      "detail": {
+        "state": "EXCEPTION",
+        "reason": "CLEARED_ABOVE_APPROVAL",
+        "clearedCents": 19000,
+        "remediation": "Dispute the excess over the approved amount; the invoice stays open for review.",
+        "notes": []
+      }
+    },
+    {
+      "check": "concurrent duplicates: exactly one authorized",
+      "pass": true
+    },
+    {
+      "check": "race hold released",
+      "pass": true,
+      "detail": [
+        {
+          "lifecycleId": "01a1c966-4717-7000-a2d6-5994bf219d9a",
+          "result": "APPROVED"
+        }
+      ]
+    },
+    {
+      "check": "Horos silent: Airwallex declines by default",
+      "pass": true,
+      "detail": "REMOTE_AUTH_DECLINED"
+    },
+    {
+      "check": "wallet moved by exactly the reconciled clearings",
+      "pass": true,
+      "detail": {
+        "drop": 562.8,
+        "reconciled": 562.8
+      }
+    },
+    {
+      "check": "every card closed and remote auth restored to its previous setting",
+      "pass": true,
+      "detail": {
+        "enabled": false,
+        "url": "https://83d4-129-205-124-205.ngrok-free.app/remote-auth",
+        "default_action": "DECLINED",
+        "readBackAfterMs": 4000
+      }
+    }
+  ],
+  "unsignedRequestsRejected": 0,
+  "ledger": {
+    "obligation": {
+      "key": "sandbox:demo-1794380208810/VND-0192/INV-4417",
+      "amount_cents": 18640,
+      "currency": "USD",
+      "state": "PAID",
+      "rail": "ISSUED_CARD",
+      "attempt_id": "e882acb5-29c5-440e-9e10-7e6e5bc4441c",
+      "reserved_at": "2026-11-11T06:57:31.186Z",
+      "approval_digest": "fe7ab74f22de0963745210ca2132a09b84e6934f2bafb6840db5964bc5e28c46",
+      "detail": "{\"state\":\"PAID\",\"clearedCents\":18640,\"transactionId\":\"31ae3dce-0ef0-4512-894b-7bea3f5c03b0\",\"notes\":[\"clearing booked under MCC 7531\"]}",
+      "updated_at": "2026-11-11T06:57:41.919Z"
+    },
+    "operations": [
+      {
+        "request_id": "db0e3c50-f725-4050-bea7-de8048b2f63b",
+        "obligation": "sandbox:demo-1794380208810/VND-0192/INV-4417",
+        "attempt_id": "e882acb5-29c5-440e-9e10-7e6e5bc4441c",
+        "rail": "ISSUED_CARD",
+        "kind": "CARD_CREATE",
+        "external_id": "63cee0d0-0cbb-41ba-9993-57e7ea4c04b2",
+        "status": "CREATED",
+        "detail": null,
+        "at": "2026-11-11T06:57:32.022Z"
+      },
+      {
+        "request_id": "1cea15fc-0187-4602-ac80-8918530626ce",
+        "obligation": "sandbox:demo-1794380208810/VND-0192/INV-4417",
+        "attempt_id": "e882acb5-29c5-440e-9e10-7e6e5bc4441c",
+        "rail": "ISSUED_CARD",
+        "kind": "AUTHORIZATION",
+        "external_id": "01a1c965-c693-7000-aa0d-08d631f2dd51",
+        "status": "APPROVED",
+        "detail": null,
+        "at": "2026-11-11T06:57:36.172Z"
+      },
+      {
+        "request_id": "a7a396f5-0f08-42ae-b9e6-e3d6863a7af6",
+        "obligation": "sandbox:demo-1794380208810/VND-0192/INV-4417",
+        "attempt_id": "e882acb5-29c5-440e-9e10-7e6e5bc4441c",
+        "rail": "ISSUED_CARD",
+        "kind": "CAPTURE",
+        "external_id": "01a1c965-c693-7000-aa0d-08d631f2dd51",
+        "status": "APPROVED",
+        "detail": null,
+        "at": "2026-11-11T06:57:40.861Z"
+      }
+    ]
+  },
+  "authLog": "runs/auth-log-1794380208810.jsonl",
+  "finishedAt": "2026-11-11T06:58:45.872Z"
+}

@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-12T18:10:03.961Z",
+  "emailSha256": "75caf86e27a802213fd500ec7822b7779bca855e280b94269ba2101069adda77",
+  "model": "claude-opus-5-5",
+  "promptVersion": "supplier-email-1",
+  "stopReason": "end_turn",
+  "usage": {
+    "input_tokens": 773,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 151,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  },
+  "raw": "{\"kind\":\"BANK_DETAILS_CHANGE\",\"passage\":\"From now on please pay all open invoices at https://slack-paylink.example/pay instead of the checkout link you used before.\",\"summary\":\"The email asks AP to send all Slack payments to a new payment link on a non-Slack domain (slack-paylink.example) and says the old checkout is closing this week; treat it as a payment-destination change and confirm with Slack through known contact details before paying.\"}"
+}

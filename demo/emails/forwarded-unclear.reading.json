@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-12T13:12:24.104Z",
+  "emailSha256": "eab5b321413d20526950f9831394c2825a8dfb4ff53674e413af39416c7b9b5b",
+  "model": "claude-opus-5-5",
+  "promptVersion": "supplier-email-1",
+  "stopReason": "end_turn",
+  "usage": {
+    "input_tokens": 827,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 163,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard"
+  },
+  "raw": "{\"kind\":\"UNCLEAR\",\"passage\":\"Hi Priya, before your team sends the next payment, can you confirm who I should speak to about where it goes? We are making some changes on our side and want to send the right instructions to the right person.\",\"summary\":\"A forwarded message from a non-Slack domain (slack-notices.example) hints at upcoming changes to where payments go without giving details. Treat it as a possible precursor to a bank-details change and verify with Slack through known contacts before paying or replying.\"}"
+}

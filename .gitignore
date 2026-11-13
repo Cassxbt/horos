@@ -1,0 +1,14 @@
+# Secrets and credentials: never committed.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+credential*.json
+# Local state: the working ledger, run receipts and tool links.
+data/
+runs/
+.vercel
+node_modules/
+.DS_Store
+.playwright-mcp/
