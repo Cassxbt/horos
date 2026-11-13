@@ -142,7 +142,7 @@ const overview = layout(
 <section class="band"><div class="wrap">
   <div class="band-head"><span class="index"><b>03</b> / built on</span><div><h2 data-reveal>Each sponsor <em>does a job</em></h2><p data-reveal>Remove any one and a check disappears.</p></div></div>
   <div class="stack">
-    <article class="spot" data-reveal><span class="eyebrow">Airwallex</span><h3>Issuing, remote authorization, checkout</h3><p>Horos answers each card authorization itself, and pays supplier checkouts through Payment Acceptance.</p></article>
+    <article class="spot" data-reveal><span class="eyebrow">Airwallex</span><h3>Issuing, remote authorization, checkout</h3><p>Airwallex asks Horos to decide authorizations on its cards, declining when no answer arrives, and Horos pays supplier checkouts through Payment Acceptance.</p></article>
     <article class="spot" data-reveal><span class="eyebrow">Visa · Airi</span><h3>Intelligent Commerce credential</h3><p>A passkey-approved, single-use credential, bound to one mandate that must match the approval.</p></article>
     <article class="spot" data-reveal><span class="eyebrow">T:0</span><h3>The accounting system of record</h3><p>Every bill, open or paid, read fresh before each payment. One payment record owed back, never two.</p></article>
     <article class="spot" data-reveal><span class="eyebrow">Claude</span><h3>Reads what changed</h3><p>${esc(readings[0].model)} reads the supplier's email and cites its evidence. It never holds the pen on a payment.</p></article>
@@ -373,7 +373,7 @@ const proof = layout(
   </article>
   <article class="entry spot" data-reveal>
     <div>${chip('live')}<p class="when" style="margin-top:14px">${esc(day(issuing.startedAt))}</p></div>
-    <div><h3>An issued card that asks Horos first</h3><p>Airwallex calls Horos on every authorization. The wallet moved by exactly the clearings Horos reconciled: USD ${money(issuing.wallet.totalDrop)} down, USD ${money(issuing.wallet.reconciledClearings)} reconciled.</p>
+    <div><h3>An issued card that asks Horos first</h3><p>Airwallex asks Horos to decide each authorization it sends, and declines by default when no answer arrives. The wallet moved by exactly the clearings Horos reconciled: USD ${money(issuing.wallet.totalDrop)} down, USD ${money(issuing.wallet.reconciledClearings)} reconciled.</p>
       <ul class="checks">${issuing.checks.map((c: { pass: boolean; check: string }) => `<li><span aria-hidden="true">${c.pass ? '✓' : '×'}</span>${esc(c.check)}</li>`).join('')}</ul>
       <p style="margin-top:16px;font-size:13px">On 3 of 8 recorded live runs, Airwallex logged MALFORMED_RESPONSE in 0 ms for one charge that never reached Horos. It was declined by default, and the check refuses to credit Horos. This is the latest run that completed cleanly.</p><p class="links">${raw('issuing-run-live-2026-11-11.json')}</p></div>
     <div class="amount">${passed}/${issuing.checks.length}</div>
