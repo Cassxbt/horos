@@ -102,7 +102,7 @@ const overview = layout(
     <span class="eyebrow" data-intro>Accounts-payable agent · Airwallex Agentic Banking</span>
     <h1>${lines('An email asked', 'to move the money.', '<em>Horos stopped it.</em>')}</h1>
     <p class="lede" data-intro>Supplier bank-change fraud works because an email can redirect a payment someone already approved. Horos reads that email with Claude, holds the payment the moment the payee is in question, and pays only through a checkout a person verified, with a single-use Visa credential.</p>
-    <div class="actions" data-intro><a class="btn" href="case.html">See the case <span class="arrow">→</span></a><a class="btn ghost" href="judges.html">See the attacks <span class="arrow">→</span></a></div>
+    <div class="actions" data-intro><a class="btn" href="case.html">See the case <span class="arrow">→</span></a><a class="btn ghost" href="https://youtu.be/ICrOhecF07w" target="_blank" rel="noopener">Watch the video · 2:38 <span class="arrow">↗</span></a><a class="btn ghost" href="judges.html">See the attacks <span class="arrow">→</span></a></div>
   </div>
   <div class="scene" aria-label="The supplier email, the approved payment it tried to redirect, and Horos's decision">
     <div class="glow" aria-hidden="true"></div>
@@ -206,6 +206,7 @@ const casePage = layout(
     <h1>${lines('Approved.', 'Then the supplier', '<em>asked to move it.</em>')}</h1>
     <p class="lede" data-intro>A real bill from the T:0 accounting sandbox, a person's approval, and a bank-change email read by Claude. Scroll through what Horos did. Every value is replayed by the real Horos commands.</p>
     <div class="chips" data-intro>${chip('replay')}${chip('recorded')}</div>
+    <p class="lede" data-intro style="margin-top:22px"><a class="link" href="https://youtu.be/ICrOhecF07w" target="_blank" rel="noopener">Watch the case in 2:38 ↗</a></p>
   </div>
   <aside class="panel" data-intro>
     <span class="eyebrow">Outcome</span>

@@ -50,7 +50,7 @@ So I treated **"the facts behind the approval changed"** as a first-class state,
 
 ## What an AP practitioner told us
 
-On 13 Nov we walked a cashier who handles supplier payments at Juliana Hotels and Restaurants through Horos (quoted with consent). One practitioner's view, not a survey.
+On 13 Nov we interviewed a cashier who handles supplier payments at Juliana Hotels and Restaurants (quoted with consent). This is customer discovery, one practitioner's view: not a survey, a pilot, or a measure of time saved.
 
 - **Bank-change emails are routine:** about 3 a month, sometimes 5. No money moves until the supplier is confirmed by email and phone, on a direct line obtained when the business relationship starts and re-confirmed every three months.
 - **Approval is layered:** goods checked, invoice checked, the cashier, then a second approval by finance before payment is released.
@@ -210,6 +210,7 @@ Every refusal is a code, and every held bill names the person's next step. An op
 
 **Limits.**
 
+- Verification is recorded, not proven. Horos records who verified a supplier's destination and what evidence they gave, and binds every approval to that verification. It does not itself establish who controls the supplier's phone line, and it does not yet implement a two-person approval chain.
 - The 12-email evaluation is a small set we wrote and labelled ourselves. It shows behaviour; it does not measure an error rate.
 - On 3 of 8 recorded live issuing runs, Airwallex logged `MALFORMED_RESPONSE` in 0 ms for one charge that never reached Horos. The charge was declined by default, and the check refuses to credit Horos.
 - Re-reading T:0 just before confirming narrows the race with a payment made outside Horos. It cannot close it.
